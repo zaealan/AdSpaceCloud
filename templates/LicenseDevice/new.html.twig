@@ -1,0 +1,372 @@
+{% extends 'Default/mainFancy.html.twig' %}
+{% block title 'License Device'%}
+    {% block content %}
+        <h1 style="margin-left: 20px; margin-top: -10px; margin-bottom: 15px;">Add/Extend Device License</h1>
+        <table class="table table-bordered table-hover tablesorter records_list">
+            <thead>
+                <tr class="valign halign">
+                    <th>Expiration Date</th>
+                    <th>Add/Subtract Months or Delete</th>
+                    <th>New Expiration Date</th>
+                    <th>Cost USD$</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set priceDeviceServer = licenseRate[0].lrPrice %}
+                {% set priceDeviceClient = licenseRate[1].lrPrice %}
+                {% for licDevice in entity %}
+                    {% set typeDevice = "Client" %}
+                    {% set priceDevice = priceDeviceClient %}
+                    {% if licDevice.ldTypeDevice == 1%}
+                        {% set typeDevice = "Server" %}
+                        {% set priceDevice = priceDeviceServer%}
+                    {% endif %}
+                    <tr id="theDevice{{licDevice.id}}" id-license="{{ licDevice.id }}" 
+                        date-from-license="{{ licDevice.ldExpirationDate|date("m/d/Y") }}"
+                        date-expir-license="{{ licDevice.ldExpirationDate|date("m/d/Y") }}"
+                        cantMoreMonth="0" priceDevice="{{ priceDevice }}">
+                        <td>
+                            {{ typeDevice }}
+                            {{ licDevice.ldExpirationDate|date("m/d/Y") }}
+                        </td>
+                        <td>
+                            <input type="button" value="+" class="btn btn-success btn-more-one-month"/>
+                            <input type="button" value="-" class="btn btn-warning btn-less-one-month theLess{{licDevice.id}}" style="display:none;"/>
+                            {% if licDevice.ldTypeDevice != constant('App\\Entity\\LicenseDevice::DEVICE_SERVER') %}
+                                <input type="button" value="x" class="btn btn-danger deleteBtn" data-device="{{licDevice.id}}" data-lic="{{licDevice.ldLicenseId.id}}" data-dates="{{licDevice.ldExpirationDate|date("m/d/Y")}}" data-path="{{ path('license_device_delete', {'license':'__DATA1__', 'id':'__DATA2__'}) }}" style="float: right"/>
+                            {% endif %}
+                        </td>
+                        <td align="center" valign="middle"><label class="newNextDate"></label></td>
+                        <td align="right"><label class="priceLicense" currentPrice="0">$0</label></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No devices found for this license</td>
+                    </tr>
+                {% endfor %}
+                <tr date-from-license="{{ "now"|date("m/d/Y") }}" 
+                    date-expir-license="{{ "now"|date_modify("+1 month")|date("m/d/Y") }}"
+                    priceDevice="{{ priceDeviceClient }}"
+                    cantMoreMonth="0" class="new-devices">
+                    <td>
+                        <input class="moreClients col-xs-3 pdn3" type="number" oldVal="0" value="0" step="1" min="0" max="100"/>
+                        <div class="datetimepicker col-xs-8">
+                            <input type="text" readonly value="{{ "now"|date("m/d/Y") }}" class="fromDate  wdth100"/>
+                        </div>
+                    </td>
+                    <td><input type="button" value="+" class="btn btn-success btn-more-one-month addDeviceClient input_number"/>
+                        <input type="button" value="-" class="btn btn-warning btn-less-one-month" style="display:none;"/></td>
+                    <td align="center"><label class="newNextDate">{{ "now"|date_modify("+1 month")|date("m/d/Y") }}</label></td>
+                    <td align="right"><label class="priceLicense" currentPrice="0">$0</label></td>
+                </tr>
+                <tr class="alert alert-success">
+                    <td colspan="3"><label>Total</label></td>
+                    <td align="right"><label class="totalPriceLicense" valPrice="0">USD $0</label></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group text-right" style="margin-top: 20px;">
+            <label id="notify_msg" style="color: green; float: left; margin-left: 310px; margin-top: 10px;"></label>
+            <div id="modificationDiv">
+                <button id="cancelbtn" class="btn btn-danger" >Cancel</button>
+                <button id="savebtn" class="btn btnSave btn-primary save-btn" type="submit">Save</button>
+            </div>
+            <div id="deleteDiv" style="display: none;">
+                <button id="cancelDeleteBtn" class="btn btn-danger">No, Cancel</button>
+                <button id="deleteBtn" class="btn btn-primary">Yes, Delete It</button>
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block scripts %}
+        
+        {#<script>#}
+        
+        $('#cancelbtn').click(function () {
+            window.parent.$.fancybox.close();
+        });
+
+        $('.moreClients').change(function () {
+            /*seccion para el change del input numberr*/
+            var oldVal = parseInt($(this).attr("oldVal"));
+            var trCurrent = $(this).closest("tr");
+            var cantDevices = parseInt($(this).val());
+            var cantMoreMonth = parseInt($(trCurrent).attr("cantMoreMonth"));
+            var action = 1;
+            if (cantMoreMonth === 0) {
+                cantMoreMonth = 1;
+                $(trCurrent).attr("cantMoreMonth", 1);
+            }
+            if (oldVal > cantDevices) {
+                action = 0;
+            }
+            sumPricesLicenses(trCurrent, action);
+            $(this).attr("oldVal", cantDevices);
+        }).keydown(function(evn){
+            return onlyNumbers(evn)
+        });
+
+        $(".btn-more-one-month").click(function () {
+            var trCurrent = $(this).closest("tr");
+            if ($(this).hasClass("addDeviceClient") && !($(trCurrent).find('.moreClients').val() > 0)) {
+                return;
+            }
+            var action = 1;
+            getDateFromAtribute(trCurrent, action);
+            sumPricesLicenses(trCurrent, action);
+        });
+        
+        $(".btn-less-one-month").click(function () {
+            var trCurrent = $(this).closest("tr");
+            var action = 0;
+            getDateFromAtribute(trCurrent, action);
+            sumPricesLicenses(trCurrent, action);
+        });
+        
+        var dataLic = 0;
+        var deletePath = '';
+        var licenceDevice = 0;
+        
+        $(".deleteBtn").click(function () {
+        
+            var clickedBtn = $(this);
+        
+            $('#modificationDiv').fadeOut("slow", function() {
+                $('#notify_msg').css('margin-left', '30px');
+                $('#notify_msg').css('color', 'black');
+                $('#notify_msg').html('Are you sure to delete the device with <strong>'+clickedBtn.attr('data-dates')+'</strong> expiration date? This action cannot be undone..');
+                $('#deleteDiv').fadeIn();
+
+                dataLic = clickedBtn.attr('data-lic');
+                deletePath = clickedBtn.attr('data-path');
+                licenceDevice = clickedBtn.attr('data-device');
+                
+                while($(".theLess"+licenceDevice).is(":visible")) {
+                    $(".theLess"+licenceDevice).click();
+                }
+            });
+        });
+        
+        $('#deleteBtn').click(function () {
+            if (licenceDevice != 0 && dataLic != 0) {
+                $('#deleteBtn').attr('disabled','disabled');
+                $('#cancelDeleteBtn').attr('disabled','disabled');
+            
+                var firstPathUrl = deletePath.replace(/__DATA1__/, dataLic);
+                var secondPathUrl = firstPathUrl.replace(/__DATA2__/, licenceDevice);
+            
+                {#alert(secondPathUrl);#}
+            
+                $.ajax({
+                    type: 'POST',
+                    url: secondPathUrl,
+                    dataType: 'json',
+                    cache: false,
+                    success: function (r) {
+                        if (r.result == '__OK__') {
+                            
+                            $('#notify_msg').fadeOut("slow", function() {
+                                $('#notify_msg').html('Device delete successfully!');
+                                $('#notify_msg').css('margin-left', '250px');
+                                $('#notify_msg').css('color', 'green');
+                                
+                                licenceDevice = 0;
+                                deletePath = '';
+                                dataLic = 0;
+                                
+                                $('#notify_msg').fadeIn("slow", function() {
+                                    var timeToClose = 0;
+                                    setInterval(function() {
+                                        timeToClose++;
+
+                                        if(timeToClose == 2) {
+                                            window.parent.$.fancybox.close();
+                                        }
+                                    },1200);
+                                });
+                            });
+                            
+                            {#$('#cancelDeleteBtn').removeAttr('disabled');
+                            $('#cancelDeleteBtn').click();
+                            $('#deleteBtn').removeAttr('disabled');#}
+                            
+                            {#$('#notify_msg').css('margin-left', '310px');
+                            $('#notify_msg').css('color', 'green');
+                            $('#notify_msg').html(r.msn);#}
+                            
+                            {#licenceDevice = 0;
+                            deletePath = '';
+                            dataLic = 0;#}
+                            
+                            {#$("#theDevice"+licenceDevice).remove();#}
+                            
+                        }
+                        else {
+                            $('#notify_msg').css('color', 'red');
+                            $('#notify_msg').html(r.msn);
+                        }
+                    },
+                    error: function (r) {
+                        $('#notify_msg').css('color', 'red');
+                        $('#notify_msg').html(r.msn);
+                    }
+                });
+            } else {
+                $('#cancelDeleteBtn').click();
+            }
+        });
+        
+        $('#cancelDeleteBtn').click(function () {
+            $('#deleteDiv').fadeOut("slow", function() {
+                $('#notify_msg').css('margin-left', '310px');
+                $('#notify_msg').css('color', 'green');
+                $('#notify_msg').html('');
+                $('#modificationDiv').fadeIn();
+
+                licenceDevice = 0;
+                deletePath = '';
+                dataLic = 0;
+            });
+        });
+
+        $("body").find(".bootstrap-datetimepicker-widget").on("click", ".day", function () {
+            if($(this).hasClass("disabled")){
+                return;
+            }
+            var fromDate = $(".fromDate").val();
+            var d = new Date(fromDate);
+            d.setMonth(d.getMonth() + 1);
+            var nextDate = (d.getMonth()+1) + '/' + d.getDate() + '/' + d.getFullYear();
+            $(".fromDate").closest("tr").find(".newNextDate").text(nextDate);
+            $(".fromDate").closest("tr").attr("date-from-license", fromDate).attr("date-expir-license", nextDate);
+        });
+        
+        $(".btnSave").click(function () {
+            var arrData = new Array();
+            var arrNewData = new Array();
+
+            $("[currentprice]").not("[currentprice=0]").closest("tr").each(function () {
+                var ldPriceUnit = parseFloat($(this).attr("pricedevice"));
+                var ldPriceTotal = parseFloat($(this).find(".priceLicense").attr("currentprice"));
+                var ldId = $(this).attr("id-license");
+                var cantMoreMonth = $(this).attr("cantMoreMonth");
+                var fromDate = $(this).attr("date-from-license");
+                if ($(this).hasClass("new-devices")) {
+                    var moreClients = parseInt($(this).find(".moreClients").val());
+                    fromDate = $(this).find(".fromDate").val();
+                    arrNewData.push({
+                        moreClients: moreClients,
+                        fromDate: fromDate, 
+                        cantMoreMonth:cantMoreMonth,
+                        ldPriceUnit: ldPriceUnit,
+                        ldPriceTotal: ldPriceTotal
+                    });
+                    return true;
+                }
+                var arrObjectEdit = {
+                ldId: ldId, 
+                fromDate: fromDate, 
+                cantMoreMonth: cantMoreMonth,
+                ldPriceUnit: ldPriceUnit,
+                ldPriceTotal: ldPriceTotal
+                };
+                arrData.push(arrObjectEdit);
+            });
+            sendData(arrData, arrNewData);
+        });
+
+        function getDateFromAtribute(trCurrent, action) {
+            var dateEnd = $(trCurrent).attr("date-from-license");
+            var cantMoreMonth = parseInt($(trCurrent).attr("cantMoreMonth"));
+            var currentDate = new Date(dateEnd);
+            var btnLessOneMonth = $(trCurrent).find(".btn-less-one-month");
+            var minimMonth = 0;
+            if (action === 1) {
+                cantMoreMonth++;
+            } else {
+                cantMoreMonth--;
+            }
+            currentDate.setMonth(currentDate.getMonth() + cantMoreMonth);
+            
+            if($(trCurrent).hasClass("new-devices")){
+                minimMonth = 1;
+            }
+            
+            if (cantMoreMonth > minimMonth) {
+                $(btnLessOneMonth).show();
+            } else {
+                $(btnLessOneMonth).hide();
+            }
+            var txtNewDate = (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
+            $(trCurrent).attr("date-expir-license", txtNewDate);
+            $(trCurrent).attr("cantMoreMonth", cantMoreMonth);
+            $(trCurrent).find(".newNextDate").text(txtNewDate);
+        }
+
+        function sumPricesLicenses(trCurrent, action) {
+            var cantDevices = 1;
+            var priceDevice = parseFloat($(trCurrent).attr("priceDevice"));
+            var cantMoreMonth = parseInt($(trCurrent).attr("cantMoreMonth"));
+            if ($(trCurrent).find(".moreClients").length) {
+                cantDevices = parseInt($(trCurrent).find(".moreClients").val());
+                priceDevice *= cantDevices;
+            }
+            var thisPrice = priceDevice * cantMoreMonth;
+            $(trCurrent).find(".priceLicense").attr("currentPrice", thisPrice).text("$" + thisPrice);
+            sumTotalPricesLicense();
+        }
+
+        function sumTotalPricesLicense() {
+            var sumTotal = 0;
+            $(".priceLicense").each(function (index) {
+                sumTotal += parseFloat($(this).attr("currentprice"));
+            });
+            $(".totalPriceLicense").text("USD $" + sumTotal).attr("valPrice", sumTotal);
+        }
+
+        function sendData(arrEditData, arrNewData) {
+            var totalPrice = $(".totalPriceLicense").attr("valPrice");
+            $('#savebtn').attr('disabled','disabled');
+            $('#cancelbtn').attr('disabled','disabled');
+            $.ajax({
+                type: "POST",
+                url: "{{path('license_device_add_edit', { 'id': entitiId })}}",
+                dataType:"json",
+                data:{
+                    arrEditData: arrEditData,
+                    arrNewData: arrNewData,
+                    totalPrice: totalPrice
+                },
+                success: function(jsonData) {
+                    if(jsonData.resp == "__OK__") {
+                        console.log(jsonData);
+                        $('#notify_msg').html(jsonData.msn);
+                        var timeToClose = 0;
+                        setInterval(function() {
+                            timeToClose++;
+
+                            if(timeToClose == 2) {
+                                window.parent.$.fancybox.close();
+                            }
+
+                            },1200);
+                    }
+                    if(jsonData.resp == "__KO__"){
+                        $('#savebtn').removeAttr('disabled');
+                        $('#cancelbtn').removeAttr('disabled');
+                        console.log(jsonData.msn);
+                        return;
+                    }
+                    return;
+                },
+                error: function(jsonData) {
+                    $('#savebtn').removeAttr('disabled');
+                    $('#cancelbtn').removeAttr('disabled');
+                    console.log(jsonData.resp);
+                    return;
+                }
+            });
+        }
+        
+    {% endblock %}

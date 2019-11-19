@@ -1,0 +1,113 @@
+{% extends 'Default/mainFancy.html.twig' %}
+{% block title 'Default Login Users'%}
+    {% block content %}
+        <h1 style="margin-top: -10px; text-align: center;">Default Lite Login User</h1>
+        <h2 style="text-align: center; font-size: 24px;">{{license}}</h2>
+        {#<table class="table table-bordered table-hover tablesorter records_list">
+            <thead>
+                <tr class="valign halign">
+                    <th colspan="3">LEVEL Web Credentials (Admin User)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        {{ '111' }}
+                    </td>
+                    <td>
+                        {{ '222' }}
+                    </td>
+                    <td>
+                        {{ '333' }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>#}
+        <table class="table table-bordered table-hover tablesorter records_list">
+            <thead>
+                <tr class="valign halign">
+                    <th colspan="4">LEVEL Lite Credentials (Default User)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <label style="font-weight: normal;">Nickname: <strong>{{ license.alLicenseUsername }}</strong></label>
+                    </td>
+                    <td>
+                        <label style="font-weight: normal;">User: <strong>{{ liteDefalultUser['username'] }}</strong></label>
+                    </td>
+                    <td>
+                        <label style="font-weight: normal;">Pass: <strong>{{ liteDefalultUser['realPass'] }}</strong></label>
+                    </td>
+                    <td>
+                        <button id="checkLogin" 
+                                data_path='{{ path('check_login_level_lite') }}'
+                                licId="{{ license.id }}" class="btn btn-success">Test Login</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group text-right" style="margin-top: 20px;">
+            <button id="cancelbtn" class="btn btn-danger">Close</button>
+        </div>
+        <div class="form-group text-center">
+            <label id="msg"></label>
+        </div>
+        
+
+    {% endblock %}
+
+    {% block scripts %}
+        
+        {#<script>#}
+        
+        $('#cancelbtn').click(function () {
+            window.parent.$.fancybox.close();
+        });
+
+         $('#checkLogin').click(function () {   
+            var idLic = $(this).attr('licId');
+            var pathUrl = $(this).attr('data_path');
+            $('#msg').text("").removeClass("text-success text-danger").addClass("fa fa-spin fa-spinner").fadeIn("slow");
+            $.ajax({
+                type: 'POST',
+                url: pathUrl,
+                dataType: 'json',
+                data: {
+                    id_license: idLic
+                },
+                cache: false,
+                success: function (re) {                
+                    $('#msg').removeClass("fa fa-spin fa-spinner");              
+                    if (re.result == "__OK__") {
+                        $('#msg').removeClass("text-danger").addClass("text-success").fadeIn("slow");                        
+                    } else {
+                       $('#msg').removeClass("text-success").addClass("text-danger").fadeIn("slow");                        
+                    }
+                    $('#msg').text(re.msg);
+                    var timeToClose = 0;
+
+                    setInterval(function() {
+                    timeToClose++;
+                    if(timeToClose == 3) {
+                         $('#msg').fadeOut("slow");
+                    }
+                    },1000);
+                },
+                error: function (re) {
+                    $('#msg').removeClass("text-success fa fa-spin fa-spinner").addClass("text-danger").fadeIn("slow");
+                    $('#msg').text(re.msg);
+                    var timeToClose = 0;
+                                            
+                    setInterval(function() {
+                    timeToClose++;
+                    if(timeToClose == 3) {
+                         $('#msg').fadeOut("slow");
+                    }
+                    },1000);
+                }
+            });
+        });
+        
+{% endblock %}

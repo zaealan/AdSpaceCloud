@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Level Licensor</title>
+        <style type="text/css">
+            .galerry {
+                /*width: 80%;*/
+                width: 620px;
+                height: auto;
+                -moz-border-radius: 25px;
+                overflow: hidden;
+                background-color: #FFF;
+                color: #384750;
+                margin-right: auto;
+                margin-left: auto;
+                display: block;
+            }
+            .content {
+                float: left;
+                width: 92%;
+                padding-right: 3%;
+                padding-left: 3%;
+                text-align: left;
+                height: auto;
+                width: 600px;
+                bottom: 0px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 14px;
+            }
+            .moi {
+                float: left;
+                width: 100%;
+                height: auto;
+                color: #5E87B5;
+                font-size: 18px;
+                margin-top: 2%;
+            }
+            .content h1 {
+                /*color: #C0BFC1;*/
+                color: #999999;
+                margin-top: 2px;
+                font-weight: bold;
+            }
+            .galerry img {
+                float: right;
+                width: 100%;
+                height: auto;
+            }
+            label {
+                float: left;
+                color: #009DB0;
+                margin-right: 8px;
+            }
+            .filterCont {
+                float: left;
+                width: 100%;
+                background-color: #E7E6E8;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="galerry">
+            <div class="content">
+                <h1>{% block title %}Mail Title{% endblock %}</h1>
+                {% block content %}
+
+                    <p>Mail content</p>
+
+                    <div class="filterCont">
+                        <label>Label:</label>
+                        Value
+                    </div>   
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

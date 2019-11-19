@@ -1,0 +1,73 @@
+Creating and using -> /var/www/html/public/uploads/android/data/NewProceduresCommand0.txt at '10/31/2018 11:38:32'HectorProceduresCommand: Start executing!HectorProceduresCommand: license jetblack_1 loaded***** calcularTotalPedido.fnc***** calcularUltimoPuesto.fnc***** fnCheckCreditCardInBill.fnc***** fnCheckCreditCardInOrder.fnc***** fnCheckSettledBill.fnc***** fnCountOrdersByEmp.fnc***** fnCountOrdersByManager.fnc***** fnGetDiscountOrder.fnc***** fnGetOrderAmountPreTax.fnc***** fnGetQuantityOrderByType.fnc***** fnGetQuantityOrderByUser.fnc***** fnGetSalary.fnc***** fnGetScheduleTime.fnc***** fnGetTotalSales.fnc***** fnObtenerDiferencia.fncfnUpdates()
+Cantidad de modulos existentes No fue necesario insertar ItemType
+***** fnUpdates.fncfnUpdatesSchedule()
+--SCH No creados
+***** fnUpdatesSchedule.fnc***** inventoryTriggersMesaPedidoDelete.trg***** inventoryTriggersMesaPedidoInsert.trg***** inventoryTriggersMesaPedidoUpdate.trg***** obtenerEstadoUsuarioTimeClock.fnc***** prActualizarSowingMesa.prcCan't process file prAndroidReport.prc -> The command "mysql -hlevel-db -uroot -paaa lvl_jetblack1_jetblkdook_1 < /var/www/html/Resources/structure/procedures/prAndroidReport.prc" failed.
+
+Exit Code: 1(General error)
+
+Working directory: /var/www/html/public
+
+Output:
+================
+
+
+Error Output:
+================
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1074 (42000) at line 9: Column length too big for column '' (max = 21845); use BLOB or TEXT instead
+***** prCambiarPedidoDemesa.prc***** prCashDrawerReport.prc***** prDeleteDuplicateSizeCategory.prc***** prDeleteDuplicateSizes.prc***** prGetScheduleStartDay.prc***** prInsertInitialConsecutive.prc***** prInsertInitialMenu.prc***** prInsertUserOMT.prc***** prMigrateItemType.prc***** prMigrateNoModifierGroup.prc***** prMigrateRefund.prc***** prPedidoDetalle.prc***** prPedidoDetallePorFactura.prc***** prRemoveGarbage.prc***** prRemoveProductPrinter.prc***** prReportesAuditorias.prc***** prReportesClientes.prc***** prReportesEmpleados.prc***** prReportesImpuestos.prc***** prReportesLabores.prc***** prReportesVentas.prc***** prShowinTables.prc***** prTimeClock.prc***** prUpdateDecimals.prc***** prUpdateOrdersBilled.prc***** prUpdateProductTaxes.prc***** prUpdatePropertiesRollUser.prc***** prUpdateRolesProperty.prc***** prUpdateSchedule.prc***** prUpdateUserProperty.prcCan't process file prUpdates.prc -> The command "mysql -hlevel-db -uroot -paaa lvl_jetblack1_jetblkdook_1 < /var/www/html/Resources/structure/procedures/prUpdates.prc" failed.
+
+Exit Code: 1(General error)
+
+Working directory: /var/www/html/public
+
+Output:
+================
+
+
+Error Output:
+================
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1265 (01000) at line 44: Data truncated for column 'prdCode' at row 1
+***** prUpdatesTables.prc***** prchangeRolesProperty.prcsetModules()
+0
+***** setModules.fncsetProducts()
+Productos actualizados con IS_GIFT_CARD: 1
+***** setProducts.fnc***** update_tallas_modificadores.prcHectorProceduresCommand: jetblack_1 procedures updated!Set AUTO strategy skipped!Using -> /var/www/html/public/uploads/android/data/NewProceduresCommand0.txt at '01/20/2019 19:56:32'HectorProceduresCommand: Start executing!HectorProceduresCommand: license elcerdit_1 loaded***** calcularTotalPedido.fnc***** calcularUltimoPuesto.fnc***** fnCheckCreditCardInBill.fnc***** fnCheckCreditCardInOrder.fnc***** fnCheckSettledBill.fnc***** fnCountOrdersByEmp.fnc***** fnCountOrdersByManager.fnc***** fnGetDiscountOrder.fnc***** fnGetOrderAmountPreTax.fnc***** fnGetQuantityOrderByType.fnc***** fnGetQuantityOrderByUser.fnc***** fnGetSalary.fnc***** fnGetScheduleTime.fnc***** fnGetTotalSales.fnc***** fnObtenerDiferencia.fncfnUpdates()
+Cantidad de modulos existentes No fue necesario insertar ItemType
+***** fnUpdates.fncfnUpdatesSchedule()
+--SCH No creados
+***** fnUpdatesSchedule.fnc***** inventoryTriggersMesaPedidoDelete.trg***** inventoryTriggersMesaPedidoInsert.trg***** inventoryTriggersMesaPedidoUpdate.trg***** obtenerEstadoUsuarioTimeClock.fnc***** prActualizarSowingMesa.prcCan't process file prAndroidReport.prc -> The command "mysql -hlevel-db -uroot -paaa lvl_jetblack1_elcerduque_1 < /var/www/html/Resources/structure/procedures/prAndroidReport.prc" failed.
+
+Exit Code: 1(General error)
+
+Working directory: /var/www/html/public
+
+Output:
+================
+
+
+Error Output:
+================
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1074 (42000) at line 9: Column length too big for column '' (max = 21845); use BLOB or TEXT instead
+***** prCambiarPedidoDemesa.prc***** prCashDrawerReport.prc***** prDeleteDuplicateSizeCategory.prc***** prDeleteDuplicateSizes.prc***** prGetScheduleStartDay.prc***** prInsertInitialConsecutive.prc***** prInsertInitialMenu.prc***** prInsertUserOMT.prc***** prMigrateItemType.prc***** prMigrateNoModifierGroup.prc***** prMigrateRefund.prc***** prPedidoDetalle.prc***** prPedidoDetallePorFactura.prc***** prRemoveGarbage.prc***** prRemoveProductPrinter.prc***** prReportesAuditorias.prc***** prReportesClientes.prc***** prReportesEmpleados.prc***** prReportesImpuestos.prc***** prReportesLabores.prc***** prReportesVentas.prc***** prShowinTables.prc***** prTimeClock.prc***** prUpdateDecimals.prc***** prUpdateOrderingCategory.prc***** prUpdateOrdersBilled.prc***** prUpdateProductTaxes.prc***** prUpdatePropertiesRollUser.prc***** prUpdateRolesProperty.prc***** prUpdateSchedule.prc***** prUpdateUserProperty.prcCan't process file prUpdates.prc -> The command "mysql -hlevel-db -uroot -paaa lvl_jetblack1_elcerduque_1 < /var/www/html/Resources/structure/procedures/prUpdates.prc" failed.
+
+Exit Code: 1(General error)
+
+Working directory: /var/www/html/public
+
+Output:
+================
+
+
+Error Output:
+================
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1265 (01000) at line 44: Data truncated for column 'prdCode' at row 1
+***** prUpdatesTables.prc***** prchangeRolesProperty.prcsetModules()
+0
+***** setModules.fncsetProducts()
+Productos actualizados con IS_GIFT_CARD: 0
+***** setProducts.fnc***** updateAlwaysShowModifier.fnc***** update_tallas_modificadores.prcHectorProceduresCommand: elcerdit_1 procedures updated!Set AUTO strategy skipped!

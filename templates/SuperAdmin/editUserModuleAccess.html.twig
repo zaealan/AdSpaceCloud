@@ -1,0 +1,168 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'User Management'%}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>{{user.usName|title~' '~user.usLastName|title }} &nbsp;&nbsp;<small>({{user.getTextType()}})</small></h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}"><i class="icon-dashboard"></i> Dashboard</a></li>
+                <li><a href="{{path('adpoint_companies')}}"><i class="fa fa-list"></i> Resellers List</a></li>
+                <li><a href="{{path('adpoint_managment_company_users_list', {'companyId':company.id })}}"><i class="fa fa-list"></i> Resellers User List</a></li>
+                <li class="active"><i class="icon-file-alt"></i> Edit Privileges</li>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+                      
+        <div class="col-lg-12">
+            <table class="table table-bordered table-hover tablesorter">
+                <thead>
+                    <tr>
+                        <th width="200px">Module</th>
+                        <th width="200px">Enable / Disable
+                            <div class="pull-right">
+                                <label for="enableDisableAll" style="display: inline; cursor:pointer;">Enable / Disable All</label>
+                                <input type="checkbox" style="display: inline;" id="enableDisableAll"/>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set lastParentEnabled = false %}
+                    {% for module in modulesUserCompany %}
+{#                        se restringe temporalmente, hasta nueva orden, la visualización de módulo de db's management#}
+{#                        {% if module.umModule.MoId != "17" and module.umModule.MoId != "18" and module.umModule.MoId != "19" %}#}
+                    <tr {% if module.umCompanyModu.cmModule.parent is empty %}
+                            style="background-color: #dadada;"
+                        {% endif %}>
+                        {% if module.umCompanyModu.cmModule.parent is empty %}
+                            <td style="font-weight: bold; font-size: 16px;">{{module}}</td>
+{#                            <td style="font-weight: bold; font-size: 16px;">{{module.umModule.parent.MoId}}</td>#}
+                        {% else %}
+                            <td style="padding-left: 30px;">{{module}}</td>
+                        {% endif %}
+                        
+                        {% if module.umCompanyModu.cmModule.parent is empty %}
+                            {% if module.umAccess == true %}
+                                {% set lastParentEnabled = true %}
+                            {% else %}
+                                {% set lastParentEnabled = false %}
+                            {% endif %}
+                        {% endif %}
+                        <td>
+                            <input type="checkbox" class="editPrivileges" module-id="{{module.umId}}" {% if module.umAccess == true %}checked="checked"{% endif %}
+                            {% if module.umCompanyModu.cmModule.parent is not empty %}
+                                parent-id="{{module.umCompanyModu.cmModule.parent.id}}"
+                                {% if lastParentEnabled == false %}
+                                    disabled="disabled"
+                                {% endif %}
+                            {% else %}
+                                group-id="{{ module.umCompanyModu.cmModule.id }}"
+                            {% endif %}/>
+                        </td>
+                    </tr>
+{#                    {% endif %}#}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="display: none; width: 100%; float: right;" id="divWait">
+                <img src="{{ asset('/images/wait_small.gif') }}" alt="Processing..." title="Processing..."/>
+                <strong id="textProcess">Processing...</strong>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+    var userId = {{user.id}};
+
+    $(".editPrivileges").click(function() {
+        var object = $(this);
+        var moduleId = object.attr('module-id');
+        var check = $(this).is(':checked');
+        var isActive = 0;
+        if(check) {
+            isActive = 1;
+        }
+        
+        $("#divWait").toggle();
+        
+        var moduleIds = [moduleId];
+        var isParent = object.attr('group-id');
+        if(isParent > 0) {
+            $(".editPrivileges").each(function() {
+                var children = $(this);
+                if(children.attr('parent-id') == isParent) {
+                    moduleIds.push(children.attr('module-id'));
+                    if(isActive == 0) {
+                        children.removeAttr('checked');
+                        children.attr('disabled','disabled');  
+                    }
+                    else {
+                        children.prop('checked',true);
+                        children.removeAttr('disabled');
+                    }
+                }
+            });
+        }
+        
+        changePrivileges(moduleIds, isActive, userId);
+    });
+    
+    $("#enableDisableAll").click(function() {
+        var object = $(this);
+        var check = $(this).is(':checked');
+        var isActive = 0;
+        if(check) {
+            isActive = 1;
+        }
+        $("#divWait").toggle();
+        
+        var moduleIds = [];
+        
+        $(".editPrivileges").each(function() {
+            var module = $(this);    
+            moduleIds.push(module.attr('module-id'));
+            if(isActive == 0) {
+                module.removeAttr('checked');
+
+                var haveParent = parseInt(module.attr('parent-id'));
+                if(haveParent > 0) {
+                  module.attr('disabled','disabled');
+                }
+            }
+            else {
+                module.prop('checked',true);
+                module.removeAttr('disabled');
+            }
+        });
+        
+        changePrivileges(moduleIds, isActive, userId);       
+    });
+{% endblock %}
+
+{% block functions_javascript %}
+    function changePrivileges(moduleIds, isActive, userId) {
+        /*Convertimos el arreglo en un JSON*/
+        var moduleIds = JSON.stringify(moduleIds);
+        
+        $.ajax({
+            type: 'POST',
+            url: "{{path('adpoint_update_user_privileges', {'id':user.id})}}",
+            dataType: 'json',
+            async: false,
+            data:'moduleId='+moduleIds+'&isActive='+isActive+'&x='+userId,
+            success: function(resp) {
+                $("#divWait").toggle();
+                if(resp.result == '__KO__') {
+                    bootbox.alert(resp.msg);
+                }
+            },
+            error: function(resp) {
+                bootbox.alert('Unknow error, try again');
+                $("#divWait").toggle();
+            }
+        });
+    }
+{% endblock %}

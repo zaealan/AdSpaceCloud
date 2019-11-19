@@ -1,0 +1,825 @@
+{% extends 'Default/main.html.twig' %}
+{% import 'Default/filters.html.twig' as filters  %}
+{% block title 'General License Information'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>General License Information</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="{{path('index_management')}}"><i class="fa fa-list"></i> Management Dashboard</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> General License Information</li>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+
+            <div class="col-lg-12">
+                <form method="post" action="{{ path('index_general_license_information_list') }}">
+                    <div class="jumbotron sinpad">
+                        <div class="containerSearchFields">      
+                         {{ form_widget(form.alLicenseUsername,{'attr':{'placeholder':'Nickname', 'class':'form-control pull-left input-form', 'value':search.alLicenseUsername|default('')} }) }}
+                         {{ form_widget(form.alContacName,{'attr':{'placeholder':'Contact Name', 'class':'form-control title-case pull-left input-form', 'value':search.alContacName|default('')} }) }} 
+                         {{ form_widget(form.alLicenseEmail,{'attr':{'placeholder':'Email', 'class':'form-control title-case pull-left input-form', 'value':search.alLicenseEmail|default('')} }) }}
+                         {{ form_widget(form.deviceUid,{'attr':{'placeholder':'UID', 'class':'form-control pull-left input-form-short', 'value':search.deviceUid|default('')} }) }}
+                         {{ form_widget(form.alAccountLicense,{'attr':{'class':'form-control pull-left input-form', 'value':search.alAccountLicense|default('')} }) }}
+                         {{ form_widget(form.apkVersion,{'attr':{'class':'form-control pull-left input-form', 'value':search.apkVersion|default('')} }) }}
+                         {{ form_widget(form.codeInstall,{'attr':{'placeholder':'Install Code', 'class':'form-control title-case pull-left input-form', 'value':search.codeInstall|default('')} }) }}
+                         {{ form_widget(form.androidLastCleanseLeftDays,{'attr':{'class':'form-control title-case pull-left input-form-short', 'value':search.androidLastCleanseLeftDays|default('')} }) }}
+                        </div>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
+                    </div>
+                    {{ form_rest(form._token) }}
+                </form>
+                <br>
+            </div>
+     
+            {{ filters.textItemsOnList(paginator, 'Licenses')}}
+            {{ filters.buttonsItemsPerPage(paginator, 'index_general_license_information_list', params, orderBy.url, '')}}
+            
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list" id="generalInfoTable">
+                    <thead>
+                        <tr>                            
+                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}                            
+                            <th style="width: 27%;"><a style="color: whitesmoke;" href="{{ path('index_general_license_information_list', { 'order_by_nickname': orderBy.order_by_nickname.order }) }}{{ params~itemsPage }}"> Restaurant Name <strong>(</strong>Nickname<strong>)</strong> <strong>/</strong> Contact Name</a>&nbsp; {{ orderBy.order_by_nickname.htmlImage|default('')|raw }}</th>                
+                            <th style="cursor: default; width: 14%;"> Email <strong>/</strong> Phone Number</th>
+                            <th style="cursor: default; width: 14%;"> Address <strong>/</strong> Suit PO Box</th> 
+                            <th style="cursor: default; width: 21%;"> Data Starting From <strong>/</strong> Database Size </th>                
+                            <th><a style="color: whitesmoke; width: 10%;" href="{{ path('index_general_license_information_list', { 'order_by_apk_version': orderBy.order_by_apk_version.order }) }}{{ params~itemsPage }}"> Version <strong>/</strong> Install C {{ orderBy.order_by_apk_version.htmlImage|default('')|raw }}</a>&nbsp;</th>
+                            <th style="cursor: default; width: 12%;"> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                        <tr>
+                            <td>
+                                {{ entity }}
+                                <br>{{ entity.alContacName|title }}
+                            </td>
+                            <td>{{ entity.alLicenseEmail }}<br>{{ entity.alPhoneNumber }}</td>
+                            <td>
+                                {{ entity.alAddres|title }}
+                                <br>{{ entity.alSuitPoBox }}
+                            </td>
+                            <td>
+                                {% if entity.lastConsecutiveAndroidDryingDB %}Data Starting From: <strong> {{entity.lastConsecutiveAndroidDryingDB|date('m/d/Y')}} </strong><br> {% endif %}
+                                Database Size: <strong {% if entity.androidDatabaseSize > level_max_healthy_database_size %} style="color: orangered;" > {% else %} style="color: green;" > {% endif %} {{ entity.databaseHumanSize }}</strong>
+                            </td>
+                            <td>
+                                Version: <strong>{{ entity.androidVersionName }}</strong>
+                                <br>Install C: <strong {% if entity.apkInstallCode == 'Standard' %}style="color: olive;"{% else %}style="color: green;"{% endif %}>{{ entity.apkInstallCode }}</strong>
+                            </td>
+                            <td>
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    &nbsp;
+                                    <a class="historyAuc" href="javascript:" data_id="{{entity.id}}">
+                                        <img class="historyImage" style="margin-top: 5px; height: 25px; width: 25px;" id="imageHistory_{{entity.id}}" src="{{asset('/images/show_more.png')}}" alt="Synchronization/Push History" title="Synchronization/Push History"/>
+                                    </a>
+                                    {% if entity.hasLogedOMT %}
+                                        &nbsp;
+                                        <a class="historyOMTAuc" href="javascript:" data_id="{{entity.id}}">
+                                            <img class="historyOMTImage" style="margin-top: 5px; height: 25px; width: 25px;" id="imageOMTHistory_{{entity.id}}" src="{{asset('/images/omt_more_sync.svg')}}" alt="OMT Synchronization History" title="OMT Synchronization History"/>
+                                        </a>
+                                    {% endif %}
+                                    
+                                    {% set difference = date('now').diff(entity.dateToValidateButton) %}
+                                    {% set leftDays = difference.days %}
+                                    {% if leftDays >= 1 %}
+                                      {% set notSameDay = 1 %}
+                                    {% else %}
+                                      {% set notSameDay = 0 %}
+                                    {% endif %}
+                                    
+                                    {% if entity.androidDatabaseSize > level_max_healthy_database_size and notSameDay == 1  and entity.dateToValidateButton <= entity.dateNow %}
+                                        &nbsp;
+                                        <a class="manualDBCleanse" href="javascript:">
+                                            <label class="manualDBCleanseImage" style="cursor: pointer;" 
+                                                data_id="{{entity.id}}"
+                                                license_name='{{entity}}' 
+                                                license_nick="{{entity.alLicenseUsername}}" 
+                                                license_device_uuid="{{entity.deviceUid}}"
+                                                data_path_firts='{{ path('level_licensor_send_ping_request') }}'
+                                                data_path_second='{{ path('level_licensor_notify_database_cleanse') }}'
+                                                title="Database Cleanse Request?" 
+                                            </label>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr id="hiddenRow_{{entity.id}}" class="historyRow" style="display: none; background-color: whitesmoke;">
+
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6">Data Not Found</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {{ filters.constructPaginator(paginator, 'index_general_license_information_list', params, orderBy.url, 'Databases', '')}}
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block scripts %} 
+        
+    $('.changeStatusLicense').click(function() {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        /*var typeUse = clickedU.attr('user_type');*/
+        var newStatus = (clickedU.attr('currentStatus') == 1) ? 2 : 1;
+
+        bootbox.confirm('Do you want to change the status for <strong>'+nameUse+'</strong> License?',
+        function(result) {
+            if(result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                    newStatus: newStatus
+                    },
+                    cache: false,
+                    success: function(r) {
+                        if(r.result=='__OK__') {
+                            clickedU.attr('currentStatus', r.newStatus);
+                            clickedU.closest('tr')
+                                .find('.txtLicenseStatus').text(r.txtNewLicenseStatus);
+                            console.log(newStatus);
+                            if(newStatus == 2){
+                                $(clickedU).removeClass('switchOn').addClass('switchOff');
+                            }else{
+                                $(clickedU).removeClass('switchOff').addClass('switchOn');
+                            }
+                        }
+                        else {
+                            bootbox.alert(r.msg)
+                        }
+                    },
+                        error: function(r) {
+                        bootbox.alert(r.msg)
+                    }
+                });
+            }
+        });
+    });
+
+    $('#isCallCenter').css('cursor','not-allowed');
+
+    var theSelectedId = 0;
+
+    var openHImage = '{{asset('/images/show_more.png')}}';
+    var closeHImage = '{{asset('/images/show_less.png')}}';
+
+    $('.historyAuc').click(function() {
+        $('.historyRow').fadeOut('slow');
+        $('.historyImage').attr('src',openHImage);
+        $('.historyOMTImage').attr('src',openHOMTImage);
+    
+        var theId = $(this).attr('data_id');
+        var intFlag = 0;
+        
+        theSelectedId = theId;
+        
+        var isTdVisible = $('#historyTd_'+theId).is(":visible");
+        
+        if(!isTdVisible) {
+            $('#hiddenRow_'+theId).fadeIn('slow');
+            $('#historyTd_'+theId).fadeIn('slow');
+            intFlag = 1;
+        } else {
+            $('#hiddenRow_'+theId).fadeOut('slow', function() {
+                $('#hiddenRow_'+theId).html('');
+                $('.historyImage').attr('src',openHImage);
+                $('.historyOMTImage').attr('src',openHOMTImage);
+            });
+            $('#historyTd_'+theId).fadeOut('slow');
+            return;
+        }
+
+        var isTdVisibleTrue = $('#historyTd_'+theId).is(":visible");
+        
+        if(!isTdVisibleTrue) {
+            $('#imageHistory_'+theId).attr('src',closeHImage);
+            $('#imageOMTHistory_'+theId).attr('src',closeHOMTImage);
+            $('#hiddenRow_'+theId).append('<td id="historyTd_'+theId+'" colspan="{{'7'}}" style=""><img src="{{asset('/images/wait_small.gif')}}" alt="Loading..." title="Loading..." width="16" height="16"/>&nbsp;&nbsp;Loading...</td>');
+            $('#hiddenRow_'+theId).fadeIn('slow');
+
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                url: '{{path('synchronization_and_push_license_history')}}',
+                data: 'license='+theId,
+                success: function(r) {
+                    if(r.result=='__OK__') {
+                        $('#historyTd_'+theId).html(r.data);
+                        $('#imageHistory_'+theId).attr('src',closeHImage);
+                    }
+                    else {
+                        bootbox.alert(r.data);
+                        $('#historyTd_'+theId).css('display','none');
+                    }
+                },
+                error: function() {
+                    bootbox.alert(r.data);
+                    $('#historyTd_'+theId).css('display','none');
+                }
+            });
+        }
+        else {
+            if(intFlag == 0) {
+                $('#hiddenRow_'+theId).fadeOut('slow');
+                $('#historyTd_'+theId).fadeOut('slow');
+                $('#hiddenRow_'+theId).html('');
+            }
+            
+            if(intFlag == 1) {
+                $('#imageOMTHistory_'+theId).attr('src',closeHImage);
+                $('#imageOMTHistory_'+theId).attr('src',closeHOMTImage);
+            }
+        }
+    });
+    
+    var theSelectedOMTId = 0;
+
+    var openHOMTImage = '{{asset('/images/omt_more_sync.svg')}}';
+    var closeHOMTImage = '{{asset('/images/omt_less_sync.svg')}}';
+
+    $('.historyOMTAuc').click(function() {
+        $('.historyRow').fadeOut('slow');
+        $('.historyImage').attr('src',openHImage);
+        $('.historyOMTImage').attr('src',openHOMTImage);
+    
+        var theId = $(this).attr('data_id');
+        var intFlag = 0;
+        
+        theSelectedId = theId;
+        
+        var isTdVisible = $('#historyTd_'+theId).is(":visible");
+        
+        if(!isTdVisible) {
+            $('#hiddenRow_'+theId).fadeIn('slow');
+            $('#historyTd_'+theId).fadeIn('slow');
+            intFlag = 1;
+        } else {
+            $('#hiddenRow_'+theId).fadeOut('slow', function() {
+                $('#hiddenRow_'+theId).html('');
+                $('.historyImage').attr('src',openHImage);
+                $('.historyOMTImage').attr('src',openHOMTImage);
+            });
+            $('#historyTd_'+theId).fadeOut('slow');
+            return;
+        }
+        
+        var isTdVisibleTrue = $('#historyTd_'+theId).is(":visible");
+        
+        if(!isTdVisibleTrue) {
+            $('#imageHistory_'+theId).attr('src',closeHImage);
+            $('#imageOMTHistory_'+theId).attr('src',closeHOMTImage);
+            $('#hiddenRow_'+theId).append('<td id="historyTd_'+theId+'" colspan="{{'7'}}" style=""><img src="{{asset('/images/wait_small.gif')}}" alt="Loading..." title="Loading..." width="16" height="16"/>&nbsp;&nbsp;Loading...</td>');
+            $('#hiddenRow_'+theId).fadeIn('slow');
+
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                url: '{{path('synchronization_and_push_omt_license_history')}}',
+                data: 'license='+theId,
+                success: function(r) {
+                    if(r.result=='__OK__') {
+                        $('#historyTd_'+theId).html(r.data);
+                        $('#imageOMTHistory_'+theId).attr('src',closeHOMTImage);
+                    }
+                    else {
+                        bootbox.alert(r.data);
+                        $('#historyTd_'+theId).css('display','none');
+                    }
+                },
+                error: function() {
+                    bootbox.alert(r.data);
+                    $('#historyTd_'+theId).css('display','none');
+                }
+            });
+        }
+        else {
+            if(intFlag == 0) {
+                $('#hiddenRow_'+theId).fadeOut('slow');
+                $('#historyTd_'+theId).fadeOut('slow');
+                $('#hiddenRow_'+theId).html('');
+            }
+            
+            if(intFlag == 1) {
+                $('#imageOMTHistory_'+theId).attr('src',closeHImage);
+                $('#imageOMTHistory_'+theId).attr('src',closeHOMTImage);
+            }
+        }
+    });
+
+    var resendUnansweredPush = 0;
+    
+    $('#generalInfoTable').on("click", '#retrySync', function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('data_name');
+ 
+        if (resendUnansweredPush == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the records in this synchronization of <strong>' + nameUse + ' (' + nickUse + ') </strong> license to send them again?';
+        
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    resendUnansweredPush = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                bootbox.confirm("Do you want to send a ping to server device in <strong>'" + nameUse + "'</strong> License?",
+                                function (result) {
+                                    if (result == true) {
+                                        pingAndroidCheck(clickedU,true);
+                                    }else{
+                                        bootbox.alert(r.msg);
+                                        var timeToClose = 0;
+                                            
+                                        setInterval(function() {
+                                        timeToClose++;
+                                        if(timeToClose == 3) {
+                                            location.reload();
+                                        }
+                                        },1000);
+                                        
+                                    }
+                                });
+                            }else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the Android server already released!');
+        }
+    });
+
+    var resendUnansweredPushOmt = 0;
+    
+    $('#generalInfoTable').on("click", '#retrySyncOmt', function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('data_name');
+ 
+        if (resendUnansweredPushOmt == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the records in this synchronization of <strong>' + nameUse + ' (' + nickUse + ') </strong> license to send them again?';
+            var timeToClose = 0;
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    resendUnansweredPushOmt = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                bootbox.alert('The records have been recollected, the synchronization is being resent!');
+                                setInterval(function() {
+                                    timeToClose++;
+                                    if(timeToClose == 3) {
+                                        location.reload();
+                                    }
+                                },1000);
+                            }else {                                
+                                bootbox.alert(r.msg);
+                                setInterval(function() {
+                                    timeToClose++;
+                                    if(timeToClose == 3) {
+                                        location.reload();
+                                    }
+                                },1000);
+                            }
+                        },
+                        error: function (r) {
+                            console.log(r.msg);
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the Android server already released!');
+        }
+    });
+    
+ 
+    var resendPushManually = 0;
+
+    $('#generalInfoTable').on("click", '.pushManually', function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('data_name');
+
+        if (resendPushManually == 0) {
+
+            var bootBoxMsg = 'Do you want to send manually this push for <strong>' + nameUse + ' (' + nickUse + ') </strong> license again?';
+
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    resendPushManually = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                var timeToClose = 0;
+                                bootbox.alert(r.msg);
+
+                                setInterval(function() {
+                                timeToClose++;
+
+                                if(timeToClose == 3) {
+                                    location.reload();
+                                }
+
+                                },1000);
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Push already send!');
+        }
+    });
+    
+    $('.manualDBCleanseImage').click(function () {
+        var clickedU = $(this);
+        var licenseName = clickedU.attr('license_name');
+        var licenseNick = clickedU.attr('license_nick');
+        var licenseDeviceUUID = clickedU.attr('license_device_uuid');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            var bootBoxMsg = 'Do you want to send a database cleanse for <strong>' + licenseName + '</strong> license? Please select the amount of days of data that you want left in Android server';
+        
+            bootbox.dialog({
+                title: 'Days to left in Android database cleanse!',
+                message: bootBoxMsg,
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel',
+                        className: 'btn-default'
+                    },
+                    full: {
+                        label: '<i class="fa fa-check"></i> 14 Days To Left',
+                        className: 'btn-primary',
+                        callback: function (result) {
+                            checkPingBeforeDatabaseCleanseAjax(clickedU, 14);
+                        }
+                    },
+                    logs: {
+                        label: '<i class="fa fa-check"></i> 7 Days To Left',
+                        className: 'btn-success',
+                        callback: function (result) {
+                            checkPingBeforeDatabaseCleanseAjax(clickedU, 7);
+                        }
+                    }, 
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> 1 Day To Left',
+                        className: 'btn-warning',
+                        callback: function (result) {
+                            checkPingBeforeDatabaseCleanseAjax(clickedU, 1);
+                        }
+                    }
+                }
+            });
+        }
+    });
+ 
+    {% endblock %}
+
+    {% block functions_javascript %}
+
+    function showLoadingDialog(msg) {
+        bootbox.hideAll();
+        bootbox.dialog({
+            closeButton: false,
+            message: '<p>' + msg + '</p><p class="bootbox-padding" style="margin-top: 10px; text-align: center; margin-bottom: -25px;"><i class="fa fa-spin fa-spinner" style="font-size:48px; margin-right: 5%"></i></p>',
+        });
+    }
+
+    function pingAndroidCheck(clickedU,syncNow){
+        if(clickedU != undefined) { 
+            var nameUid = clickedU.attr('license_uid');
+            var pathUrlPing = clickedU.attr('data_path2');
+            var nameUse = clickedU.attr('license_name');
+            var nickUse = clickedU.attr('data_name');
+            console.log(syncNow);
+            $.ajax({
+                type: 'POST',
+                url: pathUrlPing,
+                dataType: 'json',
+                data: {
+                    nickname: nickUse,
+                    uid: nameUid
+                },
+                cache: false,
+                success: function (r) {
+                    if (r.result == '__OK__') {
+                        bootbox.hideAll();
+                        if (r.result == '__OK__' && r.idpush > 0) {                                   secondPathUrl = r.url;
+                            secondPathUrl = r.url;
+                            showLoadingDialog(r.msg);
+                            $.ajax({
+                                type: 'POST',
+                                url: secondPathUrl,
+                                dataType: 'json',
+                                data: {
+                                    nickname: nickUse,
+                                    push: r.idpush
+                                },
+                                cache: false,
+                                success: function (re) {
+                                    bootbox.hideAll();
+                                    if (syncNow == true) { 
+                                        bootbox.confirm(re.msg + '.<br> You want to start synchronization?',
+                                            function (result) {
+                                                if (result == true) {
+                                                    syncUpToDown(clickedU);
+                                                }else{
+                                                    var timeToClose = 0;
+
+                                                    setInterval(function() {
+                                                    timeToClose++;
+                                                    if(timeToClose == 3) {
+                                                            location.reload();
+                                                        }
+                                                    },1000);
+                                                }
+                                            }
+                                        )
+                                    }else {
+                                        bootbox.alert(re.msg);
+                                        var timeToClose = 0;
+
+                                        setInterval(function() {                                                    
+                                        timeToClose++;
+                                        if(timeToClose == 3) {
+                                                location.reload();
+                                            }
+                                        },1000);
+                                    }
+                            },
+                                error: function (re) {
+                                    bootbox.hideAll();
+                                    bootbox.alert(re.msg);
+                                }
+                            });
+                        } else {
+                            bootbox.alert(re.msg);
+                        }
+                    }
+                    else {
+                        bootbox.alert(r.msg);
+                    }
+                },
+                error: function (r) {
+                    bootbox.alert('Unknow error, please try again!');
+                    clickedU.removeAttr('disabled');
+                }
+            });
+        }else{
+            bootbox.alert("Error ping");
+            var timeToClose = 0;
+
+            setInterval(function() {
+                timeToClose++;
+                if(timeToClose == 3) {
+                        location.reload();
+                    }
+            },1000);
+        }
+    }
+
+    function syncUpToDown(clickedU){
+        if(clickedU != undefined) { 
+
+            var pathUrl = clickedU.attr('data_path_sync');
+            var licName = clickedU.attr('data_name');
+
+            $.ajax({
+                type: 'POST',
+                url: pathUrl,
+                dataType: 'json',
+                data: {
+                    nickname: licName
+                },
+                cache: false,
+                success: function (re) {
+                    bootbox.hideAll();
+                    if (re.result == '__OK__' && re.syncId > 0) {
+                        var secondPathUrl = clickedU.attr('data_path_second_sync');
+                        secondPathUrl = secondPathUrl.replace(/__DATA__/, re.syncId);
+                        
+                        showLoadingDialog(re.msg);
+                        
+                        $.ajax({
+                            type: 'POST',
+                            url: secondPathUrl,
+                            dataType: 'json',
+                            data: {
+                                nickname: licName
+                            },
+                            cache: false,
+                            success: function (r) {
+                                bootbox.hideAll();
+                                
+                                bootbox.alert(r.msg);
+                                var timeToClose = 0;
+                                                
+                                setInterval(function() {
+                                    timeToClose++;
+                                    if(timeToClose == 3) {
+                                        location.reload();
+                                    }
+                                },1000);
+                            },
+                            error: function (r) {
+                                bootbox.alert(r.msg);
+                            }
+                        });
+                    } else {
+                        bootbox.alert(re.msg);
+                    }
+                },
+                error: function (r) {
+                    bootbox.alert(r.msg);
+                    clickedU.removeAttr('disabled');
+                }
+            });
+        }else{
+            bootbox.alert('Error sync');
+            var timeToClose = 0;
+
+            setInterval(function() {
+                timeToClose++;
+                if(timeToClose == 3) {
+                        location.reload();
+                    }
+            },1000);
+        }
+    }
+    
+    var cleanseSendTo = 0;
+    
+    function checkPingBeforeDatabaseCleanseAjax(clickedU, typeOfRequest) {
+        var pathUrl1 = clickedU.attr('data_path_firts');
+        var pathUrl2 = clickedU.attr('data_path_second');
+        var nameNick = clickedU.attr('license_nick');
+        var nameUid = clickedU.attr('license_device_uuid');
+        var nameUse = clickedU.attr('license_name');
+        var typeOfRequestStr = '';
+        var secondPathUrl = '';
+    
+        clickedU.addClass('imgDevices');
+        
+        if (typeOfRequest === 14) {
+            typeOfRequestStr = '14 Days Request';
+        } else if (typeOfRequest === 7) {
+            typeOfRequestStr = '7 Days Request';
+        } else if(typeOfRequest === 1) {
+            typeOfRequestStr = '1 Day Request';
+        } else {
+            showLoadingDialog('Error In Cleanse Request to <strong>' + nameUse + '</strong> restaurant. Please wait a few seconds..');
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: pathUrl1,
+            dataType: 'json',
+            data: {
+                nickname: nameNick,
+                uid: nameUid
+            },
+            cache: false,
+            success: function (r) {
+                if (r.result == '__OK__') {
+                    clickedU.addClass('imgDevices');
+                    bootbox.hideAll();
+                    if (r.result == '__OK__' && r.idpush > 0) {
+                        secondPathUrl = r.url;
+
+                        showLoadingDialog(r.msg);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: secondPathUrl,
+                            dataType: 'json',
+                            data: {
+                                nickname: nameNick,
+                                push: r.idpush
+                            },
+                            cache: false,
+                            success: function (re) {
+                                clickedU.addClass('imgDevices');
+                                bootbox.hideAll();
+
+                                showLoadingDialog(re.msg + ' ... starting database cleanse process... ');
+                                
+                                makeAndroidDatabaseCleanseAjax(clickedU, typeOfRequest);
+                            },
+                            error: function (re) {
+                                console.log(re);
+                            
+                                bootbox.alert(re.msg);
+                                clickedU.removeAttr('disabled');
+                            }
+                        });
+                    } else {
+                        bootbox.alert(r.msg);
+                        clickedU.removeAttr('disabled');
+                    }
+                }
+                else {
+                    bootbox.alert(r.msg);
+                    clickedU.removeAttr('disabled');
+                }
+            },
+            error: function (r) {
+                bootbox.alert('Unknow error, please try again!');
+                clickedU.removeAttr('disabled');
+            }
+        });
+    }            
+        
+    function makeAndroidDatabaseCleanseAjax(clickedU, typeOfRequest) {
+        var pathUrl2 = clickedU.attr('data_path_second');
+        var nameNick = clickedU.attr('license_nick');
+        var nameUid = clickedU.attr('license_device_uuid');
+        var nameUse = clickedU.attr('license_name');
+        var typeOfRequestStr = '';
+    
+        var request = {nickname:nameNick, uid:nameUid, days:typeOfRequest};
+        var myJsonRequest = JSON.stringify(request);
+
+        if (cleanseSendTo == 0) {
+            cleanseSendTo = 1;
+            $.ajax({
+                type: 'POST',
+                url: pathUrl2,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: myJsonRequest,
+                cache: false,
+                success: function (r) {
+                    var timeToClose = 0;
+                    bootbox.hideAll();
+                    if (r.data.status == 200) {
+                        bootbox.alert(r.data.msg);
+                        
+                        setInterval(function() {
+                        timeToClose++;
+
+                        if(timeToClose == 3) {
+                            location.reload();
+                        }
+
+                        },1500);
+                    }
+                    else {
+                        bootbox.alert(r.data.msg);
+                        clickedU.removeAttr('disabled');
+                    }
+                },
+                error: function (r) {
+                    bootbox.alert('Unknow error, please try again!');
+                    clickedU.removeAttr('disabled');
+                }
+            });
+        }
+    }
+    
+    
+    {% endblock %}

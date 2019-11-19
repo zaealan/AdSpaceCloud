@@ -1,0 +1,179 @@
+{% extends 'Default/main.html.twig' %}
+{% import 'Default/filters.html.twig' as filters  %}
+{% block title 'Account List'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Account List</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li class="active"><i class="fa fa-list"></i> Account List</li>
+                    <a class="btn btn-primary pull-right" href="{{ path('adpoint_account_new') }}">New Account</a>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+     
+            {#{{path('account')}}#}
+            
+            <div class="col-lg-12">
+                <form method="post" action="{{ path('adpoint_accounts') }}">
+                    <div class="jumbotron sinpad">
+                        <div class="containerSearchFields"> 
+                         {{ form_widget(form.alLicenseUsername,{'attr':{'placeholder':'License Nickname', 'class':'form-control pull-left input-form-short', 'value':search.alLicenseUsername|default('')} }) }}  
+                         {{ form_widget(form.acContactName,{'attr':{'placeholder':'Contact Name', 'class':'form-control title-case pull-left input-form-short', 'value':search.acContactName|default('')} }) }}      
+                         {{ form_widget(form.acEmail,{'attr':{'placeholder':'Email', 'class':'form-control pull-left input-form-short', 'value':search.acEmail|default('')} }) }}
+                         {{ form_widget(form.deleted,{'attr':{'class':'form-control pull-left input-form-short', 'value':search.deleted|default('')} }) }}
+                         {{ form_widget(form.acName,{'attr':{'placeholder':'Account Name', 'class':'form-control title-case pull-left input-form-short', 'value':search.acName|default('')} }) }}  
+                         {{ form_widget(form.deviceUid,{'attr':{'placeholder':'License UID', 'class':'form-control pull-left input-form-short', 'value':search.deviceUid|default('')} }) }}
+                        </div>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
+                     </div>
+                  {{ form_rest(form._token) }}
+                 </form>
+                 <br>
+            </div>
+            
+            {#{{ filters.textItemsOnList(paginator, 'Accounts')}}
+            {{ filters.buttonsItemsPerPage(paginator, 'account', params, orderBy.url)}}#}
+            
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                    <thead>
+                        <tr>
+{#                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}#}
+                            {% set itemsPage = '&itemsPerPage='~itemsPerPage %}
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_accounts', { 'order_by_account_name': orderBy.order_by_account_name.order }) }}{{ params~itemsPage }}">Account Name</a>&nbsp; {{ orderBy.order_by_account_name.htmlImage|default('')|raw }}</th>
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_accounts', { 'order_by_contac_name': orderBy.order_by_contac_name.order }) }}{{ params~itemsPage }}">Contact</a>&nbsp; {{ orderBy.order_by_contac_name.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Phone Number</th>
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_accounts', { 'order_by_account_email': orderBy.order_by_account_email.order }) }}{{ params~itemsPage }}">Email</a>&nbsp; {{ orderBy.order_by_account_email.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Created Date</th>
+                            <th style="cursor: default;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.acName|title }}</td>
+                                <td>{{ entity.acContactName|title }}</td>
+                                <td>{{ entity.acPhoneNumber }}</td>
+                                <td>{{ entity.acEmail }}</td>
+                                <td>{% if entity.acDateCreated %}{{ entity.acDateCreated|date('m/d/Y') }}{% endif %}</td>
+                                <td>
+                                    {% if constant('App\\Entity\\Module::MODULE_LICENSOR_ACCOUNT_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                        <a class="editAccount" href="{{path('adpoint_account_edit', { 'id': entity.id })}}">
+                                            <img src="{{ asset('/images/editts.png') }}" alt="Edit Account" title="Edit Account"/>
+                                        </a>&nbsp;
+                                    {% endif %}
+                                    {% if (constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN')) and entity.licenseNum is defined and entity.licenseNum is not empty and entity.licenseNum != '0' %}
+                                        <a class="editAccount" href="{{path('adpoint_points_list', { 'accountId': entity.id })}}">
+                                            <img src="{{ asset('/images/list.png') }}" width="26" height="26" alt="Advertise Places List" title="Advertise Places List"/>
+                                            <span class="badge listVV" title="Number of Licenses">{{entity.licenseNum}}</span>
+                                        </a>&nbsp;
+                                    {% endif %}
+                                    {% if (constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_CREATE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN')) and entity.accountStatus() == 'Active' %}
+                                        <a class="editAccount" href="{{path('adpoint_point_new', { 'id': entity.id })}}" id="create_license_ac_{{ entity.id }}" {% if entity.accountStatus() == 'Inactive' %} style="display:none;" {% endif %}>
+                                            <img src="{{ asset('/images/addLicense.png') }}" width="29" height="29" alt="Add License" title="Add License"/>
+                                        </a>&nbsp;
+                                    {% endif %}
+                                    {% if constant('App\\Entity\\Module::MODULE_LICENSOR_ACCOUNT_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                        {% set imgSwitch = 'switchOff' %}
+                                        {% if entity.accountStatus() == 'Active' %}
+                                            {% set imgSwitch = 'switchOn' %}
+                                        {% endif %}
+                                        <a class="changeStatusAccount imgSwitch {{ imgSwitch }}" href="javascript:"
+                                           data_path="{{path('adpoint_company_changeStatus',  {'id': entity.id})}}"
+                                           status="{% if entity.accountStatus() == 'Active' %}{{ "1" }}{% else %}{{ "0" }}{% endif %}">
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="7">Data Not Found</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+{#                {{ filters.constructPaginator(paginator, 'account', params, orderBy.url, 'Accounts')}}#}
+            </div>
+        </div>
+    {% endblock %}
+
+{% block scripts %}
+
+    $(".changeStatusAccount").click(function(){
+        var status = $(this);
+        var url = status.attr("data_path");
+        var arr_aux = url.split("/");
+        var entity_id = arr_aux[4];
+        console.log(arr_aux);
+        var currentStatus = status.attr("status");
+        bootbox.confirm('Do you want to change the status for this Account?',
+            function(r){
+                if(r==true){
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        dataType: 'json',
+                        data: {
+                            status: currentStatus
+                        },
+                        success: function(r){
+                            if(r.result == "__OK__"){
+                                if(r.newStatus=='Active'){
+                                    status.attr('status','1');
+                                    status.removeClass('switchOff').addClass('switchOn');
+                                    if($("#create_license_ac_"+entity_id).length){
+                                        $("#create_license_ac_"+entity_id).fadeIn("slow");
+                                    }
+                                }else{
+                                    status.attr('status','0');
+                                    status.removeClass('switchOn').addClass('switchOff');
+                                    if($("#create_license_ac_"+entity_id).length){
+                                        $("#create_license_ac_"+entity_id).fadeOut("slow");
+                                    }
+                                }
+                                
+                                location.reload();
+                            }else{
+                                bootbox.alert(r.msg);
+                            }
+                        }
+                    }); 
+                }
+            });
+        
+    });
+        
+        
+    $(".deleteAccount").click(function(){
+        var account = $(this);
+        var pathUrl = account.attr('data_path');
+        var account_name = account.attr('account_name');
+        var oneParam = '';
+        bootbox.confirm('Do you want to delete the <strong>' + account_name + '</strong> account?',
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        otherParam : oneParam
+                    },
+                    cache: false,
+                    success: function (r) { 
+                    if (r.result == '__OK__') {
+                            account.closest('tr').remove();
+                        }
+                        else {
+                            bootbox.alert(r.msg);
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.alert(r.msg);
+                    }
+                });
+            }
+        });
+    });
+
+{% endblock %}

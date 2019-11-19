@@ -1,0 +1,1 @@
+{"primarykey":{"approval":16,"cash_drawer":24,"delivery":2,"delivery_range":0,"invoice":19,"invoice_pay_record":3,"invoice_tax":14,"invoice_type_pay":19,"order_detail":339,"orders":176,"time_clock":42,"order_detail_taxes":147,"gift_cards_log":0,"outflow":0,"coupon_discount":0,"order_detail_refund":2,"order_detail_tax_refund":0,"void_refund":2},"datainfo":{"numregist":11586}}

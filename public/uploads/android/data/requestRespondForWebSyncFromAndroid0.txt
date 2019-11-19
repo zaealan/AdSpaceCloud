@@ -1,0 +1,25 @@
+Creating and using -> /var/www/html/public/uploads/android/data/requestRespondForWebSyncFromAndroid0.txt at '11/04/2018 18:00:55'Upload Sync Up-Down Andorid Response File: Llego? Whole request -> POST /ws/respondSyncFromWeb HTTP/1.1
+Accept:         */*
+Content-Length: 5694
+Content-Type:   multipart/form-data; boundary=------------------------8a81c2cfd3e5af8b
+Expect:         100-continue
+Host:           level-php
+X-Php-Ob-Level: 1
+
+Maybe some content here...? -> All parameters in request -> {"nickname":"jetblack_1","uid":"coquito1"}Nickname -> jetblack_1UID -> coquito1Full -> {"nick_encrypt":"jetblack_1","nick_decrypt":"jetblack_1","uid_encrypt":"coquito1","uid_decrypt":"coquito1"}The Client IP -> 172.18.0.7The File -> expectedCopy11-04-2018_18:00:55_10.txtEncontrada la 10 :)  Into push validation response 10 :)  Not related push, it may be an initial login... Ready to upload file!{"file":{"name":"expectedCopy11-04-2018_18:00:55_10.txt","type":"application\/octet-stream","tmp_name":"\/tmp\/phptThGbU","error":0,"size":5195}}The response {"result":"__OK__","msg":"","fileName":"expectedCopy11-04-2018_18:00:55_10.txt"}File uploaded with name: expectedCopy11-04-2018_18:00:55_10.txt:D 6Hay Chingada!?O No Hay!?Entro TriggerInstant parameter sended to consumer command -> 10Corrio Trigger? :D 7:D 8Using -> /var/www/html/public/uploads/android/data/requestRespondForWebSyncFromAndroid0.txt at '11/05/2018 17:38:58'Upload Sync Up-Down Andorid Response File: Llego? Whole request -> POST /ws/respondSyncFromWeb HTTP/1.1
+Accept:         */*
+Content-Length: 5694
+Content-Type:   multipart/form-data; boundary=------------------------752feb78fb1a8c48
+Expect:         100-continue
+Host:           level-php
+X-Php-Ob-Level: 1
+
+Maybe some content here...? -> All parameters in request -> {"nickname":"jetblack_1","uid":"coquito1"}Nickname -> jetblack_1UID -> coquito1Full -> {"nick_encrypt":"jetblack_1","nick_decrypt":"jetblack_1","uid_encrypt":"coquito1","uid_decrypt":"coquito1"}The Client IP -> 172.18.0.6The File -> expectedCopy11-05-2018_17:38:58_16.txtEncontrada la 16 :)  Into push validation response 16 :)  Not related push, it may be an initial login... Ready to upload file!{"file":{"name":"expectedCopy11-05-2018_17:38:58_16.txt","type":"application\/octet-stream","tmp_name":"\/tmp\/phpTXhJZC","error":0,"size":5195}}The response {"result":"__OK__","msg":"","fileName":"expectedCopy11-05-2018_17:38:58_16.txt"}File uploaded with name: expectedCopy11-05-2018_17:38:58_16.txt:D 6Hay Chingada!?O No Hay!?Entro TriggerInstant parameter sended to consumer command -> 16Corrio Trigger? :D 7:D 8Using -> /var/www/html/public/uploads/android/data/requestRespondForWebSyncFromAndroid0.txt at '11/25/2018 18:25:54'Upload Sync Up-Down Andorid Response File: Llego? Whole request -> POST /ws/respondSyncFromWeb HTTP/1.1
+Accept:         */*
+Content-Length: 882210
+Content-Type:   multipart/form-data; boundary=------------------------81a11225a49c183d
+Expect:         100-continue
+Host:           level-php
+X-Php-Ob-Level: 1
+
+Maybe some content here...? -> All parameters in request -> {"nickname":"jetblack_1","uid":"coquito1"}Nickname -> jetblack_1UID -> coquito1Full -> {"nick_encrypt":"jetblack_1","nick_decrypt":"jetblack_1","uid_encrypt":"coquito1","uid_decrypt":"coquito1"}The Client IP -> 172.18.0.5The File -> expectedCopy11-25-2018_18:25:53_1.txtEncontrada la 1 :)  Into push validation response 1 :)  Not related push, it may be an initial login... Ready to upload file!{"file":{"name":"expectedCopy11-25-2018_18:25:53_1.txt","type":"application\/octet-stream","tmp_name":"\/tmp\/phpicHEkG","error":0,"size":881712}}The response {"result":"__OK__","msg":"","fileName":"expectedCopy11-25-2018_18:25:53_1.txt"}File uploaded with name: expectedCopy11-25-2018_18:25:53_1.txt:D 6Hay Chingada!?O No Hay!?Entro TriggerInstant parameter sended to consumer command -> 1Corrio Trigger? :D 7:D 8

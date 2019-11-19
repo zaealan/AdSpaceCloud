@@ -1,0 +1,25 @@
+Creating and using -> /var/www/html/public/uploads/android/data/omtClientAndPointsAccountsRecord0.txt at '11/25/2018 18:56:42'omtClient Ask: {	
+	"uid": "coquito1",
+	"nickname": "jetblack_1",
+	"id": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+	"name":"Erik",
+	"lastname": "Naranjo",
+	"email": "erik@gmail.com",
+	"username": "erik4",
+	"birthdate": "07/11/18",
+	"phone": "3151544678",
+	"countryCode": "US",
+	"langCode": "1"
+}Push Responded decode params: {	
+	"uid": "coquito1",
+	"nickname": "jetblack_1",
+	"id": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+	"name":"Erik",
+	"lastname": "Naranjo",
+	"email": "erik@gmail.com",
+	"username": "erik4",
+	"birthdate": "07/11/18",
+	"phone": "3151544678",
+	"countryCode": "US",
+	"langCode": "1"
+}

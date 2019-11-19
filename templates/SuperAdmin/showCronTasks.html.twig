@@ -1,0 +1,41 @@
+<div style="margin-top: 3%">
+    <table>
+        <thead>
+        </thead>
+        <tbody>
+            <tr><td>
+            <form action="{{path('frcho_cron_task_update')}}" method="post" class="form-horizontal">
+                {% set i = 0 %}
+                {% for form in forms %}
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label textalingleft">{{form.vars.value.name}}</label>
+                            <input type="hidden" name="frcho_cron_task_type{{i}}[range]" value="{{form.vars.data.range}}"/>
+                            <div class="col-sm-2">
+                                {{form_widget(form['interval'], {'attr': {'class': 'form-control input_number', 'maxlength': 7 } }) }}
+                            </div>
+                            <div class="col-sm-1">
+                                <label class="col-m-1 control-label textalingleft">{{form.vars.data.range}}</label>
+                            </div>
+                            <div class="col-sm-3" style="margin-top: -7px">                                                
+                                {{ form_widget(form.statusTask, {'attr': {'class':'col-sm-12','data-toggle':'toggle','data-on':'On','data-off':'Off','data-onstyle':'success','data-offstyle':'danger'} }) }}
+                                <p class="help-block">{{'Enabled or disabled task'}}</p>                                                       
+                            </div>
+                        </div>
+                    </div>
+                    {% set i = i + 1%}
+                {% else %}
+                    <p style="margin-left: 5%; width: 100%;"><strong>No Cron Tasks Registered Yet!</strong></p>
+                {% endfor %} 
+                {% if forms is not empty %}
+                    <div class="col-md-12">
+                        <div>
+                            <button type="submit" class="btn btn-primary" style="float: right; margin-right: 10%">{{'Save'}}</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+            </td></tr>
+        </tbody>
+    </table>
+</div>   

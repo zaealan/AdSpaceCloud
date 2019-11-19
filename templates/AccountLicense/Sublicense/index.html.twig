@@ -1,0 +1,149 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'New Advertise Plan'%}
+{% block content %}
+    <div class="row numpad">
+        <div class="col-lg-12">
+            <h1>Advertise Plan Creation</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Account List</a></li>
+                <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Advertise Places List</a></li>
+                <li class="active"><i class="icon-file-alt"></i> Advertise Plan List</li>
+                <a class="btn btn-primary pull-right" href="{#{{ path('adpoint_account_new') }}#}">New Advertise Plan</a>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+            
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Channel</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.name }}</td>
+                            <td>{{ entity.description }}</td>
+                            <td>
+                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    &nbsp;
+                                    <a class="editAccount" href="{{path('adpoint_adplans_edit', { 'subId': entity.id })}}">
+                                        <img src="{{ asset('/images/editts.png') }}" alt="Edit Sublicense" title="Edit Sublicense"/>
+                                    </a>
+                                {% endif %}
+                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    &nbsp;
+                                    <a {% if entity.status == constant('App\\Entity\\AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING') %} class="devicesWarning imgDevices"  {% else %} class="devicesWarning" {% endif %}
+                                        style="top: 10px; margin-left: 10px;"
+                                        href="javascript:" 
+                                       {# data_path="{{ path('account_sublicense_release_uid_license', {'id':entity.id}) }}" #}
+                                        license_name="{{entity.name}}"
+                                        license_uid="{{entity.name}}"
+                                        license_push="{{entity.name}}"
+                                        title="Reset Bound To {{entity.name}} Device {% if entity.name is not empty %}With {{entity.name}} Push Key{% endif %}" alt="Reset Bound To Device">
+                                    </a>
+                                {% endif %}
+                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    &nbsp;
+                                    <a class="deleteSub" href="javascript:"
+                                       {# data_path="{{ path('level_sublicenses_delete',  {'id': entity.id}) }}" #}
+                                        sub_name="{{ entity.name|title }}">
+                                        <img src="{{ asset('/images/deletex.png ') }}" alt="Delete" title="Delete"/>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3">No Advertise Plans For List</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+    $(".deleteSub").click(function() {
+        var subLic = $(this);
+        var pathUrl = subLic.attr('data_path');
+        var sub_name = subLic.attr('sub_name');
+        var oneParam = '';
+        
+        bootbox.confirm('Do you want to delete the <strong>' + sub_name + '</strong> sublicense?',
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        otherParam : oneParam
+                    },
+                    cache: false,
+                    success: function (r) { 
+                    if (r.result == '__OK__') {
+                            subLic.closest('tr').remove();
+                        }
+                        else {
+                            bootbox.alert(r.msg);
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.alert(r.msg);
+                    }
+                });
+            }
+        });
+    });
+    
+    var devicesWarningClicked = 0;
+    
+    $('.devicesWarning').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameUid = clickedU.attr('license_uid');
+        var namePush = clickedU.attr('license_push');
+
+        if (devicesWarningClicked == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the bound with the station device in <strong>' + nameUse + '</strong> Sublicense with <strong>' + nameUid + '</strong> UID?';
+        
+            if (namePush != '') {
+                bootBoxMsg = 'Do you want to reset the bound with the station device in <strong>' + nameUse + '</strong> Sublicense with <strong>' + nameUid + '</strong> UID and <strong>' + namePush + '</strong> push key?';
+            } 
+        
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    devicesWarningClicked = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the station already released!');
+        }
+    });
+
+{% endblock %}

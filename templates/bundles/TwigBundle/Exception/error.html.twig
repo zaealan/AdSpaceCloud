@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+body {
+	background-color: #FFFFFF;
+	margin: 0;
+	padding: 0;
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+img  {
+	border: none;
+	display: block;
+	height: auto;
+	width: 65%;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+.container {
+{#	width: 590px;#}
+	width: 100%;
+	background-color: #FFF;
+	text-align: center;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	height: auto;
+}
+.txtoops {
+	display: block;
+	width: 100%;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 50px;
+	font-weight: bold;
+	color: #FA7A00;
+	text-align: left;
+}
+.msj {
+	display: block;
+	width: 100%;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+	color: #666;
+}
+.btnlnk {
+	width: 100%;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 19px;
+	color: #999999;
+	font-weight: normal;
+}
+.fltlft {
+	float: left;
+	margin-top: -8px;
+        width: 100%;
+        margin-bottom: 15px
+}
+.content {
+	padding: 10px;
+}
+a {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	color: #585858;
+	text-decoration: none;
+	width: 100%;
+	padding-left: 26px;
+	background-image: url({{asset('//images/lnk.png')}});
+	background-repeat: no-repeat;
+	background-position: left 5px;
+	-moz-transition: 0.5s ease;
+	-webkit-transition: 0.5s ease;
+	-o-transition: 0.5s ease;
+	float: left;
+        text-decoration: underline;
+        margin-top: 8px;
+}
+a:hover {
+	color: #FF7A17;
+}
+
+@media (max-width: 768px) and (min-width: 481px) {
+.container {
+{#	width: 480px;#}
+	width: 100%;
+}
+.btnlnk {
+	width: 96%;
+	display: block;
+}
+.fltlft {
+	width: auto;
+	display: block;
+	width: 100%;
+}
+}
+
+@media (max-width: 480px) {
+img  {
+	height: 250px;
+	width: 330px;
+}
+.container {
+	width: 98%;
+	padding: 1%;
+}
+.btnlnk {
+	width: 96%;
+	display: block;
+	font-size: 15px;
+}
+.fltlft {
+	width: auto;
+	display: block;
+	width: 100%;
+}
+a {
+	font-size: 20px;
+	padding: 5px 5px 5px 25px;
+}
+}
+</style>
+<meta charset="utf-8">
+<title>Level Licensor</title>
+<body>
+
+<div class="container">
+  <div class="content"><img src="{{ asset('/images/imgBroken.jpg') }}" alt="Level Licensor" width="100%" height="440px">
+          <div class="txtoops">
+              <div class="fltlft" align="center">Error {{status_code}}.<br>
+                    {% if status_code == 404 %}
+                        <span class="msj" style="font-size: 30px;margin-bottom: 8px;">This page does not exist</span>
+                    {% endif %}
+                    
+                    <span class="msj">
+                        {% if status_code != 500 %}
+                            {{ exception.message }}
+                        {% else %}
+                            Internal Server Error
+                        {% endif %}
+                    </span>
+              </div>
+    
+    <div class="btnlnk">
+        {% if status_code == 404 %}
+            Please type the right address or
+        {% endif %}
+    	<a href="javascript:" onclick="window.history.back()">Click here to go to the previous page</a>
+    </div>
+    
+    </div>
+  </div>
+  <!-- end .container --></div>
+</body>
+</html>

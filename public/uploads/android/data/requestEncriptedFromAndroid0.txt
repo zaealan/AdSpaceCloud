@@ -1,0 +1,2913 @@
+Creating and using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 18:00:39'Push Ask: {
+  "nickname": "blackdoc_28",
+  "uid": "coquitoXX",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "blackdoc_28",
+  "uid": "coquitoXX",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 18:56:55'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:10:03'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:22:50'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:24:17'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:24:41'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:24:50'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:25:58'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:27:14'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:28:07'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:33:02'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:33:44'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:33:53'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:34:01'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 19:47:19'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 20:17:22'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:12:20'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:18:19'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:19:07'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 4,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:25:28'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:26:31'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:30:16'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:31:32'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:32:03'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:32:22'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 6,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:34:05'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 7,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 7,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:35:06'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 7,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 7,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Using -> /var/www/html/public/uploads/android/data/requestEncriptedFromAndroid0.txt at '11/25/2018 21:35:15'Push Ask: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 7,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}Push Responded decode params: {
+  "nickname": "jetblack_1",
+  "uid": "coquito1",
+  "dealType": 7,
+  "customerId": "4e6592aa-e2ae-11e8-a731-0242ac1005",
+  "totalAmount": "33.90",
+  "watchedTime": "2018-01-24 16:48:14",
+  "watchedObjectsInPurchase": {
+    "category": {
+      "1daf2f48-d2c3-4152-bcdb-193438843f14": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "11c893af-f457-4a43-83ea-4a22ff5e2cf7": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product": {
+      "07b59030-bc9b-465e-8c84-d22542e09b00": {
+        "amountPerObject": "13.45",
+        "quantity": "2",
+        "totalAmount": "26.90"
+      },
+      "2a86c5e0-0796-4c0f-8ca6-d52d6bfdbb3b": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    },
+    "product_modifier_map": {
+      "012655c5-0316-45d0-a4f7-2c95d3123658": {
+        "amountPerObject": "1.25",
+        "quantity": "2",
+        "totalAmount": "2.5"
+      }
+    },
+    "product_size": {
+      "6d833d21-1b4b-48f2-a00a-2b9cf7a835da": {
+        "amountPerObject": "12.20",
+        "quantity": "2",
+        "totalAmount": "24.40"
+      },
+      "798fd3e5-f18c-4e34-9009-74614a5c26e5": {
+        "amountPerObject": "7.00",
+        "quantity": "1",
+        "totalAmount": "7.00"
+      }
+    }
+  }
+}

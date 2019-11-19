@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Account</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Acid</th>
+                <td>{{ entity.acId }}</td>
+            </tr>
+            <tr>
+                <th>Acname</th>
+                <td>{{ entity.acName }}</td>
+            </tr>
+            <tr>
+                <th>Acphonenumber</th>
+                <td>{{ entity.acPhoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>Acemail</th>
+                <td>{{ entity.acEmail }}</td>
+            </tr>
+            <tr>
+                <th>Accontactname</th>
+                <td>{{ entity.acContactName }}</td>
+            </tr>
+            <tr>
+                <th>Acdatecreated</th>
+                <td>{{ entity.acDateCreated|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('account') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('account_edit', { 'id': entity.acId }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

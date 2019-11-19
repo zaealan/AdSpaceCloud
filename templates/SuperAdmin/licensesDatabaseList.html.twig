@@ -1,0 +1,1014 @@
+{% extends 'Default/main.html.twig' %}
+{% import 'Default/filters.html.twig' as filters  %}
+{% block title 'License Databases'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Licenses Databases</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="{{path('index_management')}}"><i class="fa fa-list"></i> Management Dashboard</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Licenses Databases</li>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+
+            <div class="col-lg-12">
+                <form method="post" action="{{ path('index_databases_list') }}">
+                    <div class="jumbotron sinpad">
+                        <div class="containerSearchFields" style="display: flex;">
+                         {{ form_widget(form.alLicenseUsername,{'attr':{'placeholder':'Nickname', 'class':'form-control pull-left input-form', 'value':search.alLicenseUsername|default('')} }) }}
+                         {{ form_widget(form.dbname,{'attr':{'placeholder':'Database Name', 'class':'form-control title-case pull-left input-form', 'value':search.dbname|default('')} }) }}   
+                         {{ form_widget(form.deviceUid,{'attr':{'placeholder':'UID', 'class':'form-control pull-left input-form-short', 'value':search.deviceUid|default('')} }) }}
+                         {{ form_widget(form.account,{'attr':{'class':'form-control pull-left input-form', 'value':search.account|default('')} }) }}       
+                         {{ form_widget(form.alLicenseStatus,{'attr':{'class':'form-control pull-left input-form', 'value':search.alLicenseStatus|default('')} }) }}
+                        </div>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
+                     </div>
+                  {{ form_rest(form._token) }}
+                 </form>
+                 <br>
+            </div>
+     
+            {{ filters.textItemsOnList(paginator, 'Databases')}}
+            {{ filters.buttonsItemsPerPage(paginator, 'index_databases_list', params, orderBy.url, '')}}
+            
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list">
+                    <thead>
+                        <tr>                            
+                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}
+                            <th><a style="color: whitesmoke;" href="{{ path('index_databases_list', { 'order_by_nickname': orderBy.order_by_nickname.order }) }}{{ params~itemsPage }}"> Restaurant Name</a>&nbsp; {{ orderBy.order_by_nickname.htmlImage|default('')|raw }}</th>                
+                            <th style="cursor: default;"> DB Host</th> 
+                            <th><a style="color: whitesmoke;" href="{{ path('index_databases_list', { 'order_by_dbname': orderBy.order_by_dbname.order }) }}{{ params~itemsPage }}"> DB Name</a>&nbsp; {{ orderBy.order_by_dbname.htmlImage|default('')|raw }}</th> 
+                            <th style="cursor: default;"> DB User</th>
+                            <th style="cursor: default;"> DB Password</th>
+                            <th style="cursor: default;"> Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set isAllowedForTwig = 0 %}
+                        {% for entity in entities %}
+                            {% if entity.isSyncAllowed and entity.license.hasAndroid and not isAllowedForTwig %}
+                                {% set isAllowedForTwig = 1 %}
+                            {% endif %}
+                            <tr>
+                                <td>{{ entity.license }}</td>
+                                <td>{{ entity.dbhost }}</td>
+                                <td>{{ entity.dbname }}</td>
+                                <td>{{ entity.dbuser }}</td>
+                                <td>{{ entity.dbpass }}</td>
+                                <td>
+                                    {% if entity.license.hasAndroid %}
+                                        <a><label {% if entity.isSyncAllowed %}class="dataSyncStatus dataSyncAll"{% else %}class="dataSyncStatus dataSyncDen"{% endif %} style="cursor: pointer;" title="{% if entity.isSyncAllowed %}Deny{% else %}Allow{% endif %} Sync?" license_name='{{entity.license}}' data_path='{{ path('block_unblock_sync_by_license',  {'id': entity.license.id}) }}' data_is_allow='{{entity.isSyncAllowed}}' data_general="0"></label></a>
+                                        &nbsp;
+                                    {% endif %}
+                                    {% if entity.license.hasAndroid %}
+                                        <a {% if entity.license.deviceUid is empty %} class="devicesWarning imgDevices"  {% else %} class="devicesWarning" {% endif %}
+                                            style="margin-bottom: 7px;"
+                                            href="javascript:" 
+                                            data_path="{{ path('unlink_licenses_uid_request', {'id':entity.license.id}) }}"
+                                            license_name="{{entity.license.alRestaurantName}}"
+                                            license_uid="{{entity.license.deviceUid}}"
+                                            license_push="{{entity.license.pushyKey}}"
+                                            title="Reset Bound To {{entity.license.deviceUid}} Device {% if entity.license.pushyKey is not empty %}With {{entity.license.pushyKey}} Push Key{% endif %}" alt="Reset Bound To {{entity.license.deviceUid}} Device">
+                                        </a>
+                                        &nbsp;
+                                    {% endif %}
+                                    
+{#                                    #}
+                                    {% if entity.license.hasAndroid %}
+                                        <a {% if entity.license.deviceUid is empty %} class="testPushes imgDevices"  {% else %} class="testPushes" {% endif %}
+                                            style="margin-bottom: 7px;"
+                                            href="javascript:" 
+                                            data_path="{{ path('level_test_push_services_for_restaurant') }}"
+                                            license_name="{{entity.license}}"
+                                            license_uid="{{entity.license.deviceUid}}"
+                                            license_nickname="{{entity.license.alLicenseUsername}}"
+                                            title="Test Push Services For {{entity.license}} Restaurant" alt="Test Push Services For {{entity.license}} Restaurant">
+                                        </a>
+                                        &nbsp;
+                                    {% endif %}
+{#                                    #}
+                                    
+                                    {% if entity.license.hasAndroid %}
+                                        <a><label class="checkPing" style="cursor: pointer;" title="Test Conetion To Android Server" license_name='{{entity.license}}' data_path='{{ path('level_licensor_send_ping_request') }}' license_uid='{{entity.license.deviceUid}}' license_nick='{{entity.license.alLicenseUsername}}'></label></a>
+                                        &nbsp;
+                                    {% endif %}
+                                    <a><label class="fancybox.iframe menuFix" style="cursor: pointer;" title="Menu And Address Fix (Pizza, Gift Card And Address)"
+                                        href="{{ path('menu_fix_and_address_configuration',{'idLicense':entity.license.id}) }}"></label>
+                                    </a>
+                                    &nbsp;
+                                    {% if entity.license.hasAndroid %}
+                                        <a><label class="dataS3Request" style="cursor: pointer;" title="Request android backup to S3" license_name='{{entity.license}}' data_path='{{ path('s3_request_to_license',  {'id':entity.license.id, 'pushType':'__DATA__'}) }}' data_has_device='{{entity.license.hasAndroid}}'></label></a>
+                                        &nbsp;
+                                    {% endif %}
+                                    {% if entity.license.hasAndroid %}
+                                        <a><label class="dataS3WebRequest" style="cursor: pointer;" title="Request license backup to S3" license_name='{{entity.license}}' data_path='{{ path('s3_request_to_web_license',  {'id': entity.license.id}) }}' data_has_device='{{entity.license.hasAndroid}}'></label></a>
+                                        &nbsp;
+                                    {% endif %}
+                                    {% if entity.needsRestorationStatus != 0 %}
+                                        <a>
+                                            <label {% if entity.needsRestorationStatus >= 2 %} class="dataFullRestoration" {% else %} class="dataPartialRestoration" {% endif %} style="cursor: pointer;" title="License Database Restoration" license_name='{{entity.license}}' data_path='{{ path('restore_database_action',  {'id': entity.id, 'restoMode': '__DATA__'}) }}' data_restoration='{{entity.needsRestorationStatus}}' license_name='{{entity.license}}' >
+                                            </label>
+                                        </a>
+                                        &nbsp;
+                                    {% else %}
+                                    {% if not entity.license.hasLogedOMT and entity.license.hasAndroid %}
+                                        <a>
+                                            <label 
+                                                class="pepitoOmtClass" 
+                                                style="cursor: pointer;" 
+                                                title="Initiate Restaurant Export To OMT?" 
+                                                license_name='{{entity.license}}' 
+                                                license_nick="{{entity.license.alLicenseUsername}}" 
+                                                license_uid="{{entity.license.deviceUid}}" 
+                                                data_path='{{ path('level_licensor_initiate_restaurant_export') }}' 
+                                                data_path2='{{ path('level_licensor_sync_all_for_all') }}'  
+                                                >
+                                            </label>
+                                        </a>
+                                        &nbsp;
+                                    {% endif %}
+                                        
+                                        &nbsp;
+                                        <a><label class="imgStatus data3" style="cursor: pointer;" title="Update Schema And Procedures?" license_name='{{entity.license.alLicenseUsername}}' data_path='{{ path('accountlicense_update_database', {'id':entity.license.id}) }}' trstatus="3"></label></a>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SUPER_ADMIN') and entity.license.isTesting == true %}
+                                        &nbsp;
+                                        <a class="deleteLic" href="javascript:"
+                                            data_path="{{ path('level_licenses_delete',  {'id': entity.license.id}) }}"
+                                            sub_name="{{ entity.license|title }}">
+                                            <img src="{{ asset('/images/deletex.png ') }}" style="margin-top: -30px; margin-left: -5px;" alt="Delete" title="Delete"/>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="5">{{ response }}</td></tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="5" style="text-align: right;"><label style="margin-top: 12px; margin-right: 12px;">For All Licenses</label></td>
+                            <td>
+                                <a><label class="dataSyncStatus {% if isAllowedForTwig == 1 %}dataSyncAll{% else %}dataSyncDen{% endif %}" style="cursor: pointer;" title="{% if isAllowedForTwig == 1 %}Deny{% else %}Allow{% endif %} All Syncs?" license_name='{{'All'}}' data_path='{{ path('block_unblock_sync_by_license',  {'id':'__ALL__'}) }}' data_is_allow='{{isAllowedForTwig}}' data_general="1"></label></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {{ filters.constructPaginator(paginator, 'index_databases_list', params, orderBy.url, 'Databases', '')}}
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block scripts %} 
+        
+    var pushServiceDiagnose = 0;
+
+    $('.testPushes').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameUid = clickedU.attr('license_uid');
+        var nameNic = clickedU.attr('license_nickname');
+
+        if (pushServiceDiagnose == 0) {
+            
+            var bootBoxMsg = 'Do you want to test the push services for <strong>' + nameUse + '</strong> restaurant?';
+          
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    pushServiceDiagnose = 1;
+                    showLoadingDialog('Initiating push services diagnose for <strong>' + nameUse + '</strong> restaurant.. Please wait a few minutes until the process is finished...');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: {
+                            nickname: nameNic,
+                            uid: nameUid
+                        },
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                showDialogWithoutSpiner('Licensor APIs General Diagnose', r.html);
+                                pushServiceDiagnose = 0;
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Another push service test is running, please wait a few minutes...');
+        }
+    });
+        
+    $('.dataSyncStatus').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var isAllowedSync = clickedU.attr('data_is_allow');
+        var bootBoxText = '';
+
+        if (Number(isAllowedSync)) {
+            bootBoxText = 'Do you want deny all synchronizations for <strong>' + nameUse + '</strong> license?';
+        } else {
+            bootBoxText = 'Do you want allow all synchronizations for <strong>' + nameUse + '</strong> license?';
+        }
+        
+        bootbox.confirm(bootBoxText,
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        isSyncAllowed : isAllowedSync
+                    },
+                    cache: false,
+                    success: function (r) {
+                        if (r.syncAllowed === false) {
+                            clickedU.toggleClass('dataSyncAll');
+                            clickedU.toggleClass('dataSyncDen');
+                            if (nameUse == 'All') {
+                                $(".dataSyncAll").each(function(index) {
+                                    if ($(this).attr('data_general') != '1') {
+                                        $(this).toggleClass('dataSyncAll');
+                                        $(this).toggleClass('dataSyncDen');
+                                        $(this).attr('title', 'Allow Sync?');
+                                        $(this).attr('data_is_allow', Number('0'));
+                                    }
+                                });
+                                clickedU.attr('title', 'Allow All Syncs?');
+                            } else {
+                                clickedU.attr('title', 'Allow Sync?');
+                            }
+                        }
+                        
+                        if (r.syncAllowed === true) {
+                            clickedU.toggleClass('dataSyncDen');
+                            clickedU.toggleClass('dataSyncAll');
+                            if (nameUse == 'All') {
+                                $(".dataSyncDen").each(function(index) {
+                                    if ($(this).attr('data_general') != '1') {
+                                        $(this).toggleClass('dataSyncDen');
+                                        $(this).toggleClass('dataSyncAll');
+                                        $(this).attr('title', 'Deny Sync?');
+                                        $(this).attr('data_is_allow', Number('1'));
+                                    }
+                                });
+                                clickedU.attr('title', 'Deny All Syncs?');
+                            } else {
+                                clickedU.attr('title', 'Deny Sync?');
+                            }
+                        }
+                        
+                        clickedU.attr('data_is_allow', Number(r.syncAllowed));
+
+                        bootbox.hideAll();
+                        bootbox.alert(r.msg);
+                    },
+                    error: function (r) {
+                        bootbox.hideAll();
+                        bootbox.alert(r.msg);
+                    }
+                });
+            }
+        });
+    });
+    
+    $('.imgStatus').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            bootbox.confirm('Do you want to update the license <strong>' + nameUse + '</strong> database?',
+            function (result) {
+                if (result == true) {
+                    showLoadingDialog('Updating database.. Please wait for the until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                            }
+
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        },
+                        error: function (r) {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('License database already updated!');
+        }
+    });
+    
+    $('.dataFullRestoration, .dataPartialRestoration').click(function () {
+        var clickedU = $(this);
+        var nameUse = clickedU.attr('license_name');
+        clickedU.attr('disabled','disabled');
+       
+        if (databaseRestoration == 0) {
+            
+            databaseRestoration = 1;
+            var bootBoxMsg = 'The database of <strong>' + nameUse + '</strong> license require a restoration to operate properly, please choose which restoration do you want to do';
+        
+            bootbox.dialog({
+                title: 'Database restoration required!',
+                message: bootBoxMsg,
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel',
+                        className: 'btn-default'
+                    },
+                    primary: {
+                        label: '<i class="fa fa-check"></i> Testing Restoration',
+                        className: 'btn-primary',
+                        callback: function (result) {
+                            ajaxFordDataBaseRestoration(databaseRestoration, clickedU, 1);
+                        }
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Regular Restoration',
+                        className: 'btn-success',
+                        callback: function (result) {
+                            ajaxFordDataBaseRestoration(databaseRestoration, clickedU, 2);
+                        }
+                    }
+                }
+            });
+        } else {
+            bootbox.alert('Database restoration already done!');
+        }
+    });
+    
+    $('.dataS3Request').click(function () {
+        var clickedU = $(this);
+        var nameUseX = clickedU.attr('license_name');
+        var hasDevice = clickedU.attr('data_has_device');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            var bootBoxMsg = 'Do you want to send a S3 request to <strong>' + nameUseX + '</strong> license? Please select the type of S3 request that you want send';
+        
+            bootbox.dialog({
+                title: 'Kind of S3 request!',
+                message: bootBoxMsg,
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel',
+                        className: 'btn-default'
+                    },
+                    full: {
+                        label: '<i class="fa fa-check"></i> Full S3',
+                        className: 'btn-primary',
+                        callback: function (result) {
+                            makeAndroidS3Ajax(clickedU, hasDevice, 8);
+                        }
+                    },
+                    logs: {
+                        label: '<i class="fa fa-check"></i> Logs',
+                        className: 'btn-success',
+                        callback: function (result) {
+                            makeAndroidS3Ajax(clickedU, hasDevice, 12);
+                        }
+                    }, 
+                    errors: {
+                        label: '<i class="fa fa-check"></i> Error Logs',
+                        className: 'btn-warning',
+                        callback: function (result) {
+                            makeAndroidS3Ajax(clickedU, hasDevice, 13);
+                        }
+                    }
+                }
+            });
+        }
+    });
+    
+    var exportClicked = 0;
+ 
+    $('.pepitoOmtClass').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('license_nick');
+
+        if (!clickedU.hasClass('imgDevices') && exportClicked == 0) {
+            bootbox.confirm('Do you want to export <strong>' + nameUse + '</strong> restaurant to <strong> OpenMyTab </strong>?',
+            function (result) {
+                if (result == true) {
+                    exportClicked = 1;
+                    showLoadingDialog('Initiating <strong>' + nameUse + '</strong> restaurant export.. Please wait a few minutes until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        data: {
+                            nickname : nickUse
+                        },
+                        cache: false,
+                        success: function (r) {
+                            var timeToClose = 0;
+
+                            bootbox.hideAll();
+                            
+                            if (r.result == '__OK__' && typeof r.canRetry === 'undefined') {
+                                bootbox.alert(r.msg);
+                                
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+
+                                ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU);
+                            }
+
+                            if (r.result == '__OK__' && r.canRetry == 0) {
+                                bootbox.alert(r.msg);
+                            
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+
+                                ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU);
+                            }
+                            
+                            if (r.result == '__OK__' && r.canRetry == 1) {
+                                bootbox.hideAll();
+                                bootbox.dialog({
+                                title: 'Rewrite an already exported restaurant?',
+                                message: 'Restaurant already exported to omt.. Do you want to rewrite the <strong>' + nameUse + '</strong> restaurant in omt with all the level infromation.. <br><br><strong>Note: </strong>This proccess will overwrite al the previous information of the restaurant in OpenMyTab and can`t be undone.',
+                                buttons: {
+                                        cancel: {
+                                            label: '<i class="fa fa-times"></i> Cancel',
+                                            className: 'btn-default',
+                                            callback: function (result) {
+                                                bootbox.hideAll();
+                                            }
+                                        },
+                                        confirm: {
+                                            label: '<i class="fa fa-check"></i> Rewrite Restaurant',
+                                            className: 'btn-primary',
+                                            callback: function (result) {
+                                                ajaxFordRewriteExportedRestaurant(pathUrl, clickedU);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            
+                            if (r.result == '__KO__') {
+                                bootbox.alert(r.msg);
+                            }
+                            
+                        }, 
+                        error: function (r) {
+                            exportClicked = 0;
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    $('.dataS3WebRequest').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var hasDevice = clickedU.attr('data_has_device');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            bootbox.confirm('Do you want to send an s3 web upload backup request to <strong>' + nameUse + '</strong> license?',
+            function (result) {
+                if (result == true && hasDevice) {
+                    showLoadingDialog('Sending web upload s3 backup  request.. Please wait a few seconds until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        data: {
+                            hasDevice : hasDevice
+                        },
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+                            }
+
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        },
+                        error: function (r) {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                } else {
+                    {#alert('Se chingo esto!!!');
+                    alert(result);
+                    alert(hasDevice);#}
+                }
+            });
+        }
+    });
+    
+    $('.menuFix').click(function () {
+
+        var hasSession = getCurrentStatusSession();
+        if(hasSession === true){
+            $(".menuFix").fancybox({
+                width: '1030px',
+                height: '350px',
+                autoSize: false
+            });
+        }else{
+            window.location.href = "{{ path('level_licensor_login') }}";
+        }
+    });
+
+    $(".deleteLic").click(function() {
+        var subLic = $(this);
+        var pathUrl = subLic.attr('data_path');
+        var sub_name = subLic.attr('sub_name');
+        var oneParam = '';
+        bootbox.confirm('Do you want to delete the <strong>' + sub_name + '</strong> license?<br> This action will erase all data and can`t be undone..',
+        function (result) {
+            if (result == true) {
+                showLoadingDialog('Deleting license data.. Please wait..');
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        otherParam : oneParam
+                    },
+                    cache: false,
+                    success: function (r) { 
+                    if (r.result == '__OK__') {
+                            subLic.closest('tr').remove();
+                            bootbox.hideAll();
+                        }
+                        else {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.hideAll();
+                        bootbox.alert(r.msg);
+                    }
+                });
+            }
+        });
+    });
+
+    $('.changeStatusLicense').click(function() {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        /*var typeUse = clickedU.attr('user_type');*/
+        var newStatus = (clickedU.attr('currentStatus') == 1) ? 2 : 1;
+
+        bootbox.confirm('Do you want to change the status for <strong>'+nameUse+'</strong> License?',
+        function(result) {
+            if(result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                    newStatus: newStatus
+                    },
+                    cache: false,
+                    success: function(r) {
+                        if(r.result=='__OK__') {
+                            clickedU.attr('currentStatus', r.newStatus);
+                            clickedU.closest('tr')
+                                .find('.txtLicenseStatus').text(r.txtNewLicenseStatus);
+                            console.log(newStatus);
+                            if(newStatus == 2){
+                                $(clickedU).removeClass('switchOn').addClass('switchOff');
+                            }else{
+                                $(clickedU).removeClass('switchOff').addClass('switchOn');
+                            }
+                        }
+                        else {
+                            bootbox.alert(r.msg)
+                        }
+                    },
+                        error: function(r) {
+                        bootbox.alert(r.msg)
+                    }
+                });
+            }
+        });
+    });
+
+    $('#isCallCenter').css('cursor','not-allowed');
+
+    var theSelectedId = 0;
+    var devicesWarningClicked = 0;
+    
+    $('.devicesWarning').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameUid = clickedU.attr('license_uid');
+        var namePush = clickedU.attr('license_push');
+
+        if (devicesWarningClicked == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the bound with the server device in <strong>' + nameUse + '</strong> License with <strong>' + nameUid + '</strong> UID?';
+        
+            if (namePush != '') {
+                bootBoxMsg = 'Do you want to reset the bound with the server device in <strong>' + nameUse + '</strong> License with <strong>' + nameUid + '</strong> UID and <strong>' + namePush + '</strong> push key?';
+            } 
+          
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    devicesWarningClicked = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the Android server already released!');
+        }
+    });
+    
+    var resendUnansweredPush = 0;
+    var resendPushManually = 0;
+    var pingSendTo = 0;
+    
+    $('.checkPing').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameNick = clickedU.attr('license_nick');
+        var nameUid = clickedU.attr('license_uid');
+        clickedU.attr('disabled','disabled');
+       
+        if (pingSendTo == 0) {
+            
+            var bootBoxMsg = 'Do you want to send a ping to server device in <strong>' + nameUse + '</strong> License?';
+        
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    pingSendTo = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        data: {
+                            nickname: nameNick,
+                            uid: nameUid
+                        },
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                bootbox.hideAll();
+                                if (r.result == '__OK__' && r.idpush > 0) {
+                                    secondPathUrl = r.url;
+
+                                    showLoadingDialog(r.msg);
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: secondPathUrl,
+                                        dataType: 'json',
+                                        data: {
+                                            nickname: nameNick,
+                                            push: r.idpush
+                                        },
+                                        cache: false,
+                                        success: function (re) {
+                                            clickedU.addClass('imgDevices');
+                                            bootbox.hideAll();
+
+                                            bootbox.alert(re.msg);
+                                        },
+                                        error: function (re) {
+                                            bootbox.alert(re.msg);
+                                            clickedU.removeAttr('disabled');
+                                        }
+                                    });
+                                } else {
+                                    bootbox.alert(re.msg);
+                                    clickedU.removeAttr('disabled');
+                                }
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                                clickedU.removeAttr('disabled');
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                            clickedU.removeAttr('disabled');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Ping to Android server already sended without response!');
+        }
+    });
+    
+    var databaseRestoration = 0;
+    
+    $('.dataFullRestoration, .dataPartialRestoration').click(function () {
+        var clickedU = $(this);
+        var nameUse = clickedU.attr('license_name');
+        clickedU.attr('disabled','disabled');
+       
+        if (databaseRestoration == 0) {
+            
+            databaseRestoration = 1;
+            var bootBoxMsg = 'The database of <strong>' + nameUse + '</strong> license require a restoration to operate properly, please choose which restoration do you want to do';
+        
+            bootbox.dialog({
+                title: 'Database restoration required!',
+                message: bootBoxMsg,
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel',
+                        className: 'btn-default'
+                    },
+                    primary: {
+                        label: '<i class="fa fa-check"></i> Testing Restoration',
+                        className: 'btn-primary',
+                        callback: function (result) {
+                            ajaxFordDataBaseRestoration(databaseRestoration, clickedU, 1);
+                        }
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Regular Restoration',
+                        className: 'btn-success',
+                        callback: function (result) {
+                            ajaxFordDataBaseRestoration(databaseRestoration, clickedU, 2);
+                        }
+                    }
+                }
+            });
+        }
+    });
+     
+    {% endblock %}
+
+    {% block functions_javascript %}
+
+    function validateFixMenuOrAddress (clickedU, pathUrl, typeValidate){
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            dataType: 'json',
+            data: {
+                typeValidate: typeValidate,
+            },
+            cache: false,
+            success: function (r) {
+                if (r.result == '__OK__') {
+                    clickedU.addClass('imgDevices');
+                    clickedU.css('cursor','');
+                }
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            }, 
+            error: function (r) { 
+                bootbox.hideAll(); 
+                bootbox.alert(r.msg); 
+            } 
+        }); 
+    }
+
+    function ajaxFordRewriteExportedRestaurant(pathUrl, clickedU) {
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('license_nick');
+
+        clickedU.addClass('imgDevices');
+        
+        var bootBoxMsg = 'Rewriting <strong>' + nameUse + '</strong> restaurant, this process may take a couple of minutes, please wait...';
+        
+        showLoadingDialog(bootBoxMsg);
+
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            data: {
+                nickname : nickUse,
+                rewrite : 1
+            },
+            cache: false,
+            success: function (r) {
+                var timeToClose = 0;
+
+                if (r.result == '__OK__') {
+                    clickedU.addClass('imgDevices');
+                    clickedU.css('cursor','');
+
+                    bootbox.hideAll();
+                    bootbox.alert(r.msg);
+
+                    ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU);
+                }
+            },
+            error: function (r) {
+                exportClicked = 0;
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            }
+        });
+    }
+    
+    function ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU) {
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('license_nick');
+        var uidUse = clickedU.attr('license_uid');
+        var newPath = clickedU.attr('data_path2');
+
+        var bootBoxMsg = 'Sending full sync request to <strong>' + nameUse + '</strong> restaurant, this process may take a couple of minutes, please wait...';
+        
+        showLoadingDialog(bootBoxMsg);
+
+        var request = {nickname:nickUse, uid:uidUse};
+        var myJsonRequest = JSON.stringify(request);
+        
+        $.ajax({
+            type: 'POST',
+            url: newPath,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: myJsonRequest,
+            cache: false,
+            success: function (r) {
+                var timeToClose = 0;
+
+                if (r.data.result == '__OK__' && r.data.status == 200) {
+                    clickedU.addClass('imgDevices');
+                    clickedU.css('cursor','');
+
+                    bootbox.hideAll();
+                    bootbox.alert(r.data.msg);
+
+                    setInterval(function() {
+                    timeToClose++;
+
+                    if(timeToClose == 3) {
+                        location.reload();
+                    }
+
+                    },1500);
+                } else {
+                    bootbox.hideAll();
+                    bootbox.alert(r.msg);
+                }
+            },
+            error: function (r) {
+                exportClicked = 0;
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            }
+        });
+    }
+
+    function makeAndroidS3Ajax(clickedU, hasDevice, typeOfRequest) {
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+    
+        clickedU.addClass('imgDevices');
+        
+        pathUrl = pathUrl.replace(/__DATA__/, typeOfRequest);
+        
+        if (typeOfRequest === 1) {
+            typeOfRequest = 'Full S3 Request';
+        } else if (typeOfRequest === 2) {
+            typeOfRequest = 'Just Logs Request';
+        } else {
+            typeOfRequest = 'Error Logs Request';
+        }
+
+        showLoadingDialog('Sending ' + typeOfRequest + ' to <strong>' + nameUse + '</strong> restaurant Please wait a few seconds..');
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            dataType: 'json',
+            data: {
+                hasDevice : hasDevice
+            },
+            cache: false,
+            success: function (r) {
+                if (r.result == '__OK__') {
+                    clickedU.addClass('imgDevices');
+                    clickedU.css('cursor','');
+                }
+
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            },
+            error: function (r) {
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            }
+        });
+    }
+    
+    function ajaxFordDataBaseRestoration(databaseRestoration, clickedU, restoMode) {
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var restorationStatus = clickedU.attr('data_restoration');
+    
+        clickedU.addClass('imgDevices');
+        databaseRestoration = 0;
+        
+        pathUrl = pathUrl.replace(/__DATA__/, restoMode);
+
+        var bootBoxMsg = 'Doing database restoration for <strong>' + nameUse + '</strong> license, this process may take a couple of minutes, please wait...';
+        
+        showLoadingDialog(bootBoxMsg);
+
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            dataType: 'json',
+            cache: false,
+            success: function (r) {
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+                databaseRestoration = 0;
+                
+                if (r.result != '__OK__') {
+                    clickedU.removeAttr('disabled');
+                }
+                
+                window.location.reload(true);
+            },
+            error: function (r) {
+                bootbox.alert('Unknow error, please try again!');
+                clickedU.removeAttr('disabled');
+            }
+        });
+    }
+
+    function showLoadingDialog(msg) {
+        bootbox.hideAll();
+        bootbox.dialog({
+            closeButton: false,
+            message: '<p>' + msg + '</p><p class="bootbox-padding" style="margin-top: 10px; text-align: center; margin-bottom: -25px;"><i class="fa fa-spin fa-spinner" style="font-size:48px; margin-right: 5%"></i></p>',
+            
+        });
+    }
+    
+    function showDialogWithoutSpiner(title, msg) {
+        bootbox.hideAll();
+        bootbox.dialog({
+            title: '' + title + '',
+            message: '' + msg + '',
+            buttons: {
+                success: {
+                    label: "OK",
+                    className: "btn-primary",
+                    callback: function () {
+
+                    }
+                }
+            }
+        });
+    }
+
+    {% endblock %}
+
+

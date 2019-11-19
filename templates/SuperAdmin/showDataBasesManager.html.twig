@@ -1,0 +1,82 @@
+<div style="margin-top: 3%">
+    <table class="table table-bordered table-hover tablesorter records_list table-striped">
+        <thead>
+            <tr>
+                <th>Restaurant Name</th>                
+                <th>DB Host</th> 
+                <th>DB Name</th>
+                <th>DB User</th>
+                <th>DB Password</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set isAllowedForTwig = 0 %}
+            {% for entity in entities %}
+                {% if entity.isSyncAllowed and entity.license.hasAndroid and not isAllowedForTwig %}
+                    {% set isAllowedForTwig = 1 %}
+                {% endif %}
+                <tr>
+                    <td>{{ entity.license }}</td>
+                    <td>{{ entity.dbhost }}</td>
+                    <td>{{ entity.dbname }}</td>
+                    <td>{{ entity.dbuser }}</td>
+                    <td>{{ entity.dbpass }}</td>
+                    <td>
+                        {% if entity.license.hasAndroid %}
+                            <a><label {% if entity.isSyncAllowed %}class="dataSyncStatus dataSyncAll"{% else %}class="dataSyncStatus dataSyncDen"{% endif %} style="cursor: pointer;" title="{% if entity.isSyncAllowed %}Deny{% else %}Allow{% endif %} Sync?" license_name='{{entity.license}}' data_path='{{ path('block_unblock_sync_by_license',  {'id': entity.license.id}) }}' data_is_allow='{{entity.isSyncAllowed}}' data_general="0"></label></a>
+                            &nbsp;
+                        {% endif %}
+                        {% if entity.license.hasAndroid %}
+                            <a {% if entity.license.deviceUid is empty %} class="devicesWarning imgDevices"  {% else %} class="devicesWarning" {% endif %}
+                                style="margin-bottom: 7px;"
+                                href="javascript:" 
+                                data_path="{{ path('unlink_licenses_uid_request', {'id':entity.license.id}) }}"
+                                license_name="{{entity.license.alRestaurantName}}"
+                                license_uid="{{entity.license.deviceUid}}"
+                                license_push="{{entity.license.pushyKey}}"
+                                title="Reset Bound To {{entity.license.deviceUid}} Device {% if entity.license.pushyKey is not empty %}With {{entity.license.pushyKey}} Push Key{% endif %}" alt="Reset Bound To {{entity.license.deviceUid}} Device">
+                            </a>
+                            &nbsp;
+                        {% endif %}
+                        {% if entity.license.hasAndroid %}
+                            <a><label class="dataS3Request" style="cursor: pointer;" title="Request android backup to S3" license_name='{{entity.license}}' data_path='{{ path('s3_request_to_license',  {'id': entity.license.id}) }}' data_has_device='{{entity.hasDevice}}'></label></a>
+                            &nbsp;
+                        {% endif %}
+                        {% if entity.license.hasAndroid %}
+                            <a><label class="checkPing" style="cursor: pointer;" title="Test Conetion To Android Server" license_name='{{entity.license}}' data_path='{{ path('level_licensor_send_ping_request') }}' license_name='{{entity.license}}' license_uid='{{entity.license.deviceUid}}' license_nick='{{entity.license.alLicenseUsername}}'></label></a>
+                            &nbsp;
+                        {% endif %}
+                        {% if entity.license.hasAndroid %}
+                            <a><label class="dataS3WebRequest" style="cursor: pointer;" title="Request license backup to S3" license_name='{{entity.license}}' data_path='{{ path('s3_request_to_web_license',  {'id': entity.license.id}) }}' data_has_device='{{entity.hasDevice}}'></label></a>
+                            &nbsp;
+                        {% endif %}
+                        {% if entity.needsRestorationStatus != 0 %}
+                            <a><label {% if entity.needsRestorationStatus >= 2 %} class="dataFullRestoration" {% else %} class="dataPartialRestoration" {% endif %} style="cursor: pointer;" title="License Database Restoration" license_name='{{entity.license}}' data_path='{{ path('restore_database_action',  {'id': entity.id, 'restoMode': '__DATA__'}) }}' data_restoration='{{entity.needsRestorationStatus}}' license_name='{{entity.license}}' ></label></a>
+                            &nbsp;
+                        {% else %}
+                            &nbsp;
+                            <a><label class="imgStatus data3" style="cursor: pointer;" title="Update Schema And Procedures?" license_name='{{entity.license.alLicenseUsername}}' data_path='{{ path('accountlicense_update_database', {'id':entity.license.id}) }}' trstatus="3"></label></a>
+                        {% endif %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') and entity.license.isTesting == true %}
+                            &nbsp;
+                            <a class="deleteLic" href="javascript:"
+                                data_path="{{ path('level_licenses_delete',  {'id': entity.license.id}) }}"
+                                sub_name="{{ entity.license|title }}">
+                                <img src="{{ asset('/images/deletex.png ') }}" style="margin-top: -30px; margin-left: -5px;" alt="Delete" title="Delete"/>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5">Data Not Found</td></tr>
+            {% endfor %}
+            <tr>
+                <td colspan="5" style="text-align: right;"><label style="margin-top: 12px; margin-right: 12px;">For All Licenses</label></td>
+                <td>
+                    <a><label class="dataSyncStatus {% if isAllowedForTwig == 1 %}dataSyncAll{% else %}dataSyncDen{% endif %}" style="cursor: pointer;" title="{% if isAllowedForTwig == 1 %}Deny{% else %}Allow{% endif %} All Syncs?" license_name='{{'All'}}' data_path='{{ path('block_unblock_sync_by_license',  {'id':'__ALL__'}) }}' data_is_allow='{{isAllowedForTwig}}' data_general="1"></label></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,21 @@
+{% extends 'Emails/main.html.twig' %}
+
+{% block content %}
+
+{% if message is iterable %}
+    {% for msg in message %}
+        {% if msg == "&nbsp;" %}
+            <p style="margin:3px;">
+            {% autoescape 'html' %}
+                {{ msg|raw }}
+            {% endautoescape %}
+            </p>
+        {% else %}
+            <p style="margin:3px;">{{ msg|raw }}</p>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <p style="margin:3px;">{{ message|raw }}</p>
+{% endif %}
+
+{% endblock %}

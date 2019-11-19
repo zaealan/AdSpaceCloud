@@ -1,0 +1,313 @@
+{% spaceless %}
+<div>
+    <label style="font-weight: bold; font-size: 22px;">OMT Synchronization History</label>
+    {% if licenseSyncs is defined and licenseSyncs|length > 0 %}
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%" style="text-align: center">Sync Type</th>
+                <th width="13%" style="text-align: center">Asosiated Curl</th>
+                <th width="7%" style="text-align: center">Sync Status</th>
+                <th width="70%" style="text-align: center">Asosiated Files</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set initialLoginFound = 0 %}
+            {% for sync in licenseSyncs %}
+                {% if sync.msSyncWebRecord.rfwOMTNameProcessedFile 
+                            and 'theInitialOMTData' not in sync.msSyncWebRecord.rfwOMTNameProcessedFile 
+                                and sync.msSyncWebRecord.rfwOMTSyncType != constant('App\\Entity\\ReadFilesDataWeb::OMT_SYNC_TYPE_OMT_LEVEL') %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            <label style="color: #252862;">LEVEL - OMT</label>
+                            <br><label class="syncToOMT"></label>
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msPushRecord %}
+                                Curl Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                {% if sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_PENDING') %}
+                                    <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.omtCurlSendDate|date('m/d/Y H:i:s')}}</label>
+                                    <br><label style="color: #AA3333;">No Responded yet!</label>
+                                {% else %}
+                                    <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.omtCurlUpdatedDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.omtCurlResendCounter > 0 %}
+                                    <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendCounter}}</label>
+                                    <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                            {% else %}
+                                <label style="color: red;">No Associated Push!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                <label style="color: green;">Completed</label>
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: olivedrab;">Processing Response...</label>
+                                {% if sync.msOMTStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msOMTHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedOMTForConsumeDateTwo|date('U') < 'now'|date_modify("-10 minute")|date('U') %}
+                                    <br><label style="color: red;">Marked With Error!</label>
+                                {% endif %}
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                                {% if sync.msOMTStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msOMTHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedOMTForConsumeDateOne|date('U') < 'now'|date_modify("-10 minute")|date('U') %}
+                                    <br><label style="color: red;">Marked With Error!</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.omtCurlStatus != constant('App\\Entity\\PushSent::STATUS_CURL_FINISHED')
+                                        and sync.msPushRecord.omtCurlSendDate < date('-5 min') %}
+                                    <br><br><br><br>
+                                    <label style="color: #252862; margin-top: 5px;">Retry Records?</label>
+                                    <br>
+                                    <a  id="retrySyncOmt"
+                                        class="retrySync"
+                                        href="javascript:"
+                                        data_path="{{ path('reset_sync_to_resync_omt', {'id':sync.msSyncWebRecord.id}) }}"
+                                        data_name="{{sync.msSyncWebRecord.rfwLicenseId.alLicenseUsername}}"
+                                        data_path2='{{ path('level_licensor_send_ping_request') }}'
+                                        data_path_sync="{{ path('accountlicense_sync_up_down', {'id':sync.msSyncWebRecord.rfwLicenseId.id}) }}"
+                                        data_path_second_sync="{{ path('level_web_manual_websync_to_deliver', {'id':'__DATA__'}) }}"
+                                        license_uid='{{sync.msSyncWebRecord.rfwLicenseId.deviceUid}}' 
+                                        license_nick='{{sync.msSyncWebRecord.rfwLicenseId.alLicenseUsername}}'
+                                        license_name="{{sync.msSyncWebRecord.rfwLicenseId.alRestaurantName}}"
+                                        title="Retry Records?" alt="Retry Records?">
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncWebRecord.rfwOMTNameProcessedFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile) %}
+                                <label>Delivered File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTNameProcessedFile, 'isResponse': 2})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwOMTNameProcessedFile %}
+                                <label>Delivered File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></label>
+                            {% endif %}
+                            {% if sync.msSyncWebRecord.rfwOMTClientResponseFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile) %}
+                                <br><label>Omt Response File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTClientResponseFile, 'isResponse': 3})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwOMTClientResponseFile %}
+                                <br><label>Omt Response File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% elseif sync.msSyncWebRecord.rfwOMTSyncType != constant('App\\Entity\\ReadFilesDataWeb::OMT_SYNC_TYPE_OMT_LEVEL') %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            {% if initialLoginFound == 0 and loop.index == loop.last %}
+                                {% set initialLoginFound = 1 %}
+                                <label style="color: blue;">Initial Export</label>
+                            {% else %}
+                                <label style="color: #252862;">LEVEL - OMT</label>
+                                <br><label class="syncToOMT"></label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msPushRecord and sync.msSyncWebRecord.rfwNameProcessedFile and 'theInitialOMTData' not in sync.msSyncWebRecord.rfwNameProcessedFile %}
+                                Curl Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                {% if sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_PENDING') %}
+                                    <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.omtCurlSendDate|date('m/d/Y H:i:s')}}</label>
+                                    <br><label style="color: #AA3333;">No Responded yet!</label>
+                                {% else %}
+                                    <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.omtCurlUpdatedDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.omtCurlResendCounter > 0 %}
+                                    <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendCounter}}</label>
+                                    <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                            {% elseif sync.msPushRecord and not sync.msSyncWebRecord.rfwNameProcessedFile and sync.msSyncWebRecord.rfwOMTNameProcessedFile %}
+                                Curl Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                {% if sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_PENDING') %}
+                                    <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.omtCurlSendDate|date('m/d/Y H:i:s')}}</label>
+                                    <br><label style="color: #AA3333;">No Responded yet!</label>
+                                {% else %}
+                                    <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.omtCurlUpdatedDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.omtCurlResendCounter > 0 %}
+                                    <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendCounter}}</label>
+                                    <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                            {% elseif sync.msPushRecord and sync.msSyncWebRecord.rfwNameProcessedFile and 'theInitialOMTData' in sync.msSyncWebRecord.rfwNameProcessedFile %}
+                                N/A
+                            {% else %}
+                                <label style="color: red;">No Associated Push!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                {% if sync.msSyncWebRecord.rfwOMTNameProcessedFile or (sync.msSyncWebRecord.rfwNameProcessedFile and 'theInitialOMTData' in sync.msSyncWebRecord.rfwNameProcessedFile) %}
+                                    <label style="color: green;">Completed</label>
+                                {% else %}
+                                    <label style="color: darkgoldenrod;">Closed</label>
+                                {% endif %}
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: olivedrab;">Processing Response...</label>
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                            {% if sync.msOMTStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msOMTHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedOMTForConsumeDateTwo|date('U') < 'now'|date_modify("-20 minute")|date('U') %}
+                                <br><label style="color: red;">Marked With Error!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncWebRecord.rfwOMTNameProcessedFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile) %}
+                                <label>Delivered File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTNameProcessedFile, 'isResponse': 2})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord and sync.msSyncWebRecord.rfwOMTNameProcessedFile %}
+                                <label>Delivered File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></label>
+                            {% elseif sync.msSyncWebRecord.rfwNameProcessedFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwNameProcessedFile) 
+                                and 'theInitialOMTData' in sync.msSyncWebRecord.rfwNameProcessedFile %}
+                                <label>Initial File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwNameProcessedFile, 'isResponse': 2})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord and sync.msSyncWebRecord.rfwNameProcessedFile and 'theInitialOMTData' in sync.msSyncWebRecord.rfwNameProcessedFile %}
+                                <label>Initial File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></label>
+                            {% else %}   
+                                {% if initialLoginFound == 0 and sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                    <label style="color: darkred;">No Sync Files Associated!</label>
+                                {% else %}
+                                    <label style="color: red;">No Sync Files Associated!</label>
+                                {% endif %}
+                            {% endif %}
+                            {% if sync.msSyncWebRecord.rfwOMTClientResponseFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile) %}
+                                <br><label>Omt Response File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTClientResponseFile, 'isResponse': 3})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwOMTClientResponseFile %}
+                                <br><label>Omt Response File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% elseif sync.msSyncWebRecord.rfwOMTNameProcessedFile 
+                        and 'import_from_omt_to_level' not in sync.msSyncWebRecord.rfwOMTNameProcessedFile 
+                            and sync.msSyncWebRecord.rfwOMTSyncType == constant('App\\Entity\\ReadFilesDataWeb::OMT_SYNC_TYPE_OMT_LEVEL') %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            {% if initialLoginFound == 0 and loop.index == loop.last %}
+                                {% set initialLoginFound = 1 %}
+                                <label style="color: blue;">Initial Import</label>
+                            {% else %}
+                                <label style="color: #252862;">OMT - LEVEL</label>
+                                <br><label class="syncFromOMT"></label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msPushRecord %}
+                                Curl Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                {% if sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_PENDING') %}
+                                    <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.omtCurlSendDate|date('m/d/Y H:i:s')}}</label>
+                                    <br><label style="color: #AA3333;">No Responded yet!</label>
+                                {% else %}
+                                    <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.omtCurlUpdatedDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.omtCurlResendCounter > 0 %}
+                                    <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendCounter}}</label>
+                                    <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                            {% else %}
+                                <label style="color: red;">No Associated Push!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                {% if sync.msSyncWebRecord.rfwOMTClientResponseFile %}
+                                    <label style="color: green;">Completed</label>
+                                {% else %}
+                                    <label style="color: darkgoldenrod;">Closed</label>
+                                {% endif %}
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: olivedrab;">Processing Response...</label>
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                            {% if sync.msOMTStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msOMTHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedOMTForConsumeDateTwo|date('U') < 'now'|date_modify("-20 minute")|date('U') %}
+                                <br><label style="color: red;">Marked With Error!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncWebRecord.rfwOMTNameProcessedFile and fileExists(level_directory_omt_data~sync.msLicense.alLicenseUsername~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile) %}
+                                <label>Recived File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTNameProcessedFile, 'isResponse': 2})}}" target="_blank">{{licenseOmtDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord and sync.msSyncWebRecord.rfwOMTNameProcessedFile %}
+                                <label>Recived File: <strong style="color: gray;">{{licenseOmtDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></label>
+                            {% else %}
+                                {% if initialLoginFound == 0 and sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                    <label style="color: darkred;">No Sync Files Associated!</label>
+                                {% else %}
+                                    <label style="color: red;">No Sync Files Associated!</label>
+                                {% endif %}
+                            {% endif %}
+                            {% if sync.msSyncWebRecord.rfwOMTClientResponseFile and fileExists(level_directory_omt_data~sync.msLicense.alLicenseUsername~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile) %}
+                                <br><label>Licensor Response File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTClientResponseFile, 'isResponse': 3})}}" target="_blank">{{licenseOmtDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwOMTClientResponseFile %}
+                                <br><label>Licensor Response File: <strong style="color: gray;">{{licenseOmtDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% elseif sync.msSyncWebRecord.rfwOMTSyncType == constant('App\\Entity\\ReadFilesDataWeb::OMT_SYNC_TYPE_OMT_LEVEL') %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            {% if initialLoginFound == 0 and loop.index == loop.last %}
+                                {% set initialLoginFound = 1 %}
+                                <label style="color: blue;">Initial Import</label>
+                            {% else %}
+                                <label style="color: #252862;">OMT - LEVEL</label>
+                                <br><label class="syncFromOMT"></label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            N/A
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                {% if initialLoginFound == 1 %}
+                                    <label style="color: green;">Completed</label>
+                                {% else %}
+                                    <label style="color: darkgoldenrod;">Closed</label>
+                                {% endif %}
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: olivedrab;">Processing Response...</label>
+                            {% elseif sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                            {% if sync.msOMTStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msOMTHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedOMTForConsumeDateTwo|date('U') < 'now'|date_modify("-20 minute")|date('U') %}
+                                <br><label style="color: red;">Marked With Error!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncWebRecord.rfwOMTNameProcessedFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile) %}
+                                <label>Delivered File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTNameProcessedFile, 'isResponse': 2})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord and sync.msSyncWebRecord.rfwOMTNameProcessedFile %}
+                                <label>Delivered File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTNameProcessedFile}}</strong></label>
+                            {% else %}
+                                {% if initialLoginFound == 0 and sync.msOMTStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                    <label style="color: darkred;">No Sync Files Associated!</label>
+                                {% else %}
+                                    <label style="color: red;">No Sync Files Associated!</label>
+                                {% endif %}
+                            {% endif %}
+                            {% if sync.msSyncWebRecord.rfwOMTClientResponseFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile) %}
+                                <br><label>Omt Response File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwOMTClientResponseFile, 'isResponse': 3})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwOMTClientResponseFile %}
+                                <br><label>Omt Response File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwOMTClientResponseFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                <td colspan="4">This license dont have any synchronization record yet!</td>
+            {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+        <label style="width: 99%; font-size: 17px; margin-left: 7px; margin-top: 3px; margin-bottom: 17px;" >This license dont have any synchronization record yet!</label>
+    {% endif %}
+</div>
+{% endspaceless %}

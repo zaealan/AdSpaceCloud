@@ -1,0 +1,24 @@
+<div id="instantMsgAlert" style="display: none" class="alertx1 alert-dismissablex1 alert-dangerx1">
+    <button class="closex1" type="button">x</button>
+    <h4>Notifications</h4>
+    <label id="msgInstant"></label>
+</div>
+{% for message in app.session.flashbag.get('msgError') %}
+<div class="alert alert-dismissable alert-danger">
+    <button data-dismiss="alert" class="close" type="button">x</button>
+    {% if loop.index == loop.first %}
+        <h4>Notifications</h4>
+    {% endif %}
+    {{ message|raw }}
+</div>
+{% endfor %}
+
+{% for message in app.session.flashbag.get('msgNotification') %}
+    <div class="alert alert-dismissable alert-success">
+        <button data-dismiss="alert" class="close" type="button">x</button>
+        {% if loop.index == loop.first %}
+            <h4>Notifications</h4>
+        {% endif %}
+        {{ message|raw }}
+    </div>
+{% endfor %}

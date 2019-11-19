@@ -1,0 +1,74 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'Dashboard'%}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 well">
+            <h1>Dashboard</h1>
+            {% include 'Default/messageNotification.html.twig'%}      
+
+            {% if is_granted('ROLE_SUPER_ADMIN') or (app.session is defined and app.session.get('activeModules') is not empty) %}
+                <div class="bs-example">
+                  <ul class="nav nav-pills menubig">
+                    {% for module in app.session.get('activeModules') %}
+                        {% if module == constant('App\\Entity\\Module::MODULE_LICENSOR_COMPANY') and (is_granted('ROLE_ADMINISTRATOR') or is_granted('ROLE_SUPER_ADMIN'))%}
+                            <li class="item-dashboard">
+                                <a href="{{path('adpoint_companies')}}" xxx='aaa'>
+                                    <img src="{{asset('/images/resell.png')}}" height="24px"/> Resellers
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if module == constant('App\\Entity\\Module::MODULE_LICENSOR_ACCOUNT') and not (is_granted('ROLE_REPORT_VIEWER')) %}
+                            <li class="item-dashboard"><a href="{{path('adpoint_accounts')}}"><img src="{{asset('/images/acount.png')}}" height="24px"/> Accounts</a></li>
+                        {% endif %}
+                        
+                        {#{% if (is_granted('ROLE_SUPER_ADMIN') and loop.index == loop.first) or (module == constant('App\\Entity\\Module::MODULE_LICENSOR_DATA_BASES_MANAGEMENT') and loop.index == loop.first) %}
+                            <li class="item-dashboard">
+                                <a href="{{path('index_management')}}"><img src="{{asset('/images/dbmana.png')}}" height="24px"/> Management</a>
+                            </li>
+                        {% endif %}#}
+                        
+                        {#{% if (module == constant('App\\Entity\\Module::MODULE_LICENSOR_REPORTS') or is_granted('ROLE_SUPER_ADMIN')) and loop.index == loop.first %}
+                            <li class="item-dashboard">
+                                <a href="{{path('adpoint_reports')}}">
+                                    <img src="{{asset('/images/repo.png')}}" height="24px"/>Reports</a>
+                            </li>
+                        {% endif %}#}
+
+                    {% else %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <li class="item-dashboard"><a href="{{path('adpoint_reseller_companies')}}"><img src="{{asset('/images/usersManagement.png')}}" width="25px" height="24px"/> Aplication Managment</a></li>
+                            <li class="item-dashboard"><a href="{{path('adpoint_companies')}}" xxx='aaa'><img src="{{asset('/images/company.png')}}" width="25px" height="19px"/> Resellers</a></li>
+                            <li class="item-dashboard"><a href="{{path('adpoint_accounts')}}"><img src="{{asset('/images/acount.png')}}" width="25px" height="24px"/> Accounts</a></li>
+                            <li class="item-dashboard"><a href="{{path('adpoint_reports')}}"><img src="{{asset('/images/repo.png')}}" width="25px" height="24px"/> Reports</a></li>
+                            <li class="item-dashboard"><a href="{{path('index_management')}}"><img src="{{asset('/images/dbmanagment.png')}}" width="25px" height="24px"/> Management</a></li>
+                        {% endif %}
+                    {% endfor %}
+                  </ul>
+                </div>
+            {% else %}
+                We're sorry, your user account doesn't have enabled all its modules, please ask to your administrator to enable them.
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}  
+    
+    $(document).ready(function($) {
+        var window_with = $(window).width();
+        var window_height = $(window).height();
+        if(window_with > 967) {
+            $("#tooglePanelLeft").trigger('click');
+        }else{}
+    });
+    
+    $('.fancyChooseAuction').fancybox( {
+        width       : '600px',
+        height      : '370px',
+        autoSize    : false
+    });
+   
+{% endblock %}
+
+{% block functions_javascript %}
+{% endblock %}

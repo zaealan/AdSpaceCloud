@@ -1,0 +1,186 @@
+{% extends 'Default/mainFancy.html.twig' %}
+{% block title 'Configuration Menu Fix And Validate Address' %}
+{% set count = 1 %}
+{% set count2 = 1 %}
+{% set countSpan = 0 %}
+{% block content %}
+<h1 style="text-align: center;margin-left: 20px; margin-top: -10px; margin-bottom: 15px;">Configuration Menu Fix And Validate Address</h1>
+
+<div>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Validate Menu Fix And Address</a></li>
+    <li><a data-toggle="tab" href="#menu1">Enable Or Disable Category Fix Of "Open My Tab"</a></li>
+    <div id="notify_msg"> </div>
+</ul> 
+</div>
+<div class="tab-content"> 
+<div id="home"  class="tab-pane fade in active">
+    <table class="table table-bordered tablesorter records_list">
+        <thead>
+            <tr class="valign halign">
+                {% for cat in catDefaultGroupBy %}
+                    <th width="10%"> {{ cat.categoryName }} </th>
+                {% endfor %}
+                <th width="10%">Address</th>
+            </tr>
+        </thead>
+        <tbody class="halign">
+            <tr>
+                {% for cat in catDefaultGroupBy %}
+                    <td width="10%">
+                        <div class="container-personalizer">
+                            <ul class="list">
+                                {% set count2 = count2 + 1 %}  
+                                <li class="list__item">
+                                    <input type="radio" class="radio-btn {{cat.idCategoria}}" categoryId="{{cat.idCategoria}}" singleStates="0" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="{{cat.catDefault}}" {% if cat.catEnabled == true %} checked {% endif %}  value="1" id="{{count2}}-opt2" />
+                                    <label for="{{count2}}-opt2" class="label">Active</label>
+                                </li>  
+                                {% set count2 = count2 + 1 %}                        
+                                <li class="list__item">
+                                    <input type="radio" class="radio-btn {{cat.idCategoria}}" categoryId="{{cat.idCategoria}}" singleStates="0" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="{{cat.catDefault}}" {% if cat.catEnabled == false %} checked {% endif %}  value="0" id="{{count2}}-opt2" />
+                                    <label for="{{count2}}-opt2" class="label">Unactive</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                {% endfor %}
+                {# <td><button class="btn btn-primary pull-center pizza" singleStates="0" type="button" id="Pizza" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="Pizza">Validate Pizza</button></td>
+                <td><button class="btn btn-primary pull-center gift_card" singleStates="0" type="button" id="Gift_Card" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="Gift_Card">Validate Gift Card</button></td> #}
+                <td><button class="btn btn-primary pull-center address" type="button" id="address" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="address" name="address">Fix Address Format</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div id="menu1" class="tab-pane fade">
+{% if countCat > 0 %}
+    <table class="table table-bordered tablesorter records_list">
+        <thead>
+            <tr class="valign halign">
+                <th width="10%">Brand</th>
+                {% for cat in catDefaultGroupBy %}
+                    <th width="10%"> {{ cat.categoryName }} </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody class="halign">
+            {% for brand in brands %}
+                <tr>
+                    <td width="10%"> {{ brand.btm_name }} </td>
+                    {% for category in categoryDefault %}
+                        {% if brand.btm_id == category.brandId %}
+                            <td width="10%" >
+                                <div class="container-personalizer">
+                                    <ul class="list text-left">
+                                        {% set count = count + 1 %}  
+                                        <li class="list__item">
+                                            <input type="radio" class="radio-btn {{category.brandId}}" singleStates="1" brandName="{{category.brandName}}" categoryId="{{category.idCategoria}}" idBrandMenu="{{ category.brandIdRelation }}" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="{{category.brandIdRelation}}" nameCat="{{category.catDefault}}" {% if category.brandStatus == true %} checked {% endif %}  value="1" id="{{count}}-opt" />
+                                            <label for="{{count}}-opt" class="label">Active</label>
+                                        </li>  
+                                        {% set count = count + 1 %}                        
+                                        <li class="list__item">
+                                            <input type="radio" class="radio-btn {{category.brandId}}" singleStates="1" brandName="{{category.brandName}}" categoryId="{{category.idCategoria}}" idBrandMenu="{{ category.brandIdRelation }}" data_path="{{ path('menu_fix_for_license',{'id':entity.id}) }}" name="{{category.brandIdRelation}}" nameCat="{{category.catDefault}}" {% if category.brandStatus == false %} checked {% endif %}  value="0" id="{{count}}-opt" />
+                                            <label for="{{count}}-opt" class="label">Unactive</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        {% endif %}         
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div> There are no records to show. please validate fixed menus first. </div>
+{% endif %}
+</div>   
+</div>  
+{% endblock %}
+
+
+{% block scripts %} 
+
+    var msg="0";
+
+{% for category in categoryDefault %}
+    $('.' + '{{ category.brandId }}').click(function () {
+            var clickedU = $(this);
+            var pathUrl = clickedU.attr('data_path');
+            var typeValidate = clickedU.attr('nameCat');
+            var idBrandMenu = clickedU.attr('idBrandMenu');
+            var catStatus = clickedU.attr('value');
+            var categoryId = clickedU.attr('categoryId');
+            var singleStates = clickedU.attr('singleStates');
+            var brandName = clickedU.attr('brandName');
+            $("#notify_msg").text("");
+            $('#notify_msg').text("").css("padding-top","11px").css("font-size", "12px").css("text-align","right").addClass("fa fa-spin fa-spinner").fadeIn("slow");;
+            validateFixMenuOrAddress(clickedU, pathUrl, typeValidate, catStatus, idBrandMenu, singleStates, categoryId, brandName);
+    })
+{% endfor %}
+
+{% for category in catDefaultGroupBy %}
+$('.' + '{{ category.idCategoria }}').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var typeValidate = clickedU.attr('name');
+        var singleStates = clickedU.attr('singleStates');
+        var catStatus = clickedU.attr('value'); 
+        var categoryId = clickedU.attr('categoryId');
+        $('#notify_msg').text("").css("float","right").css("font-size", "12px").css("color", "green").css("padding-top","11px").addClass("fa fa-spin fa-spinner").fadeIn("slow");;
+        validateFixMenuOrAddress(clickedU, pathUrl, typeValidate, catStatus, 0, singleStates, categoryId, null);
+    })
+{% endfor %}
+
+$('.address').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var typeValidate = clickedU.attr('name');
+        $('#notify_msg').text("").css("float","right").css("font-size", "12px").css("color", "green").css("padding-top","11px").addClass("fa fa-spin fa-spinner").fadeIn("slow");;
+        validateFixMenuOrAddress(clickedU, pathUrl, typeValidate, null, 0, null, null, null);
+    })
+
+{% endblock %}
+
+
+
+{% block functions_javascript %}
+
+    function validateFixMenuOrAddress (clickedU, pathUrl, typeValidate, catStatus, idBrandMenu, singleStates, categoryId, brandName){
+        $("#notify_msg").fadeIn("slow");
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            dataType: 'json',
+            data: {
+                typeValidate: typeValidate,
+                catStatus:catStatus,
+                idBrandMenu:idBrandMenu,
+                singleStates:singleStates,
+                categoryId:categoryId,
+                brandName:brandName
+            },
+            cache: false,
+            success: function (r) {    
+                $('#notify_msg').text("").removeClass("fa fa-spin fa-spinner").fadeIn("slow");
+
+                if (r.result == "__OK__") {
+                    $("#notify_msg").text(r.msg).css("font-size", "12px").css("color", "Green").css("padding-top","11px").css("text-align","right");
+                }else if (r.result == "__KO__") {
+                    $("#notify_msg").text(r.msg).css("font-size", "12px").css("color", "red").css("padding-top","11px").css("text-align","right");
+                }
+                timeToClose = 0;
+                setInterval(function() {
+                timeToClose++;
+                
+                if (timeToClose == 2) {
+                    $("#notify_msg").fadeOut("slow");
+                }
+
+                },3100);
+            }, 
+            error: function (r) { 
+                console.log(r.msg);
+            } 
+        }); 
+    }
+{% endblock %}

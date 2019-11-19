@@ -1,3 +1,37 @@
+_wdt:
+    resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"
+    prefix:   /_wdt
+_profiler:
+    resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
+    prefix:   /_profiler
+
+adspace_login_check:
+    path: /cloud/login_check
+
+adspace_logout:
+    path: /logout
+
 #index:
 #    path: /
-#    controller: App\Controller\DefaultController::index
+#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+#    
+#index2:
+#    path: /pepito
+#    defaults: { _controller: 'App\Controller\DefaultController::index2' }
+
+#level_App:
+#    resource: 'routes/routing.yaml'
+#    prefix:   /    
+#    
+#level_licensor_web_service:
+#    resource: 'routes/ws-routing.yaml'
+#    prefix:   /ws
+#    
+#level_licensor_login:
+#    path:    /licensor/login
+#    defaults: { _controller: 'App\Controller\DefaultController::login' }
+#    
+#level_licensor_logout:
+#    path: /logout
+#
+

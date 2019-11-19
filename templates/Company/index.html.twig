@@ -1,0 +1,144 @@
+{% extends 'Default/main.html.twig' %}
+{% import 'Default/filters.html.twig' as filters  %}
+{% block title 'Reseller'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Resellers List</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}">
+                            <i class="fa fa-home"></i> Dashboard</a></li>
+                    <li class="active"><i class="fa fa-list"></i> Resellers List</li>
+                    <a class="btn btn-primary pull-right" href="{{ path('adpoint_company_new') }}">New Reseller</a>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+
+            <div class="col-lg-12">
+                <form method="post" action="{{ path('adpoint_companies') }}">
+                    <div class="jumbotron sinpad">
+                        <div class="containerSearchFields">
+                         {{ form_widget(form.coCompanyName,{'attr':{'placeholder':'Reseller Name', 'class':'form-control title-case pull-left input-form', 'value':search.coCompanyName|default('')} }) }}     
+                         {{ form_widget(form.coCompanyIdentification,{'attr':{'placeholder':'Reseller Id', 'class':'form-control title-case pull-left input-form', 'value':search.coCompanyIdentification|default('')} }) }}      
+                         {{ form_widget(form.coStatus,{'attr':{'class':'form-control pull-left input-form', 'value':search.coStatus|default('')} }) }}
+                        </div>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
+                     </div>
+                  {{ form_rest(form._token) }}
+                 </form>
+                 <br>
+            </div>
+            
+            {#{{ filters.textItemsOnList(paginator, 'Resellers')}}
+            {{ filters.buttonsItemsPerPage(paginator, 'adpoint_companies', params, orderBy.url)}}#}
+            
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                    <thead>
+                        <tr>
+{#                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}#}
+                            {% set itemsPage = '&itemsPerPage='~itemsPerPage %}
+                            <th><a style="color: #333;" href="{{ path('adpoint_companies', { 'order_by_company_name': orderBy.order_by_company_name.order }) }}{{ params~itemsPage }}">Reseller Name</a>&nbsp; {{ orderBy.order_by_company_name.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">City (State)</th>
+                            <th><a style="color: #333;" href="{{ path('adpoint_companies', { 'order_by_company_identification': orderBy.order_by_company_identification.order }) }}{{ params~itemsPage }}">Reseller Id</a>&nbsp; {{ orderBy.order_by_company_identification.htmlImage|default('')|raw }}</th>
+                            <th><a style="color: #333;" href="{{ path('adpoint_companies', { 'order_by_company_status': orderBy.order_by_company_status.order }) }}{{ params~itemsPage }}">Status</a>&nbsp; {{ orderBy.order_by_company_status.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.coCompanyName|title }}</td>
+                                <td>{{ entity.city }} ({{ entity.city.ciState }})</td>
+                                <td>{{ entity.coCompanyIdentification }}</td>
+                                <td><label class='txtCompanyStatus'>{{ entity.getTextStatus }}</label></td>
+                                <!--Actions -->
+                                <td>
+                                    <!--SuperUser -->
+                                    {% if constant('App\\Entity\\Module::MODULE_LICENSOR_COMPANY_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    {#<a title="Users Managment" href="{{path('super_managment_companies_users_list',{ 'companyId':entity.id })}}">#}
+                                    <a title="Users Managment" href="{{path('adpoint_managment_company_users_list', {'companyId':entity.id })}}">
+                                            <img src="{{ asset('/images/users.png ')}}" 
+                                                 width="30" height="26" alt="Users Managment" title="Users Managment"/></a>
+                                    <a class="editUser" href="{{path('adpoint_company_edit', { 'id': entity.id })}}">
+                                        <img src="{{ asset('/images/editts.png') }}" alt="Edit Company" title="Edit Company"/>
+                                    </a>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <a title="Edit Privileges" href="{{path('adpoint_companies_privileges_list', {'companyId':entity.id })}}">
+                                            <img src="{{ asset('/images/lock.png ')}}" width="30" height="30" alt="Edit Privileges" title="Edit Privileges"/>
+                                        </a>&nbsp;
+                                    {% endif %}
+
+                                    {% if constant('App\\Entity\\Module::MODULE_LICENSOR_COMPANY_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    {% set imgSwitch = 'switchOff' %}
+                                        {% if entity.coStatus == 1 %}
+                                            {% set imgSwitch = 'switchOn' %}
+                                        {% endif%}
+                                        <a class="deleteCompany imgSwitch {{ imgSwitch }} " href="javascript:" 
+                                           data_path="{{ path('adpoint_company_changeStatus', {'id': entity.id}) }}"
+                                           currentStatus="{{ entity.coStatus }}"
+                                           company_name="{{ entity.coCompanyName|title }}">
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="10">No Resellers To List</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+{#                {{ filters.constructPaginator(paginator, 'company', params, orderBy.url, 'Resellers')}}#}
+            </div>
+        </div>
+    {% endblock %}
+
+{% block scripts %}
+    
+    $('.deleteCompany').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameCompany = clickedU.attr('company_name');
+        var newStatus = (clickedU.attr('currentStatus') == 1) ? 0 : 1;
+        var txtStatus = "<strong> Activate </strong>";
+        if(newStatus === 0){
+            txtStatus = "<strong> Deactivate </strong>";
+        }
+        
+        bootbox.confirm('Do you want to '+ txtStatus+' <strong>' + nameCompany + '</strong> reseller?',
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+
+                    data: {
+                        newStatus : newStatus
+                    },
+                    cache: false,
+                    success: function (r) {
+                        if (r.result == '__OK__') {
+                            clickedU.closest('tr')
+                                .find('.txtCompanyStatus').text(r.txtNewCompanyStatus);
+                            $(clickedU).attr('currentStatus', newStatus);
+                            if(newStatus == 0) {
+                                $(clickedU).removeClass('switchOn').addClass('switchOff');
+                            } else {
+                                $(clickedU).removeClass('switchOff').addClass('switchOn');
+                            }
+                        }
+                        else {
+                            bootbox.alert(r.msg)
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.alert(r.msg)
+                    }
+                });
+            }
+        });
+    });
+
+{% endblock %}
+

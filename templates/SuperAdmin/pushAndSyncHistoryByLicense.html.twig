@@ -1,0 +1,328 @@
+{% spaceless %}
+<div>
+    <label style="font-weight: bold; font-size: 22px;">Synchronization History</label>
+    {% if licenseSyncs is defined and licenseSyncs|length > 0 %}
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%" style="text-align: center">Sync Type</th>
+                <th width="13%" style="text-align: center">Asosiated Push</th>
+                <th width="7%" style="text-align: center">Sync Status</th>
+                <th width="70%" style="text-align: center">Asosiated Files</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set initialLoginFound = 0 %}
+            {% for sync in licenseSyncs %}
+                {% if sync.msType == constant('App\\Entity\\MasterSync::MASTER_SYNC_TYPE_DOWUP') %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            <label style="color: #2b542c;">Down - Up</label>
+                            <br><label class="syncUp"></label>
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msPushRecord %}
+                                Push Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                {% if sync.msPushRecord.pushStatus == constant('App\\Entity\\PushSent::STATUS_PUSH_PENDING') %}
+                                    <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.sentDate|date('m/d/Y H:i:s')}}</label>
+                                    <br><label style="color: #AA3333;">No Responded yet!</label>
+                                {% else %}
+                                    <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.respondDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.pushToResend > 0 %}
+                                    <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.pushToResend}}</label>
+                                    <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.resendDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                            {% else %}
+                                <label style="color: red;">No Associated Push!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: green;">Completed</label>
+                            {% elseif sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                            {% if sync.msStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') 
+                                    and sync.msHasPersistentError 
+                                        and sync.msSyncRecord.rfDateUpload|date('U') < 'now'|date_modify("-10 minute")|date('U') %}
+                                <br><label style="color: red;">Marked With Error!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncRecord.rfNameFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncRecord.rfNameFile) %}
+{#                                <label>Uploaded File: <strong><a href="{{licenseDirURL~'/'~sync.msSyncRecord.rfNameFile}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncRecord.rfNameFile}}</strong></a></label>#}
+                                <label>Uploaded File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncRecord.rfNameFile, 'isResponse': 1})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncRecord.rfNameFile}}</strong></a></label>
+                            {% elseif sync.msSyncRecord.rfNameFile %}
+                                <label>Uploaded File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncRecord.rfNameFile}}</strong></label>
+                            {% endif %}
+                            {% if sync.msSyncRecord.rfDeliverNameFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncRecord.rfDeliverNameFile) %}
+{#                                <br><label>Delivered File: <strong><a href="{{licenseDirURL~'/'~sync.msSyncRecord.rfDeliverNameFile}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncRecord.rfDeliverNameFile}}</strong></a></label>#}
+                                <br><label>Delivered File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncRecord.rfDeliverNameFile, 'isResponse': 1})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncRecord.rfDeliverNameFile}}</strong></a></label>
+                            {% elseif sync.msSyncRecord.rfDeliverNameFile %}
+                                <br><label>Delivered File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncRecord.rfDeliverNameFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% elseif sync.msType == constant('App\\Entity\\MasterSync::MASTER_SYNC_TYPE_UPDOWN') and sync.msSyncWebRecord.rfwNameProcessedFile and 'theInitialData' not in sync.msSyncWebRecord.rfwNameProcessedFile %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            <label style="color: #252862;">Up - Down</label>
+                            <br><label class="syncDown"></label>
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msPushRecord %}
+                                Push Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                {% if sync.msPushRecord.pushStatus == constant('App\\Entity\\PushSent::STATUS_PUSH_PENDING') %}
+                                    <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.sentDate|date('m/d/Y H:i:s')}}</label>
+                                    <br><label style="color: #AA3333;">No Responded yet!</label>
+                                {% else %}
+                                    <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.respondDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                                {% if sync.msPushRecord.pushToResend > 0 %}
+                                    <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.pushToResend}}</label>
+                                    <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.resendDate|date('m/d/Y H:i:s')}}</label>
+                                {% endif %}
+                            {% else %}
+                                <label style="color: red;">No Associated Push!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                <label style="color: green;">Completed</label>
+                            {% elseif sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: olivedrab;">Processing Response...</label>
+                                {% if sync.msStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedForConsumeDateTwo|date('U') < 'now'|date_modify("-10 minute")|date('U') %}
+                                    <br><label style="color: red;">Marked With Error!</label>
+                                {% endif %}
+                            {% elseif sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                                {% if sync.msStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedForConsumeDateOne|date('U') < 'now'|date_modify("-10 minute")|date('U') %}
+                                    <br><label style="color: red;">Marked With Error!</label>
+                                {% elseif sync.msPushRecord.pushToResend >= 3 or 
+                                    (sync.msPushRecord.pushStatus == constant('App\\Entity\\PushSent::STATUS_PUSH_READED')
+                                        and sync.msDateSyncAsk < date('-'~hours_until_resync~'hours')) %}
+                                    <br><br><br><br>
+                                    <label style="color: #252862; margin-top: 5px;">Retry Records?</label>
+                                    <br>
+                                    <a  id="retrySync"
+                                        class="retrySync"
+                                        href="javascript:"
+                                        data_path="{{ path('reset_sync_to_resync', {'id':sync.msSyncWebRecord.id}) }}"
+                                        data_name="{{sync.msSyncWebRecord.rfwLicenseId.alLicenseUsername}}"
+                                        data_path2='{{ path('level_licensor_send_ping_request') }}'
+                                        data_path_sync="{{ path('accountlicense_sync_up_down', {'id':sync.msSyncWebRecord.rfwLicenseId.id}) }}"
+                                        data_path_second_sync="{{ path('level_web_manual_websync_to_deliver', {'id':'__DATA__'}) }}"
+                                        license_uid='{{sync.msSyncWebRecord.rfwLicenseId.deviceUid}}' 
+                                        license_nick='{{sync.msSyncWebRecord.rfwLicenseId.alLicenseUsername}}'
+                                        license_name="{{sync.msSyncWebRecord.rfwLicenseId.alRestaurantName}}"
+                                        title="Retry Records?" alt="Retry Records?">
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncWebRecord.rfwNameProcessedFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwNameProcessedFile) %}
+{#                                <label>Delivered File: <strong><a href="{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></a></label>#}
+                                <label>Delivered File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwNameProcessedFile, 'isResponse': 0})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwNameProcessedFile %}
+                                <label>Delivered File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></label>
+                            {% endif %}
+                            {% if sync.msSyncWebRecord.rfwClientResponseFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwClientResponseFile) %}
+{#                                <br><label>Client Response File: <strong><a href="{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}</strong></a></label>#}
+                                <br><label>Client Response File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwClientResponseFile, 'isResponse': 1})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwClientResponseFile %}
+                                <br><label>Client Response File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% elseif sync.msType == constant('App\\Entity\\MasterSync::MASTER_SYNC_TYPE_UPDOWN') %}
+                    <tr>    
+                        <td style="text-align: center;">
+                            {% if initialLoginFound == 0 and loop.index == loop.last %}
+                                {% set initialLoginFound = 1 %}
+                                <label style="color: blue;">Initial Login</label>
+                            {% else %}
+                                <label style="color: #252862;">Up - Down</label>
+                                <br><label class="syncDown"></label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if initialLoginFound == 0
+                                    and sync.msPushRecord and sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_FINISHED')
+                                    and sync.msSyncWebRecord and sync.msSyncWebRecord.rfwNameProcessedFile is  null
+                                    and sync.msSyncWebRecord.rfwOMTNameProcessedFile is defined and sync.msSyncWebRecord.rfwOMTNameProcessedFile != null
+                                    and sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                {% if sync.msPushRecord %}
+                                    Push Code: <label style="color: #044;">{{sync.msPushRecord.verificationCode}}</label>
+                                        {% if sync.msPushRecord.pushStatus == constant('App\\Entity\\PushSent::STATUS_PUSH_PENDING') %}
+                                            <br>Send At: <label style="color: #207050;">{{sync.msPushRecord.sentDate|date('m/d/Y H:i:s')}}</label>
+                                            <br><label style="color: #AA3333;">No Responded yet!</label>
+                                        {% else %}
+                                            <br>Responded At: <label style="color: #208050;">{{sync.msPushRecord.omtCurlUpdatedDate|date('m/d/Y H:i:s')}}</label>
+                                        {% endif %}
+                                        {% if sync.msPushRecord.omtCurlResendCounter > 0 %}
+                                            <br>Resend Times: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendCounter}}</label>
+                                            <br>Last Resend At: <label style="color: #985f0d;">{{sync.msPushRecord.omtCurlResendDate|date('m/d/Y H:i:s')}}</label>
+                                        {% endif %}
+                                {% else %}
+                                    <label style="color: red;">No Associated Push!</label>
+                                {% endif %}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                {% if initialLoginFound == 1 %}
+                                    <label style="color: green;">Completed</label>
+                                {% elseif initialLoginFound == 0 
+                                    and sync.msSyncWebRecord and sync.msSyncWebRecord.rfwNameProcessedFile is  null
+                                    and sync.msSyncWebRecord.rfwOMTNameProcessedFile is defined 
+                                    and sync.msSyncWebRecord.rfwOMTNameProcessedFile != null %}
+                                        {% if sync.msPushRecord and sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_FINISHED')   %}
+                                            <label style="color: #00008B;">Completed</label>
+                                        {% elseif  sync.msPushRecord and sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_RESPONDED') %}
+                                            <label style="color: #483D8B;">Processing Response...</label>
+                                        {% elseif  sync.msPushRecord and sync.msPushRecord.omtCurlStatus == constant('App\\Entity\\PushSent::STATUS_CURL_PENDING') %}
+                                            <label style="color: #6A5ACD;">Processing...</label>
+                                        {% endif %}
+                                {% else %}
+                                    <label style="color: darkgoldenrod;">Closed</label>
+                                {% endif %}
+                            {% elseif sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                                <label style="color: olivedrab;">Processing Response...</label>
+                            {% elseif sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                                <label style="color: olive;">Processing...</label>
+                            {% else %}
+                                <label style="color: goldenrod;">Initialised...</label>
+                            {% endif %}
+                            {% if sync.msStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                    and sync.msHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedForConsumeDateTwo|date('U') < 'now'|date_modify("-20 minute")|date('U') %}
+                                <br><label style="color: red;">Marked With Error!</label>
+                            {% elseif sync.msOMTStatus != constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') 
+                                        and sync.msOMTHasPersistentError 
+                                        and sync.msSyncWebRecord.pickedOMTForConsumeDateTwo|date('U') < 'now'|date_modify("-20 minute")|date('U') %}
+                                <br><label style="color: red;">Marked With Error!</label>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center">
+                            {% if sync.msSyncWebRecord.rfwNameProcessedFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwNameProcessedFile) %}
+{#                                <label>Delivered File: <strong><a href="{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></a></label>#}
+                                <label>Delivered File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwNameProcessedFile, 'isResponse': 0})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></a></label>
+                            {% elseif sync.msSyncRecord and sync.msSyncRecord.rfNameFile %}
+                                <label>Delivered File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwNameProcessedFile}}</strong></label>
+                            {% else %}
+                                {% if initialLoginFound == 0 
+                                    and sync.msSyncWebRecord and sync.msSyncWebRecord.rfwNameProcessedFile is  null
+                                    and sync.msSyncWebRecord.rfwOMTNameProcessedFile is defined and sync.msSyncWebRecord.rfwOMTNameProcessedFile != null
+                                    and sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                    <label style="color: indigo;">Direct Synchronization to OMT</label>
+                                {% elseif initialLoginFound == 0 and sync.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                                    <label style="color: darkred;">No Sync Files Associated!</label>
+                                {% else %}
+                                    <label style="color: red;">No Sync Files Associated!</label>
+                                {% endif %}
+                            {% endif %}
+                            {% if sync.msSyncWebRecord.rfwClientResponseFile and fileExists(level_directory_android_data~(sync.msLicense.alAccountLicense~'/'~sync.msLicense.alLicenseUsername)|replace({' ':'_'})~'/'~sync.msSyncWebRecord.rfwClientResponseFile) %}
+{#                                <br><label>Client Response File: <strong><a href="{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}</strong></a></label>#}
+                                <br><label>Client Response File: <strong><a href="{{path('sync_file_viewer', {'masterSyncId': sync.id, 'fileName': sync.msSyncWebRecord.rfwClientResponseFile, 'isResponse': 1})}}" target="_blank">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}</strong></a></label>
+                            {% elseif sync.msSyncWebRecord.rfwClientResponseFile %}
+                                <br><label>Client Response File: <strong style="color: gray;">{{licenseDirURL~'/'~sync.msSyncWebRecord.rfwClientResponseFile}}</strong></label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                <td colspan="4">This license dont have any synchronization record yet!</td>
+            {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+        <label style="width: 99%; font-size: 17px; margin-left: 7px; margin-top: 3px; margin-bottom: 17px;" >This license dont have any synchronization record yet!</label>
+    {% endif %}
+    
+    <label style="font-weight: bold; font-size: 22px;">Push History</label>
+    {% if licensePushes is defined and licensePushes|length > 0 %}
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="20%" style="text-align: center">Push Type</th>    
+                <th width="50%" style="text-align: center">Push Code <strong>/</strong> Status</th>
+                <th width="25%" style="text-align: center">Forwarded?</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for push in licensePushes %}
+                <tr>    
+                    <td style="text-align: center">
+                        {% if push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_APK_UPDATE') %}
+                            <label style="color: indigo;">APK Update</label>
+                        {% elseif push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_LICENSE_DISABLED') %}
+                            <label style="color: grey;">License Disabled</label>
+                        {% elseif push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_LICENSE_ENABLED') %}
+                            <label style="color: darkcyan;">License Enabled</label>
+                        {% elseif push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_LICENSE_RESET_UID') %}
+                            <label style="color: olive;">Reset License</label>
+                        {% elseif push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_VALIDATE_ACCESSCODE') %}
+                            <label style="color: yellowgreen;">Access Code Validation</label>
+                        {% elseif push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_UPLOAD_S3_BACKUP') %}
+                            <label style="color: blue;">Full S3 Request</label>
+                        {% elseif push.pushType == constant('App\\Entity\\PushSent::PUSH_TYPE_PING_TO_ANDROID') %}
+                            <label style="color: forestgreen;">Ping Request</label>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center">
+                        Push Code: <label style="color: #044;">{{push.verificationCode}}</label>
+                        {% if push.pushStatus == constant('App\\Entity\\PushSent::STATUS_PUSH_PENDING') %}
+                            <br>Send At: <label style="color: #207050;">{{push.sentDate|date('m/d/Y H:i:s')}}</label>
+                            <br><label style="color: #AA3333;">No Responded yet!</label>
+                        {% else %}
+                            <br>Responded At: <label style="color: #208050;">{{push.respondDate|date('m/d/Y H:i:s')}}</label>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center">
+                        {% set wasResend = 0 %}
+                        {% if push.pushToResend > 0 %}
+                            {% set wasResend = 1 %}
+                            Resend Times: <label style="color: #985f0d;">{{push.pushToResend}}</label>
+                            <br>Last Resend At: <label style="color: #985f0d;">{{push.resendDate|date('m/d/Y H:i:s')}}</label> 
+                        {% endif %}
+                        {% if push.pushStatus == constant('App\\Entity\\PushSent::STATUS_PUSH_PENDING') %}
+                            {% if wasResend == 0 %}
+                                <label style="color: #008200; margin-top: -5px !important;">Not Forwarded</label>
+                            {% endif %}
+                            <br>
+                            <label style="color: #252862; margin-bottom: -5px;">Retry Manually?</label>
+                            <br>
+                            <a class="pushManually"
+                                href="javascript:"
+                                data_path="{{ path('resend_push_manually', {'id':push.id}) }}"
+                                data_name="{{push.psLicense.alLicenseUsername}}"
+                                license_name="{{push.psLicense.alRestaurantName}}"
+                                title="Retry Manually?" alt="Retry Manually?">
+                            </a>
+                        {% elseif wasResend == 0 %}
+                            <br><label style="color: #008200;">Not Forwarded</label>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <td colspan="3">This license dosent have any asociated push record yet!</td>
+            {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+        <label style="width: 99%; font-size: 17px; margin-left: 7px; margin-top: 3px; margin-bottom: 17px;" >This license dosent have any asociated push record yet!</label>
+    {% endif %}
+</div>
+{% endspaceless %}

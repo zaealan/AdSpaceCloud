@@ -1,0 +1,1 @@
+Creating and using -> /var/www/html/public/uploads/android/data/readFilesDataWebConsumerCommand0.txt at '01/20/2019 22:24:26'Starting!Casi tryAntes del sleep searching for: 8Consuming...

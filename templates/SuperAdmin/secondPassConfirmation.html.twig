@@ -1,0 +1,87 @@
+{% extends 'Default/mainFancy.html.twig' %}
+{% block title 'Confirm Second Password' %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h2 style="margin-top: 0px;">Secure Area</h2>
+        <form id="form-validate-password" method="post">
+                <div class="form-group">
+                    {{form_label(form.secondPass,'Please type the second password:')}}  
+                    {{form_widget(form.secondPass,{ 'attr': {'class': 'form-control', 'tabindex':'1'} })}}
+                    <div class="help-block alert-danger">
+                        {{form_errors(form.secondPass)}}
+                    </div>
+                </div>
+                
+            {{ form_widget(form._token) }}
+            
+            <p class="containerMessage"></p>
+            
+            <div class="form-group">
+                <a class="btn btn-danger pull-right" id="cancel">Cancel</a>
+                <button class="btn btn-primary pull-right" id="validate-password" style="margin-right: 5px;">Continue</button>                
+            </div>
+        </form>  
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}     
+
+    {# Codigo para enviar el formulario mediante un ajax #}
+    $("#form-validate-password").submit(function(e){
+        e.preventDefault();    
+       
+            $("#cancel").toggle();
+            $("#validate-password").text('Please wait..');
+            $("#validate-password").attr('disabled','disabled');
+            
+            $.ajax({
+                type: 'POST',
+                url: "{{path('level_license_second_pass_validation')}}",
+                dataType: 'json',
+                data:$("#form-validate-password").serialize(),
+                success: function(resp) 
+                {
+                    if(resp.result=='__OK__')
+                    {         
+                        $(".containerMessage").html(resp.data.msg);
+                        $(".containerMessage").css('color','green');
+                        window.location.href = "{{path}}";
+                        
+                        {% if closeFancy %}
+                            closeFancyOnTime();
+                        {% endif %}
+                    }
+                    else
+                    {
+                        $(".containerMessage").html(resp.data.msg);
+                        $(".containerMessage").css('color','red');
+                        $("#cancel").toggle();
+                        $("#validate-password").text('Continue');
+                        $("#validate-password").removeAttr('disabled');
+                    }
+                },
+                error: function(resp)
+                {
+                    $(".containerMessage").html('Unknown error, try again');
+                    $(".containerMessage").css('color','red');
+                    $("#cancel").toggle();
+                    $("#validate-password").text('Continue');
+                    $("#validate-password").removeAttr('disabled');
+                }
+            });
+    });
+    
+    $("#close").click(function(){
+        window.parent.$.fancybox.close();
+    });
+
+    $("#cancel").click(function(){
+        window.parent.$.fancybox.close();
+    });
+    
+    $('#validate-password').removeAttr('disabled');
+    $("#levellicensor_levellicensorbundle_secondpass").focus();
+    
+{% endblock %}

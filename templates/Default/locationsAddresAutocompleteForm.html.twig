@@ -1,0 +1,132 @@
+{% block autocompAddressBlock %}
+
+    <div id="locationField" class="form-group">
+        <label>Address</label><em>*</em>
+        <span>
+            <input class="form-control" required="required" id="autocomplete" placeholder="Enter the restaurant address"
+            maxlength="50" type="text" name="address" {% if entity is defined and entity is not empty and entity.alAddres is defined and entity.alAddres %} value="{{entity.alAddres}}" 
+                {% elseif entity is defined and entity is not empty and entity.acAddress is defined and entity.acAddress  %} value="{{entity.acAddress}}"
+                {% endif %}/>
+        </span>
+        <div class="help-block alert-danger"></div>
+    </div>
+        
+    <table id="address">
+      <tr>
+        <td class="slimField">
+            <input class="field" id="street_number" name="street_number" type="hidden"/>
+        </td>
+        <td class="wideField" colspan="2">
+            <input class="field" id="route" name="route" type="hidden"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="wideField" colspan="3">
+            <input class="field" id="locality" name="cityx" type="hidden"
+                    {% if entity is defined and entity is not empty and entity.city %}
+                        value="{{entity.city.ciName}}"
+                    {% endif %}
+                   />
+        </td>
+      </tr>
+      <tr>
+        <td class="slimField">
+            <input class="field" id="administrative_area_level_1" name="state" type="hidden"
+                    {% if entity.city is defined and entity.city is not empty 
+                        and entity.city.ciState is defined and entity.city.ciState is not empty %}
+                        value="{{entity.city.ciState.stName}}"
+                    {% endif %}
+                   />
+        </td>
+        <td class="wideField">
+            <input class="field" id="postal_code" name="zipcode" type="hidden"
+                    {% if entity.zipcode is defined and entity.zipcode is not empty %}
+                        value="{{entity.zipcode.zcName}}"
+                    {% endif %}
+                   />
+        </td>
+      </tr>
+      <tr>
+        <td class="wideField" colspan="3">
+            <input class="field" id="country" name="country" type="hidden"
+                    {% if entity.city is defined and entity.city is not empty 
+                        and entity.city.ciState is defined and entity.city.ciState is not empty
+                            and entity.city.ciState.stCountry is defined and entity.city.ciState.stCountry is not empty %}
+                        value="{{entity.city.ciState.stCountry.coName}}"
+                    {% endif %}
+                   />
+        </td>
+      </tr>
+    </table>
+
+{% endblock %}
+
+{% block functionsAutoCompListener %}
+    $('#autocomplete').focus(function() {
+        geolocate();
+    });   
+{% endblock %}
+
+{% block functionsAutoAddress %}
+        var placeSearch, autocomplete;
+        var componentForm = {
+            street_number: 'short_name', 
+            route: 'long_name',
+            locality: 'long_name',
+            administrative_area_level_1: 'short_name',
+            country: 'long_name',
+            postal_code: 'short_name'
+        };
+
+        function initAutocomplete() {
+            autocomplete = new google.maps.places.Autocomplete(
+                /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+                {types: ['geocode']});
+
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            var place = autocomplete.getPlace();
+
+            {#console.log(place);#}
+            
+            for (var component in componentForm) {
+                document.getElementById(component).value = '';
+                document.getElementById(component).disabled = false;
+            }
+
+            for (var i = 0; i < place.address_components.length; i++) {
+                var addressType = place.address_components[i].types[0];
+                if (componentForm[addressType]) {
+                    var val = place.address_components[i][componentForm[addressType]];
+                    document.getElementById(addressType).value = val;
+                }
+            }
+            
+            {#console.log($('#autocomplete').val());#}
+        }
+
+        function geolocate() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var geolocation = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                    };
+                    var circle = new google.maps.Circle({
+                      center: geolocation,
+                      radius: position.coords.accuracy
+                    });
+                    autocomplete.setBounds(circle.getBounds());
+                });
+            }
+        }
+{% endblock %}
+
+{# AIzaSyA4mnmGBg3yL82KUGRBqp_zzDj0pCthJ2s #}
+
+{% block functionsAutocompAddress %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4mnmGBg3yL82KUGRBqp_zzDj0pCthJ2s&libraries=places&callback=initAutocomplete" async defer></script>
+{% endblock %}
+

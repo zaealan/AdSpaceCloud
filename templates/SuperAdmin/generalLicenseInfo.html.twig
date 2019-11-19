@@ -1,0 +1,38 @@
+<div style="margin-top: 3%">
+    <table class="table table-bordered table-hover tablesorter records_list table-striped" id="generalInfoTable">
+        <thead>
+            <tr>
+                <th>Restaurant Name <strong>(</strong>Nickname<strong>)</strong></th>
+                <th>Contact Name</th>
+                <th>Email <strong>/</strong> Phone Number</th>
+                <th>Address <strong>/</strong> Suit PO Box</th>
+                <th>APK Version <strong>/</strong> Code Install</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity }}</td>
+                    <td>{{ entity.alContacName|title }}</td>
+                    <td>{{ entity.alLicenseEmail }}<br>{{ entity.alPhoneNumber }}</td>
+                    <td>{{ entity.alAddres|title }}<br>{{ entity.alSuitPoBox }}</td>
+                    <td>Version: <strong>{{ entity.androidVersionName }}</strong><br>Code Install: <strong {% if entity.apkInstallCode == 'Standard' %}style="color: olive;"{% else %}style="color: green;"{% endif %}>{{ entity.apkInstallCode }}</strong></td>
+                    <td>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            &nbsp;
+                            <a class="historyAuc" href="javascript:" data_id="{{entity.id}}">
+                                <img class="historyImage" style="margin-top: 5px;" id="imageHistory_{{entity.id}}" src="{{asset('/images/show_more.png')}}" alt="Synchronization/Push History" title="Synchronization/Push History"/>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr id="hiddenRow_{{entity.id}}" class="historyRow" style="display: none; background-color: whitesmoke;">
+
+                </tr>
+            {% else %}
+                <tr><td colspan="6">Data Not Found</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

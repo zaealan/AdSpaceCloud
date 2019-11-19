@@ -1,0 +1,1 @@
+{"primarykey":{"approval":0,"cash_drawer":0,"delivery":0,"delivery_range":0,"invoice":0,"invoice_pay_record":0,"invoice_tax":0,"invoice_type_pay":0,"order_detail":0,"orders":0,"time_clock":0,"order_detail_taxes":0,"gift_cards_log":0,"outflow":0,"coupon_discount":0,"order_detail_refund":0,"order_detail_tax_refund":0,"void_refund":0},"datainfo":{"numregist":0}}

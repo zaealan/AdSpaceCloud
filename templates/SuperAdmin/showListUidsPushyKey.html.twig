@@ -1,0 +1,90 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'UIDs And Pushy Keys'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>UIDs And Pushy Keys</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="{{path('index_management')}}"><i class="fa fa-list"></i> Management Dashboard</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> UIDs And Pushy Keys</li>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+        <div class="table-responsive col-sm-6">
+            <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center" style="background-color: black;">LICENSES </th>
+                    </tr>
+                    <tr>                            
+                        <th><a style="color: whitesmoke;">Nickname</a>&nbsp; </th>                
+                        <th><a style="color: whitesmoke;">UID</a>&nbsp; </th> 
+                        <th><a style="color: whitesmoke;">Pushy </a>&nbsp; </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for license in licenses %}
+                        <tr>
+                            <td>
+                                <label>{{license.alLicenseUsername|default(' -o- ')}}</label>
+                            </td>
+                            <td>
+                                <label>{{license.deviceUid|default(' -o- ')}}</label>
+                            </td>
+                            <td>
+                                <label>{{license.pushyKey|default(' -o- ')}}</label>
+                            </td>
+                        </tr>
+
+                    {% else %}
+                        <tr>
+                            <td colspan="2">
+                                No Data
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive col-sm-6">
+            <table class="table table-bordered table-hover tablesorter records_list table-striped">
+            <thead>
+                <tr>
+                    <th colspan="4" class="text-center" style="background-color: black;">SUB-LICENSES </th>
+                </tr>
+                <tr>                            
+                    <th><a style="color: whitesmoke;">Nickname</a>&nbsp; </th>  
+                    <th><a style="color: whitesmoke;">Channel</a>&nbsp; </th>  
+                    <th><a style="color: whitesmoke;">UID</a>&nbsp; </th> 
+                    <th><a style="color: whitesmoke;">Pushy </a>&nbsp; </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sublicense in sublicenses %}
+                <tr>
+                    <td>
+                        <label>{{sublicense.alLicenseUsername|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{sublicense.channelName|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{sublicense.deviceUid|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{sublicense.pushyKey|default(' -o- ')}}</label>
+                    </td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">
+                            No Data
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+            </div>
+        </div>
+    {% endblock %}

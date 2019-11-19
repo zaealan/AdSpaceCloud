@@ -1,0 +1,104 @@
+<div class="col-lg-12 table-responsive">
+    <table style="width: 49%; float: left;">
+        <thead>
+            <tr>
+                <th><label style="font-size: 24px;"><strong>Licenses</strong></label></th>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <label><strong>Nickname</strong></label>
+                </td>
+                <td>
+                    <label><strong>UID</strong></label>
+                </td>
+                <td>
+                    <label><strong>Pushy</strong></label>
+                </td>
+            </tr>
+            {% for license in licenses %}
+                <tr>
+                    <td>
+                        <label>{{license.alLicenseUsername|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{license.deviceUid|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{license.pushyKey|default(' -o- ')}}</label>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">
+                        No Data
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <table style="width: 49%;">
+        <thead>
+            <tr>
+                <th><label style="font-size: 24px;"><strong>Subicenses</strong></label></th>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <label><strong>Nickname</strong></label>
+                </td>
+                <td>
+                    <label><strong>Channel</strong></label>
+                </td>
+                <td>
+                    <label><strong>UID</strong></label>
+                </td>
+                <td>
+                    <label><strong>Pushy</strong></label>
+                </td>
+            </tr>
+            {% for sublicense in sublicenses %}
+                <tr>
+                    <td>
+                        <label>{{sublicense.alLicenseUsername|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{sublicense.channelName|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{sublicense.deviceUid|default(' -o- ')}}</label>
+                    </td>
+                    <td>
+                        <label>{{sublicense.pushyKey|default(' -o- ')}}</label>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">
+                        No Data
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

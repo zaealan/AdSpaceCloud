@@ -1,0 +1,19 @@
+<div style="width: 98%; margin-top: 1%; margin-bottom: 1%; padding: 15px;">
+    {% for key, log in arrayLogs %}
+        {% if key == keyLog %}
+            <li><strong><a href="{{ path('level_licensor_master_log_managment', {'baseFileName': baseFileName, 'contentLog': log}) }}">{{ log }}</a></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ path('level_licensor_master_log_managment_clean', {'baseFileName': baseFileName, 'nameLog': log}) }}">Clean</a></li>
+            <br>
+        {% else %}
+            <li><a href="{{ path('level_licensor_master_log_managment', {'baseFileName': baseFileName, 'contentLog': log}) }}">{{ log }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ path('level_licensor_master_log_managment_clean', {'baseFileName': baseFileName, 'nameLog': log}) }}">Clean</a></li>
+            <br>
+        {% endif %}
+    {% else %}
+        <strong>No logs found!</strong>
+    {% endfor %}
+</div>
+<div style="width: 98%; margin-top: 1%; margin-bottom: 1%; padding: 15px; font-size: 13px; font-family: monospace;">
+    {{ content|raw }}
+</div>
+<div style="width: 98%; margin-top: 1%; margin-bottom: 1%; padding: 15px;">
+    
+</div>

@@ -1,0 +1,97 @@
+<div class="notificationDiv">
+    {#{{ render(controller('App\\Controller\\Licensor\\DefaultController::getMyNotiesForTheBell')) }}#}
+    
+    {#{% if app.session.flashbag.get('newNotificationCount')|length > 0 %}#}
+    {#<div>
+        <li class="dropdown alerts-dropdown mainRingBell">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('/images/newNotificationsTwo.png')}}" height="48px"/></a>
+            {% set newNotificationCount = app.session.flashbag.get('newNotificationCount')[0] %}
+            <div style="margin-top: -42px; margin-bottom: -22px; {% if newNotificationCount > 9 %} {% set newNotificationCount = '9+' %} margin-left: 40px; {% else %} margin-left: 43px; {% endif %}">
+                <span class="badgesito listVVsito" title="Number of new notifications">{{newNotificationCount}}</span>
+            </div>
+            <ul class="dropdown-menu" style="margin-left: -365%; margin-top: 25%; width: 300px !important;">
+                <li style="padding-bottom: 2px;">
+                    <a href="#" style="width: content-box">
+                        <div style="white-space: initial;">
+                            <label><span class="label label-default">Default</span> Android login<br><small>Una Fecha</small></label>
+                            <p>Pepito habla ingles! Pepito habla ingles! Pepito habla ingles! Pepito habla ingles! Pepito habla ingles!</p>
+                        </div>
+                    </a>
+                </li>
+                <li style="padding-bottom: 2px;"><a href="#"><span class="label label-primary">Primary</span> Primary</a></li>
+                <li style="padding-bottom: 2px; background:#E4E9F2;"><a href="#"><span class="label label-success">Success</span> Success</a></li>
+                <li style="padding-bottom: 2px;"><a href="#"><span class="label label-info">Info</span> Info</a></li>
+                <li style="padding-bottom: 2px;"><a href="#"><span class="label label-warning">Warning</span> Warning</a></li>
+                <li style="padding-bottom: 2px;"><a href="#"><span class="label label-danger">Danger</span> Danger</a></li>
+                <li class="divider"></li>
+                <li><a href="#">View All</a></li>
+            </ul>
+        </li>
+    </div>#}
+    {#{% else %}
+        <img src="{{asset('/images/oldNotifications.png')}}" height="48px"/>
+    {% endif %}#}
+</div>
+<ul class="nav navbar-nav navbar-right navbar-user mainup a-user">
+    {#<li class="dropdown messages-dropdown mainR">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">7</span> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="dropdown-header">7 New Messages</li>
+            <li class="message-preview">
+                <a href="#">
+                    <span class="avatar"><img src="http://placehold.it/50x50"></span>
+                    <span class="name">John Smith:</span>
+                    <span class="message">Hey there, I wanted to ask you something...</span>
+                    <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="message-preview">
+                <a href="#">
+                    <span class="avatar"><img src="http://placehold.it/50x50"></span>
+                    <span class="name">John Smith:</span>
+                    <span class="message">Hey there, I wanted to ask you something...</span>
+                    <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li class="message-preview">
+                <a href="#">
+                    <span class="avatar"><img src="http://placehold.it/50x50"></span>
+                    <span class="name">John Smith:</span>
+                    <span class="message">Hey there, I wanted to ask you something...</span>
+                    <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li><a href="#">View Inbox <span class="badge">7</span></a></li>
+        </ul>
+    </li>
+    <li class="dropdown alerts-dropdown mainR">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> Alerts <span class="badge">3</span> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Default <span class="label label-default">Default</span></a></li>
+            <li><a href="#">Primary <span class="label label-primary">Primary</span></a></li>
+            <li><a href="#">Success <span class="label label-success">Success</span></a></li>
+            <li><a href="#">Info <span class="label label-info">Info</span></a></li>
+            <li><a href="#">Warning <span class="label label-warning">Warning</span></a></li>
+            <li><a href="#">Danger <span class="label label-danger">Danger</span></a></li>
+            <li class="divider"></li>
+            <li><a href="#">View All</a></li>
+        </ul>
+    </li>#}
+    <li class="dropdown user-dropdown mainR" style="margin-top: 20px !important; margin-right: 10px !important;">
+        <a href="#" id="blackletter" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if app.user is defined and app.user is not empty %}{{app.user|title}} ({{app.user.textType}}){% endif %} <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="{#{{path('bmak_company_auction_edit_profile')}}#}"><i class="fa fa-user"></i> Profile</a></li>
+            {#{% for module in app.session.get('activeModules') %}
+               {%if module == constant('Bmak\\BmakBackendBundle\\Entity\\Module::MODULE_SETTINGS')%}
+                <li><a href="{{path('bmak_company_auction_setting')}}"><i class="fa fa-cogs"></i> Settings</a></li>
+               {%endif%}
+            {%endfor%}#}
+           {# <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>#}
+            <li class="divider"></li>
+            <li><a href="{{path('adspace_logout')}}"><i class="fa fa-power-off"></i> Log Out</a></li>
+        </ul>
+    </li>
+</ul>

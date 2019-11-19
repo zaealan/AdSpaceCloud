@@ -1,0 +1,83 @@
+{% extends 'Default/mainFancy.html.twig' %}
+{% block title 'Restaurant Loyalty Configuration' %}
+    {% block content %}
+        <h1 style="margin-left: 20px; margin-top: -10px; margin-bottom: 15px;">Restaurant Loyalty Configuration</h1>
+        <label id="localPtrValue" style="float:right; color: #505050; {% if (entities.useLocalPoints == false and entities.useGlobalPoints == true) or (entities.useLocalPoints == false and entities.useGlobalPoints == false) %} display:none; {% endif %}">Local Points Value: 1pt = {{localRatio|number_format(2)}}$</label>
+        <label id="globalPtrValue" style="float:right; color: #505050; {% if entities.useLocalPoints == true and entities.useGlobalPoints == false %} display:none; {% endif %}">Global Points Value: 1pt = {{globalRatio|number_format(2)}}$</label>
+        <ul class="nav nav-tabs">
+            <li class=""><a href="{{ path('level_licensor_update_loyalty_configuration',{'id':entities.license.id, 'type': 1}) }}"><label>Configuration Points</label></a></li>
+            <li class="active"><a>Configuration Points Local</a></li>
+        </ul>
+        {% if localPoint is defined and localPoint != null and ratioPointLocal is defined and ratioPointLocal != null %}
+        <div class="tab-content">
+            <form name="configPointLocal" id="form_adqui_redem_rule" action="{{path('update_adqui_redem_rules')}}" method="post" class="form-horizontal">
+                <table class="table table-bordered table-hover tablesorter records_list">
+                    <thead>
+                        <tr class="valign halign">
+                            <th>Purchase Points Earned %</th>
+                            <th>Minimum Purchase In $</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr> 
+                            <input type="hidden" name="points_adqui_redem_rules[typePoint]" value="{{ localPoint }}">   
+                            <input type="hidden" id="realLocalRatio" name="points_adqui_redem_rules[ratioPointLocal]" value="{{ ratioPointLocal }}">   
+                            {{ form_widget(formPtsAdquiRedemRules.license,{'attr':{'class':'form-control  input-form', 'value':entities.license.id} }) }}
+                            <td>                                  
+                                <div class="col-xs-offset-2 col-xs-4" style="margin-left: 100px; margin-right: 100px;">                                                
+                                    {{ form_widget(formPtsAdquiRedemRules.ptsRate, {'attr': {'class':'form-control input-form', 'maxlength':'2'} }) }}                                                      
+                                </div>
+                            </td>
+                            <td>                                  
+                                <div class="col-xs-offset-2 col-xs-4" style="margin-left: 100px; margin-right: 100px;">                                                
+                                    {{ form_widget(formPtsAdquiRedemRules.minimumPurchase, {'attr': {'class':'form-control input-form'} }) }}                                                      
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-group text-right" style="margin-top: 20px; margin-right: 0px;">
+                    <label id="notify_msg" style="color: green; float: left; margin-left: 210px; margin-top: 10px;">
+                    </label>
+                    <div>
+                        <button id="cancelbtn"  class="btn btn-danger" >Cancel</button>
+                        <button id="update_adqui_redem_rules" class="btn btn-primary " type="submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    {% else %}
+        <label id="notify_msg" style="color: red; float: left; margin-left: 210px; margin-top: 10px;">Please check is the licensor default fixture command has runned already!        </label>
+            <div class="form-group text-right" style="margin-top: 20px; margin-right: 0px;">
+            <button id="cancelbtn"  class="btn btn-danger" >Cancel</button>
+        </div>
+    {% endif %}
+    {% endblock %}
+
+{% block scripts %}
+    
+    $('#cancelbtn').click(function () {
+        window.parent.$.fancybox.close();
+    });
+    
+    $("#form_adqui_redem_rule").on('change', '#points_adqui_redem_rules_ptsRate', function () {
+        $("#realLocalRatio").val($('#points_adqui_redem_rules_ptsRate').val());
+    });
+    
+    {% if toClose is defined and toClose %}
+
+        $("#notify_msg").text('Loyalty configuration updated!').css("color", "green");
+        setInterval(function() {
+        timeToClose++;
+
+        if(timeToClose == 2) {
+            $("#notify_msg").fadeOut("slow");
+        }
+
+        },2200);
+
+    {% endif %}
+    
+{% endblock %}

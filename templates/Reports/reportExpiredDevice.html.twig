@@ -1,0 +1,77 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'Advertise Places List'%}
+    {% block content %}
+
+        <div class="col-lg-12">
+            <h1>Advertise Places List</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}">
+                        <i class="fa fa-home"></i> Dashboard</a></li>
+
+                <li><a href="{{path('reports')}}">
+                        <i class="fa fa-list"></i> Reports</a></li>
+                <li class="active"><i class="fa fa-list"></i> License Near To Expire</li>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+
+        <div class="col-sm-12">
+            <form class="well nlblk cien" action="{{path('report_license_search_expired_date')}}" method="POST" >
+                    <label class="col-sm-3">Select Date To Search Licenses Near To Expire</label>
+                    <div class="datetimepicker-mindate col-sm-2">
+                        <input type="text" value="{{ dates[1]|date("m/d/Y") }}" name="endDate" class="form-control" autocomplete="off"/>
+                    </div>
+                    <div class="col-sm-7">
+                        <input class="btn btn-primary" type="submit" value="Search"/>
+                    </div>
+            </form>
+        </div>
+        <div class="col-sm-12">
+            Start Date {{ dates[0]|date("m/d/Y") }} End Date {{ dates[1]|date("m/d/Y") }}
+        </div>
+        <div class="col-sm-12 table-responsive" >
+            <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                <thead>
+                    <tr>
+                        <th>Restaurant / Contact Name</th>
+                        <th>Email / Phone</th>
+                        <th>Expiration Date</th>
+                        <th>Device Type</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in datas %}
+                        {% set typeDev = 'Client' %}
+                        {% if data.typeDevice == 1 %}
+                            {% set typeDev = 'Server' %}
+                        {% endif %}
+                        <tr>
+                            <td>
+                                <div>{{ data.restaurantName }}</div>
+                                <div>{{ data.contactName }}</div>
+                            </td>
+                            <td>
+                                <div>{{ data.licenseEmail }}</div>
+                                <div>{{ data.phoneNumber }}</div>
+                            </td>
+                            <td>{{ data.expirationDate|date("m/d/Y H:i") }}</td>
+                            <td>{{ typeDev }}</td>
+                            <td align="right">USD ${{ data.unitPrice }}</td>
+                            <td>...</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No Data Found Between Dates</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% endblock %}
+
+    {% block scripts %} 
+
+    {% endblock %}

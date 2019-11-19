@@ -1,0 +1,40 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'Dashboard Management'%}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 well">
+            <h1>Dashboard Management</h1>
+            {% include 'Default/messageNotification.html.twig' %}      
+
+            {% if is_granted('ROLE_SUPER_ADMIN') or (app.session is defined and app.session.get('activeModules') is not empty) %}
+                <div class="bs-example">
+                    <ul class="nav nav-pills menubig">
+                        {#<li class="item-dashboard"><a href="{{ path('index_databases_list') }}"><img src="{{asset('/images/repo.png')}}" height="24px"/> Licenses Databases</a></li>#}
+                        <li class="item-dashboard"><a href="{{ path('adpoint_management_list') }}"><img src="{{asset('/images/general_info_list.png')}}" height="24px"/> AdPoint Information</a></li>
+{#                        <li class="item-dashboard"><a href="{{ path('crons_management') }}"><img src="{{asset('/images/dbmana.png')}}" height="24px"/> Crons Management</a></li>#}
+{#                        <li class="item-dashboard"><a href="{{ path('iud_pushykey') }}"><img src="{{asset('/images/uids_and_pushys.png')}}" height="24px"/> UIDs And Pushy Keys</a></li>#}
+{#                        <li class="item-dashboard"><a href="{{ path('new_update_push_apk', {'theReq': 0}) }}"><img src="{{asset('/images/send_push_apk.png')}}" height="24px"/> Send APK Push Update</a></li>#}
+{#                        <li class="item-dashboard"><a href="{{ path('send_custom_push_notification', {'theReq': 0}) }}"><img src="{{asset('/images/mail-01.png')}}" height="24px"/> Send Push Message</a></li>#}
+                    </ul>
+                </div>
+            {% else %}
+                We're sorry, your user account doesn't have enabled modules, please ask to your administrator to enable them.
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}  
+    
+    $(document).ready(function($) {
+        var window_with = $(window).width();
+        var window_height = $(window).height();
+        if(window_with > 967) {
+            $("#tooglePanelLeft").trigger('click');
+        } else { }
+    });
+   
+{% endblock %}
+
+{% block functions_javascript %}
+{% endblock %}

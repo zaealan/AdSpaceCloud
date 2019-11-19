@@ -1,0 +1,88 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>AccountLicense</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Alid</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Allicensekey</th>
+                <td>{{ entity.alLicenseKey }}</td>
+            </tr>
+            <tr>
+                <th>Aldbhost</th>
+                <td>{{ entity.alDbHost }}</td>
+            </tr>
+            <tr>
+                <th>Aldbname</th>
+                <td>{{ entity.alDbName }}</td>
+            </tr>
+            <tr>
+                <th>Aldbuser</th>
+                <td>{{ entity.alDbUser }}</td>
+            </tr>
+            <tr>
+                <th>Aldbpassword</th>
+                <td>{{ entity.alDbPassword }}</td>
+            </tr>
+            <tr>
+                <th>Aldatecreated</th>
+                <td>{{ entity.alDateCreated|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Allicensestatus</th>
+                <td>{{ entity.alLicenseStatus }}</td>
+            </tr>
+            <tr>
+                <th>Allicenseusername</th>
+                <td>{{ entity.alLicenseUsername }}</td>
+            </tr>
+            <tr>
+                <th>Alcontacname</th>
+                <td>{{ entity.alContacName }}</td>
+            </tr>
+            <tr>
+                <th>Allicenseemail</th>
+                <td>{{ entity.alLicenseEmail }}</td>
+            </tr>
+            <tr>
+                <th>Aladdres</th>
+                <td>{{ entity.alAddres }}</td>
+            </tr>
+            <tr>
+                <th>Alsuitpobox</th>
+                <td>{{ entity.alSuitPoBox }}</td>
+            </tr>
+            <tr>
+                <th>Allongitude</th>
+                <td>{{ entity.alLongitude }}</td>
+            </tr>
+            <tr>
+                <th>Allatitude</th>
+                <td>{{ entity.alLatitude }}</td>
+            </tr>
+            <tr>
+                <th>Alphonenumber</th>
+                <td>{{ entity.alPhoneNumber }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('accountlicense') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('accountlicense_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

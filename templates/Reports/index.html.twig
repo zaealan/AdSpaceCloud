@@ -1,0 +1,31 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'Reports'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Licenses Next to Expired & Sold</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li class="active"><i class="fa fa-list"></i> Reports</li>
+                </ol>
+            </div>
+
+            <div class="col-lg-12 table-responsive">
+                <div class="well">
+                    <ul class="nav nav-pills menubig">
+                        {% if (is_granted('ROLE_SUPER_ADMIN')) or (is_granted('ROLE_REPORT_VIEWER')) or (module == constant('App\\Entity\\Module::MODULE_LICENSOR_REPORTS')) %}
+                            <li class="item-dashboard">
+                                <a href="{{path('report_license_search_expired_date')}}">
+                                    <img src="{{asset('/images/expired.png')}}" height="24px"/>Lic. Next to Expired</a>
+                            </li>
+                            <li class="item-dashboard">
+                                <a href="{{path('report_licenses_sold')}}">
+                                    <img src="{{asset('/images/sold.png')}}" height="24px"/>Licenses Sold</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    {% endblock %}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    </head>
+    <body>
+        {% if badRequestMsg is defined and badRequestMsg != '' %}
+            <label><strong>{{badRequestMsg}}</strong></label>
+        {% else %}
+            <div>
+                <label style="font-size: 25px;">License: <strong>{{masterSyncRecord.msLicense}}</strong></label>
+                <br>
+                <label style="font-size: 25px;">File: <strong>{{fileName}}</strong></label>
+                <br>
+                <label style="font-size: 22px;">Sync Ask Date: <strong>{{masterSyncRecord.msDateSyncAsk|date('m/d/Y H:i:s')}}</strong></label>
+                {% if isWebSync is defined and isWebSync == true %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_INITIALIZATED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: goldenrod;">Initialised...</strong></label>
+                    {% endif %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: olive;">Processing...</strong></label>
+                    {% endif %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: olivedrab;">Processing Response...</strong></label>
+                    {% endif %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_CLOSED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: green;">Completed</strong></label>
+                    {% endif %}
+                {% else %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_INITIALIZATED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: goldenrod;">Initialised...</strong></label>
+                    {% endif %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_PROCESSED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: olive;">Processing...</strong></label>
+                    {% endif %}
+                    {% if masterSyncRecord.msStatus == constant('App\\Entity\\MasterSync::MASTER_STATUS_RESPONDED') %}
+                        <br>
+                        <label style="font-size: 20px;">Status: <strong style="color: green;">Completed</strong></label>
+                    {% endif %}
+                {% endif %}
+                {% if isWebSync is defined and isWebSync == true %}
+                    {% if 'InitialData' in masterSyncRecord.msSyncWebRecord.rfwNameProcessedFile %}
+                        <br>
+                        <label style="font-size: 20px;">Special: <strong style="color: blue;">Initial Login</strong></label>
+                    {% endif %}
+                    {% if isResponseFile is defined and isResponseFile == true %}
+                        <br>
+                        <label style="font-size: 19px;">Type: <strong>Client Response File In Up-Down Sync</strong></label>
+                        {% if isTraduced is defined and isTraduced == true %}
+                            <br>
+                            <label style="font-size: 18px;">Note: <strong>Decriphted From Original File</strong></label>
+                            <br>
+                            <label style="font-size: 18px;">Original: <strong><a href="{{licenseDirURL~'/'~masterSyncRecord.msSyncWebRecord.rfwClientResponseFile}}" target="_blank"/>{{licenseDirURL~'/'~masterSyncRecord.msSyncWebRecord.rfwClientResponseFile}}</a></strong></label>
+                        {% endif %}
+                    {% else %}
+                        <br>
+                        <label style="font-size: 19px;">Type: <strong>Delivered File In Up-Down Sync</strong></label>
+                        {% if isTraduced is defined and isTraduced == true %}
+                            <br>
+                            <label style="font-size: 18px;">Note: <strong>Decriphted From Original File</strong></label>
+                            <br>
+                            <label style="font-size: 18px;">Original: <strong><a href="{{licenseDirURL~'/'~masterSyncRecord.msSyncWebRecord.rfwNameProcessedFile}}" target="_blank"/>{{licenseDirURL~'/'~masterSyncRecord.msSyncWebRecord.rfwNameProcessedFile}}</a></strong></label>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% if isResponseFile is defined and isResponseFile == true %}
+                        <br>
+                        <label style="font-size: 19px;">Type: <strong>Delivered Down-Up Sync Response File</strong></label>
+                        {% if isTraduced is defined and isTraduced == true %}
+                            <br>
+                            <label style="font-size: 18px;">Note: <strong>Decriphted From Original File</strong></label>
+                            <br>
+                            <label style="font-size: 18px;">Original: <strong><a href="{{licenseDirURL~'/'~masterSyncRecord.msSyncRecord.rfDeliverNameFile}}" target="_blank"/>{{licenseDirURL~'/'~masterSyncRecord.msSyncRecord.rfDeliverNameFile}}</a></strong></label>
+                        {% endif %}
+                    {% else %}
+                        <br>
+                        <label style="font-size: 19px;">Type: <strong>Uploaded Down-Up Sync File</strong></label>
+                        {% if isTraduced is defined and isTraduced == true %}
+                            <br>
+                            <label style="font-size: 18px;">Note: <strong>Decriphted From Original File</strong></label>
+                            <br>
+                            <label style="font-size: 18px;">Original: <strong><a href="{{licenseDirURL~'/'~masterSyncRecord.msSyncRecord.rfNameFile}}" target="_blank">{{licenseDirURL~'/'~masterSyncRecord.msSyncRecord.rfNameFile}}</a></strong></label>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div>
+                <br>
+                <label>{{fileContent}}</label>
+            </div>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,124 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'User'%}
+{% block content %}
+    <div class="row numpad">
+        <div class="col-lg-12">
+            <h1>User List</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}">
+                        <i class="fa fa-home"></i> Dashboard</a></li>
+                <li class="active"><i class="fa fa-list"></i> User List</li>
+                <a class="btn btn-primary pull-right" href="{{ path('user_new') }}">New User</a>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+           
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-bordered table-hover tablesorter records_list">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Creation Date</th>
+                        <th>Status</th>
+                        <th>User Parent</th>
+                        <th>Username</th>
+                        <th>Company</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.usName|title }}</td>
+                            <td>{{ entity.usLastName|title }}</td>
+                            <td>{{ entity.usEmail }}</td>
+                            <td>{{ entity.usPhoneNumber }}</td>
+                            <td>{% if entity.usDateCreated %}{{ entity.usDateCreated|date('m/d/Y') }}{% endif %}</td>
+                            <td>{{ entity.getTextStatus }}</td>
+                            <td>{{ entity.usUserParent|title }}</td>
+                            <td>{{ entity.username|title }}</td>
+                            <td>{{ entity.usCompany|title }}</td>
+                            <td>
+                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_USERS_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    {% if entity.usType != constant('App\\Entity\\User::USER_SUPER_ADMIN') %}
+                                        <a class="editUser" href="{{path('user_edit', { 'id': entity.id })}}">
+                                            <img src="{{ asset('/images/editts.png') }}" alt="Edit User" title="Edit User"/>
+                                        </a>
+                                    {% elseif is_granted('ROLE_SUPER_ADMIN') %}
+                                        <a class="editUser" href="{{path('user_edit', { 'id': entity.id })}}">
+                                            <img src="{{ asset('/images/editts.png') }}" alt="Edit User" title="Edit User"/>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_USERS_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                    {% if entity.usType != constant('App\\Entity\\User::USER_SUPER_ADMIN') %}
+                                        <a class="deleteUser" href="javascript:"
+                                            data_path="{{path('user_delete',  {'id': entity.id})}}"
+                                            user_type="{{entity.getTextType()}}"
+                                            user_name="{{entity.usName|title~' '~entity.usLastName|title}}">
+                                            <img src="{{ asset('/images/deletex.png ')}}" alt="Delete" title="Delete"/>
+                                        </a>
+                                    {% elseif is_granted('ROLE_SUPER_ADMIN') %}
+                                        <a class="deleteUser" href="javascript:"
+                                            data_path="{{path('user_delete',  {'id': entity.id})}}"
+                                            user_type="{{entity.getTextType()}}"
+                                            user_name="{{entity.usName|title~' '~entity.usLastName|title}}">
+                                            <img src="{{ asset('/images/deletex.png ')}}" alt="Delete" title="Delete"/>
+                                        </a>
+                                    {% endif %}
+                                    
+                                    
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="10">No Users To List</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    
+    $('.deleteUser').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('user_name');
+        var typeUse = clickedU.attr('user_type');
+        var oneParam = 1;
+
+        bootbox.confirm('Do you want to delete the <strong>' + nameUse + '</strong> ' + typeUse + ' user?',
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+
+                    data: {
+                        otherParam : oneParam
+                    },
+                    cache: false,
+                    success: function (r) {
+                        if (r.result == '__OK__') {
+                            clickedU.closest('tr').remove();
+                        }
+                        else {
+                            bootbox.alert(r.msg)
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.alert(r.msg)
+                    }
+                });
+            }
+        });
+    });
+
+{% endblock %}
+

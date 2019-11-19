@@ -1,0 +1,44 @@
+<div>
+    <li class="dropdown alerts-dropdown mainRingBell">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {% if numberOfNewNotifications is defined and numberOfNewNotifications > 0 %}
+                <img src="{{asset('/images/newNotificationsTwo.png')}}" height="48px" style="margin-top: 4px;"/>
+            {% else %}
+                <img src="{{asset('/images/oldNotifications.png')}}" height="48px" style="margin-top: 4px;"/>
+            {% endif %}
+        </a>
+        <div style="margin-top: -42px; margin-bottom: -22px; {% if numberOfNewNotifications > 9 %} {% set numberOfNewNotifications = '9+' %} margin-left: 40px; {% else %} margin-left: 43px; {% endif %}">
+            {% if numberOfNewNotifications > 0 %}
+                <span class="badgesito listVVsito" title="Number of new notifications">{{numberOfNewNotifications}}</span>
+            {% else %}
+                <span class="badgesito listVVsito" title="Number of new notifications"></span>
+            {% endif %}
+        </div>
+        <ul class="dropdown-menu" style="margin-left: -365%; margin-top: 25%; width: 300px !important; overflow-y: auto; max-height: 350px;">
+            {% for smallNotyBell in notificationsToShowInBell %}
+                <li {{smallNotyBell['notificationStatus']}} style="{% if smallNotyBell['notificationStatus'] == constant('App\\Entity\\BellNotificationSeenBy::STATUS_UNNOTIFIED') %} background:#E4E9F2; {% endif %}padding-bottom: 2px;">
+                    {#<a href="{{smallNotyBell['urlForNotification'] ~ '&readedNoty=' ~ smallNotyBell['id']}}" style="width: content-box">#}
+                    <a href="{{smallNotyBell['urlForNotification']}}" style="width: content-box">
+                        <div style="white-space: initial;">
+                            {% if smallNotyBell['seenNotification'].notificationLabel == 'msgError' %}
+                                <label><span class="label label-danger"> Danger</span> {{smallNotyBell['seenNotification'].notificationTitle}}<br><small style="font-size: 10px;">{{smallNotyBell['seenNotification'].dateCreated|date('m/d/Y H:i:s')}}</small></label>
+                                <p style="font-size: 12px;" title="{{smallNotyBell['seenNotification'].notificationHTMLTitle}}" alt="{{smallNotyBell['seenNotification'].notificationAlt}}">{{smallNotyBell['seenNotification'].notificationMsg|raw}}</p>
+                            {% elseif smallNotyBell['seenNotification'].notificationLabel == 'msgSuccess' %}
+                                <label><span class="label label-success"> Success</span> {{smallNotyBell['seenNotification'].notificationTitle}}<br><small style="font-size: 10px;">{{smallNotyBell['seenNotification'].dateCreated|date('m/d/Y H:i:s')}}</small></label>
+                                <p style="font-size: 12px;" title="{{smallNotyBell['seenNotification'].notificationHTMLTitle}}" alt="{{smallNotyBell['seenNotification'].notificationAlt}}">{{smallNotyBell['seenNotification'].notificationMsg|raw}}</p>
+                            {% elseif smallNotyBell['seenNotification'].notificationLabel == 'msgWarning' %}
+                                <label><span class="label label-warning"> Warning</span> {{smallNotyBell['seenNotification'].notificationTitle}}<br><small style="font-size: 10px;">{{smallNotyBell['seenNotification'].dateCreated|date('m/d/Y H:i:s')}}</small></label>
+                                <p style="font-size: 12px;" title="{{smallNotyBell['seenNotification'].notificationHTMLTitle}}" alt="{{smallNotyBell['seenNotification'].notificationAlt}}">{{smallNotyBell['seenNotification'].notificationMsg|raw}}</p>
+                            {% elseif smallNotyBell['seenNotification'].notificationLabel == 'msgInfo' %}
+                                <label><span class="label label-info"> Info</span> {{smallNotyBell['seenNotification'].notificationTitle}}<br><small style="font-size: 10px;">{{smallNotyBell['seenNotification'].dateCreated|date('m/d/Y H:i:s')}}</small></label>
+                                <p style="font-size: 12px;" title="{{smallNotyBell['seenNotification'].notificationHTMLTitle}}" alt="{{smallNotyBell['seenNotification'].notificationAlt}}">{{smallNotyBell['seenNotification'].notificationMsg|raw}}</p>
+                            {% endif %}
+                        </div>
+                    </a>
+                </li>
+            {% else %}
+                <li><a href="#">No notifications to show</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+</div>

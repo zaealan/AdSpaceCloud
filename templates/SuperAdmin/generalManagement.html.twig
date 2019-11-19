@@ -1,0 +1,846 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'General Management'%}    
+{% block content %}
+    
+    <div class="row numpad" style="height: 100%">
+        <div class="col-lg-12">
+            <h1>Databases List</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                <li class="active"><i class="icon-file-alt"></i> General Management</li>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+
+        <div class="panel-body table-responsive" >
+            <ul class="nav nav-tabs">
+                <li class="{% if view == 1 %}active{% endif %}"><a href="#databasesList" data-toggle="tab"><strong>Licenses Databases</strong></a></li>
+                <li class="{% if view == 2 %}active{% endif %}"><a href="#licenseGeneralInfo" data-toggle="tab"><strong>General Licenses  Information</strong></a></li>
+                <li class="{% if view == 3 %}active{% endif %}"><a href="#cronsManagement" data-toggle="tab"><strong>Crons Management</strong></a></li>
+                <li class="{% if view == 4 %}active{% endif %}"><a href="#uidsPushyKey" data-toggle="tab"><strong>UIDs And Pushy Key</strong></a></li>
+                <li class="{% if view == 5 %}active{% endif %}"><a href="#sendPushAPKUpdate" data-toggle="tab"><strong>Send APK Push Update</strong></a></li>
+{#                <li class="{% if view == 6 %}active{% endif %}"><a href="{{path('pepito_experimental_index_management')}}" data-toggle="tab"><strong>Pepitos Experimental Tab</strong></a></li>#}
+            </ul>
+            <div class="tab-content">
+{#                {{ 'Joder! '~view }}#}
+                <div {% if view == 1 %}class="tab-pane fade in active in"{% else %}class="tab-pane fade"{% endif %} id="databasesList">
+                    {% if view != 6 %}
+                        {{ render(controller('App\\Controller\\Licensor\\DataBasesController::databasesList')) }}
+                    {% endif %}
+                </div>
+
+                <div {% if view == 2 %}class="tab-pane fade in active in"{% else %}class="tab-pane fade"{% endif %} id="licenseGeneralInfo">
+                    {% if view != 6 %}
+                        {{ render(controller('App\\Controller\\Licensor\\DataBasesController::generalLicenseInformation')) }}
+                    {% endif %}
+                </div>
+                
+                <div {% if view == 3 %}class="tab-pane fade in active in"{% else %}class="tab-pane fade"{% endif %} id="cronsManagement">
+                    {% if view != 6 %}
+                        {{ render(controller('App\\Controller\\Licensor\\DataBasesController::cronsManagement')) }}
+                    {% endif %}
+                </div>
+                
+                <div {% if view == 4 %}class="tab-pane fade in active in"{% else %}class="tab-pane fade"{% endif %} id="uidsPushyKey">
+                    {% if view != 6 %}
+                        {{ render(controller('App\\Controller\\Licensor\\DataBasesController::uidsAndPushyKey')) }}
+                    {% endif %}
+                </div>
+
+                <div {% if view == 5 %}class="tab-pane fade in active in"{% else %}class="tab-pane fade"{% endif %} id="sendPushAPKUpdate">
+                    {% if view != 6 %}
+                        {% if theReq is defined and theReq != '0' %}
+                            {{ render(controller('App\\Controller\\Licensor\\DataBasesController::newManuallySendPushAPK', {'theReq': theReq})) }}
+                        {% else %}
+                            {{ render(controller('App\\Controller\\Licensor\\DataBasesController::newManuallySendPushAPK', {'theReq': '0'})) }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {#<div {% if view == 6 %}class="tab-pane fade in active in"{% else %}class="tab-pane fade"{% endif %} id="experimentalPepitoTab">
+                    {{ render(controller('App\\Controller\\Licensor\\DataBasesController::newManuallySendPushAPK', {'theReq': '0'})) }}
+                </div>#}
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block scripts %} 
+
+    $('.dataSyncStatus').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var isAllowedSync = clickedU.attr('data_is_allow');
+        var bootBoxText = '';
+
+        if (Number(isAllowedSync)) {
+            bootBoxText = 'Do you want deny all synchronizations for <strong>' + nameUse + '</strong> license?';
+        } else {
+            bootBoxText = 'Do you want allow all synchronizations for <strong>' + nameUse + '</strong> license?';
+        }
+        
+        bootbox.confirm(bootBoxText,
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        isSyncAllowed : isAllowedSync
+                    },
+                    cache: false,
+                    success: function (r) {
+                        if (r.syncAllowed === false) {
+                            clickedU.toggleClass('dataSyncAll');
+                            clickedU.toggleClass('dataSyncDen');
+                            if (nameUse == 'All') {
+                                $(".dataSyncAll").each(function(index) {
+                                    if ($(this).attr('data_general') != '1') {
+                                        $(this).toggleClass('dataSyncAll');
+                                        $(this).toggleClass('dataSyncDen');
+                                        $(this).attr('title', 'Allow Sync?');
+                                        $(this).attr('data_is_allow', Number('0'));
+                                    }
+                                });
+                                clickedU.attr('title', 'Allow All Syncs?');
+                            } else {
+                                clickedU.attr('title', 'Allow Sync?');
+                            }
+                        }
+                        
+                        if (r.syncAllowed === true) {
+                            clickedU.toggleClass('dataSyncDen');
+                            clickedU.toggleClass('dataSyncAll');
+                            if (nameUse == 'All') {
+                                $(".dataSyncDen").each(function(index) {
+                                    if ($(this).attr('data_general') != '1') {
+                                        $(this).toggleClass('dataSyncDen');
+                                        $(this).toggleClass('dataSyncAll');
+                                        $(this).attr('title', 'Deny Sync?');
+                                        $(this).attr('data_is_allow', Number('1'));
+                                    }
+                                });
+                                clickedU.attr('title', 'Deny All Syncs?');
+                            } else {
+                                clickedU.attr('title', 'Deny Sync?');
+                            }
+                        }
+                        
+                        clickedU.attr('data_is_allow', Number(r.syncAllowed));
+
+                        bootbox.hideAll();
+                        bootbox.alert(r.msg);
+                    },
+                    error: function (r) {
+                        bootbox.hideAll();
+                        bootbox.alert(r.msg);
+                    }
+                });
+            }
+        });
+    });
+    
+    $('.imgStatus').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            bootbox.confirm('Do you want to update the license <strong>' + nameUse + '</strong> database?',
+            function (result) {
+                if (result == true) {
+                    showLoadingDialog('Updating database.. Please wait for the until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                            }
+
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        },
+                        error: function (r) {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('License database already updated!');
+        }
+    });
+    
+    $('.dataS3Request').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var hasDevice = clickedU.attr('data_has_device');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            bootbox.confirm('Do you want to send a s3 full request to <strong>' + nameUse + '</strong> license?',
+            function (result) {
+                if (result == true && hasDevice) {
+                    showLoadingDialog('Sending s3 request.. Please wait a few seconds until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        data: {
+                            hasDevice : hasDevice
+                        },
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+                            }
+
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        },
+                        error: function (r) {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        }
+    });
+    
+    $('.dataS3WebRequest').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var hasDevice = clickedU.attr('data_has_device');
+
+        if (!clickedU.hasClass('imgDevices')) {
+            bootbox.confirm('Do you want to send an s3 web upload backup request to <strong>' + nameUse + '</strong> license?',
+            function (result) {
+                if (result == true && hasDevice) {
+                    showLoadingDialog('Sending web upload s3 backup  request.. Please wait a few seconds until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        data: {
+                            hasDevice : hasDevice
+                        },
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+                            }
+
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        },
+                        error: function (r) {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    $(".deleteLic").click(function() {
+        var subLic = $(this);
+        var pathUrl = subLic.attr('data_path');
+        var sub_name = subLic.attr('sub_name');
+        var oneParam = '';
+        bootbox.confirm('Do you want to delete the <strong>' + sub_name + '</strong> license?<br> This action will erase all data and can`t be undone..',
+        function (result) {
+            if (result == true) {
+                showLoadingDialog('Deleting license data.. Please wait..');
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        otherParam : oneParam
+                    },
+                    cache: false,
+                    success: function (r) { 
+                    if (r.result == '__OK__') {
+                            subLic.closest('tr').remove();
+                            bootbox.hideAll();
+                        }
+                        else {
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.hideAll();
+                        bootbox.alert(r.msg);
+                    }
+                });
+            }
+        });
+    });
+
+    $('.changeStatusLicense').click(function() {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        /*var typeUse = clickedU.attr('user_type');*/
+        var newStatus = (clickedU.attr('currentStatus') == 1) ? 2 : 1;
+
+        bootbox.confirm('Do you want to change the status for <strong>'+nameUse+'</strong> License?',
+        function(result) {
+            if(result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                    newStatus: newStatus
+                    },
+                    cache: false,
+                    success: function(r) {
+                        if(r.result=='__OK__') {
+                            clickedU.attr('currentStatus', r.newStatus);
+                            clickedU.closest('tr')
+                                .find('.txtLicenseStatus').text(r.txtNewLicenseStatus);
+                            console.log(newStatus);
+                            if(newStatus == 2){
+                                $(clickedU).removeClass('switchOn').addClass('switchOff');
+                            }else{
+                                $(clickedU).removeClass('switchOff').addClass('switchOn');
+                            }
+                        }
+                        else {
+                            bootbox.alert(r.msg)
+                        }
+                    },
+                        error: function(r) {
+                        bootbox.alert(r.msg)
+                    }
+                });
+            }
+        });
+    });
+
+    $('#isCallCenter').css('cursor','not-allowed');
+
+    var theSelectedId = 0;
+
+    var openHImage = '{{asset('/images/show_more.png')}}';
+    var closeHImage = '{{asset('/images/show_less.png')}}';
+
+    $('.historyAuc').click(function() {
+        $('.historyRow').fadeOut('slow');
+        $('.historyImage').attr('src',openHImage);
+    
+        var theId = $(this).attr('data_id');
+        var intFlag = 0;
+        
+        theSelectedId = theId;
+        
+        var isTdVisible = $('#historyTd_'+theId).is(":visible");
+        
+        if(!isTdVisible) {
+            $('#hiddenRow_'+theId).fadeIn('slow');
+            $('#historyTd_'+theId).fadeIn('slow');
+            intFlag = 1;
+        }
+        
+        var isTdVisibleTrue = $('#historyTd_'+theId).is(":visible");
+        
+        if(!isTdVisibleTrue) {
+            $('#imageHistory_'+theId).attr('src',closeHImage);
+            $('#hiddenRow_'+theId).append('<td id="historyTd_'+theId+'" colspan="{{'7'}}" style=""><img src="{{asset('/images/wait_small.gif')}}" alt="Loading..." title="Loading..." width="16" height="16"/>&nbsp;&nbsp;Loading...</td>');
+            $('#hiddenRow_'+theId).fadeIn('slow');
+        
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                url: '{{path('synchronization_and_push_license_history')}}',
+                data: 'license='+theId,
+                success: function(r) {
+                    if(r.result=='__OK__') {
+                        $('#historyTd_'+theId).html(r.data);
+                        $('#imageHistory_'+theId).attr('src',closeHImage);
+                    }
+                    else {
+                        bootbox.alert(r.data);
+                        $('#historyTd_'+theId).css('display','none');
+                    }
+                },
+                error: function() {
+                    bootbox.alert(r.data);
+                    $('#historyTd_'+theId).css('display','none');
+                }
+            })
+        }
+        else {
+            if(intFlag == 0) {
+                $('#hiddenRow_'+theId).fadeOut('slow');
+            }
+            
+            if(intFlag == 1) {
+                $('#imageHistory_'+theId).attr('src',closeHImage);
+            }
+        }
+    });
+    
+    $('#manually_send_push_apk_apkName').click(function() {
+        if($('.amt_errr').is(':visible')) {
+            $('.amt_errr').fadeOut('slow');
+        }
+    });
+
+    $('#manually_send_push_apk_licenses').autocomplete({   
+        source: '{{path('autocomplet_licenses_update_push_apk')}}',
+        minLength: 1,
+        appendTo: "#madreMia",
+        select: function( event, ui ) {
+            if(ui.item.label != 'Not Matched Results!') {
+                var aux = ui.item.label;
+                var id_aux = ui.item.id;
+                var aux_label_id = '';
+                string_dealers = aux+'<br>';
+
+                string_dealers_post = $('#theDs').val();
+                if(string_dealers_post == '') {
+                    string_dealers_post = ',';
+                }
+                var bool_flag = isDeal(string_dealers_post,ui.item.id);
+
+                if(bool_flag) {
+                    string_dealers_post += id_aux+',';
+                    $('#theDs').val(string_dealers_post);
+                    $('#titleDs').css('display','block');
+                    $('#titleDs').text('The Selected Licenses');
+                    $('#titleDs').append('<br><br>');
+
+                    var html = '<div style="width: 100%; max-height: 35px; margin-top: 1px; float: top;" id="thedeal_'+ui.item.id+'" class="unDeal" data_d="'+ui.item.value+'"><label style="float: left; width: 92%;">'+string_dealers+'</label><img style="float: right; margin-top: 3px; cursor: pointer; margin-right: 2px;" onclick="javascript: eraseDeal('+ui.item.id+');" src="{{ asset('/images/SmallCancel2.png') }}" width="16px" height="16px"/><br></div>';
+
+                    $('#selected_dealers').append(html);
+
+                    $('#theDealers').css('display','block');
+                    event.preventDefault(); 
+                    $(this).val('');  
+                } else {
+                    bootbox.alert('The selected license is already listed for this APK update!');
+                    event.preventDefault(); 
+                    $(this).val('');
+                }
+            } else {
+                event.preventDefault();
+                $(this).val('');
+            }
+        },
+    });
+    
+    var devicesWarningClicked = 0;
+    
+    $('.devicesWarning').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameUid = clickedU.attr('license_uid');
+        var namePush = clickedU.attr('license_push');
+
+        if (devicesWarningClicked == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the bound with the server device in <strong>' + nameUse + '</strong> License with <strong>' + nameUid + '</strong> UID?';
+        
+            if (namePush != '') {
+                bootBoxMsg = 'Do you want to reset the bound with the server device in <strong>' + nameUse + '</strong> License with <strong>' + nameUid + '</strong> UID and <strong>' + namePush + '</strong> push key?';
+            } 
+          
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    devicesWarningClicked = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the Android server already released!');
+        }
+    });
+    
+    var resendUnansweredPush = 0;
+    
+    $('#generalInfoTable').on("click", '.retrySync', function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('data_name');
+ 
+        if (resendUnansweredPush == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the records in this synchronization of <strong>' + nameUse + ' (' + nickUse + ') </strong> license to send them again?';
+        
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    resendUnansweredPush = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                var timeToClose = 0;
+                                bootbox.alert(r.msg);
+                                
+                                setInterval(function() {
+                                timeToClose++;
+
+                                if(timeToClose == 3) {
+                                    location.reload();
+                                }
+
+                                },1000);
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the Android server already released!');
+        }
+    });
+ 
+    var resendPushManually = 0;
+
+    $('#generalInfoTable').on("click", '.pushManually', function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('data_name');
+
+        if (resendPushManually == 0) {
+
+            var bootBoxMsg = 'Do you want to send manually this push for <strong>' + nameUse + ' (' + nickUse + ') </strong> license again?';
+
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    resendPushManually = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                var timeToClose = 0;
+                                bootbox.alert(r.msg);
+
+                                setInterval(function() {
+                                timeToClose++;
+
+                                if(timeToClose == 3) {
+                                    location.reload();
+                                }
+
+                                },1000);
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Push already send!');
+        }
+    });
+    
+    var pingSendTo = 0;
+    
+    $('.checkPing').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameNick = clickedU.attr('license_nick');
+        var nameUid = clickedU.attr('license_uid');
+        clickedU.attr('disabled','disabled');
+       
+        if (pingSendTo == 0) {
+            
+            var bootBoxMsg = 'Do you want to send a ping to server device in <strong>' + nameUse + '</strong> License?';
+        
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    pingSendTo = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        data: {
+                            nickname: nameNick,
+                            uid: nameUid
+                        },
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                bootbox.hideAll();
+                                if (r.result == '__OK__' && r.idpush > 0) {
+                                    secondPathUrl = r.url;
+
+                                    showLoadingDialog(r.msg);
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: secondPathUrl,
+                                        dataType: 'json',
+                                        data: {
+                                            nickname: nameNick,
+                                            push: r.idpush
+                                        },
+                                        cache: false,
+                                        success: function (re) {
+                                            clickedU.addClass('imgDevices');
+                                            bootbox.hideAll();
+
+                                            bootbox.alert(re.msg);
+                                        },
+                                        error: function (re) {
+                                            bootbox.alert(re.msg);
+                                            clickedU.removeAttr('disabled');
+                                        }
+                                    });
+                                } else {
+                                    bootbox.alert(re.msg);
+                                    clickedU.removeAttr('disabled');
+                                }
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                                clickedU.removeAttr('disabled');
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert('Unknow error, please try again!');
+                            clickedU.removeAttr('disabled');
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Ping to Android server already sended without response!');
+        }
+    });
+    
+    var databaseRestoration = 0;
+    
+    $('.dataFullRestoration, .dataPartialRestoration').click(function () {
+        var clickedU = $(this);
+        var nameUse = clickedU.attr('license_name');
+        clickedU.attr('disabled','disabled');
+       
+        if (databaseRestoration == 0) {
+            
+            databaseRestoration = 1;
+            var bootBoxMsg = 'The database of <strong>' + nameUse + '</strong> license require a restoration to operate properly, please choose which restoration do you want to do';
+        
+            bootbox.dialog({
+                title: 'Database restoration required!',
+                message: bootBoxMsg,
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel',
+                        className: 'btn-default'
+                    },
+                    primary: {
+                        label: '<i class="fa fa-check"></i> Testing Restoration',
+                        className: 'btn-primary',
+                        callback: function (result) {
+                            ajaxFordDataBaseRestoration(databaseRestoration, clickedU, 1);
+                        }
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Regular Restoration',
+                        className: 'btn-success',
+                        callback: function (result) {
+                            ajaxFordDataBaseRestoration(databaseRestoration, clickedU, 2);
+                        }
+                    }
+                }
+            });
+        } else {
+            bootbox.alert('Database restoration already done!');
+        }
+    });
+     
+{% endblock %}
+    
+{% block functions_javascript %}
+
+    function checkFileSize(e) {
+        e.preventDefault();
+
+        var theObj = null;
+        var docuField = null;
+        var textInField = '';
+
+        $('.joder').each(function( index ) {
+            docuField = $(this);
+            textInField = $(this).val();
+
+            {#alert(textInField);#}
+            if(docuField.is(':visible')) {
+                theObj = docuField;
+            }
+        });
+
+        if(theObj != null) {
+            if(textInField != '') {
+                {#alert(theObj[0].files[0].size);#}
+                switch(textInField.substring(textInField.lastIndexOf('.') + 1).toLowerCase()) {
+                    case 'apk':
+                        break;
+                    default:
+                        theObj.val('');
+                        $('.amt_errr')
+                            .text('Invalid File, Please Upload An APK File (example: aplication.apk)')
+                            .fadeIn('fast');
+                        return;
+                }
+
+                if(theObj[0].files[0].size > 12000000) {
+                    $('.amt_errr')
+                        .text('The File Exceeds 12MB Maximum limit')
+                        .fadeIn('fast');
+                } else {
+                   $('#manually_send_push_apk_installAfterDownload').removeAttr('disabled');
+                   $('#manually_send_push_apk_installAfterDownload').parent().removeAttr('disabled');
+                   $('#update_apk_push').submit();
+                   $('#theButton').attr('disabled', 'disables');
+                }
+            } else {
+                $('.amt_errr')
+                    .text('Empty File, Please Upload An APK File (example: aplication.apk)')
+                    .fadeIn('fast');
+            }
+        }
+    }
+    
+    function eraseDeal(deal_id) {
+        var d_name = $( '#thedeal_'+deal_id ).attr('data_d');
+        bootbox.confirm('Are you sure to delete "'+d_name+'" from the licenses list on which this APK update would be sent?', function(result) {
+            if(result == true) {
+                var theDeals = $('#theDs').val();
+                var res = theDeals.replace(''+deal_id,''+0);
+                $('#theDs').val(res);
+
+                $( '#thedeal_'+deal_id ).remove();
+
+                var contains = $(".unDeal").is(':visible');
+
+                if(!contains) {
+                    $('#titleDs').text('No Licenses Selected!');
+                }
+            }        
+        });
+    }
+    
+    function isDeal(text,deal_id) {
+        var string_id = ''+deal_id;
+        
+        if(text.indexOf(','+string_id+',') == -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    function ajaxFordDataBaseRestoration(databaseRestoration, clickedU, restoMode) {
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var restorationStatus = clickedU.attr('data_restoration');
+    
+        clickedU.addClass('imgDevices');
+        databaseRestoration = 0;
+        
+        pathUrl = pathUrl.replace(/__DATA__/, restoMode);
+
+        var bootBoxMsg = 'Doing database restoration for <strong>' + nameUse + '</strong> license, this process may take a couple of minutes, please wait...';
+        
+        showLoadingDialog(bootBoxMsg);
+
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            dataType: 'json',
+            cache: false,
+            success: function (r) {
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+                databaseRestoration = 0;
+                
+                if (r.result != '__OK__') {
+                    clickedU.removeAttr('disabled');
+                }
+                
+                window.location.reload(true);
+            },
+            error: function (r) {
+                bootbox.alert('Unknow error, please try again!');
+                clickedU.removeAttr('disabled');
+            }
+        });
+    }
+    
+    function showLoadingDialog(msg) {
+        bootbox.hideAll();
+        bootbox.dialog({
+            message: '<p>' + msg + '</p><p style="margin-top: 10px; text-align: center; margin-bottom: -25px;"><i class="fa fa-spin fa-spinner" style="font-size:48px; margin-right: 5%"></i></p>',
+            buttons: {
+                success: {
+                    label: "OK",
+                    className: "btn-primary",
+                    callback: function () {
+
+                    }
+                }
+            }
+        });
+    }
+    
+{% endblock %}

@@ -1,0 +1,34 @@
+Creating and using -> /var/www/html/public/uploads/android/data/runDatabaseRestorationCommands0.txt at '11/04/2018 17:38:43'Yeah! lest do itThe connection options -> {"dbname":"lvl_jetblack1_jetblkdook_1","user":"root","password":"aaa","host":"level-db","driver":"pdo_mysql"}Connection obtainedCount -> 1Comand 'level:schema:restore_backup' result -> Beginning the database restoration command...
+Modification for a test user requested for a license with an associated device ...
+This modification will be ignored by the synchronization...
+Command running for schema: lvl_jetblack1_jetblkdook_1 license
+Configuration found: 1
+Devices count: 2
+New device saved!
+New device saved!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Configuration setted!
+Initial Data Configured!
+No user found for testing, finishing command...
+Using -> /var/www/html/public/uploads/android/data/runDatabaseRestorationCommands0.txt at '01/20/2019 21:07:30'Yeah! lest do itThe connection options -> {"dbname":"lvl_jetblack1_elcerduque_1","user":"root","password":"aaa","host":"level-db","driver":"pdo_mysql"}Connection obtainedCount -> 1Comand 'level:schema:restore_backup' result -> Beginning the database restoration command...
+Command running for schema: lvl_jetblack1_elcerduque_1 license
+Configuration found: 1
+Devices count: 2
+New device saved!
+New device saved!
+Device deleted for data integrity!
+Device deleted for data integrity!
+Configuration setted!
+Initial Data Configured!
+Testing user found, user: omt pass: 123
+Finishing command...
+

@@ -1,0 +1,168 @@
+{% block locationsBlock %}
+
+    <div class="form-group">
+        <label>City</label><em>*</em> 
+        <span><input class="form-control" required="required" maxlength="50" type="text" id="cityBlock" name="city" {% if entity.city is defined and entity.city is not empty %}value="{{entity.city}} ({{entity.city.ciState}})"{% else %}placeholder="City"{% endif %}/></span>
+        <div class="help-block alert-danger"></div>
+    </div>
+    <input type="hidden" id="pathCities" name="cityx" {% if entity.city is defined and entity.city is not empty %}value="{{entity.city.id}}"{% else %}value=""{% endif %} xpath="{{path('level_licensor_country_cities_autocomplete', {'cId': 1})}}"/>
+    <div class="form-group">
+        <label>State</label><em>*</em>
+        <span id="theStatesx">
+            <select class="form-control" required="required" name="state" id="stateBlock">
+                <option value="">Select..</option>
+                {% if states is defined and states is not empty %}
+                    {% for state in states %}
+                        {% if state.stId is defined and entity.city is not empty and entity.city.ciState.stId == state.stId %}
+                            <option value="{{entity.city.ciState.stId}}" selected="selected">{{entity.city.ciState.stName}}</option>
+                        {% else %}
+                            <option value="{{state.stId}}">{{state.stName}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label>Country</label><em>*</em>
+        <span>
+            <select class="form-control" required="required" name="country" id="countryBlock">
+                {% if countries is defined and countries is not empty %}
+                    {% for country in countries %}
+                        {% if country.coId is defined and entity.city is not empty and entity.city.ciState.stCountry.coId == country.coId %}
+                            <option value="{{entity.city.ciState.stCountry.coId}}" selected="selected">{{entity.city.ciState.stCountry.coName}}</option>
+                        {% else %}
+                            <option value="{{country.coId}}">{{country.coName}}</option>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </span>
+    </div>
+    {% if entity.zipcode is defined %} 
+        <div class="form-group">
+            <label>Zip Code</label><em>*</em>
+            <span><input class="form-control" required="required" maxlength="6" type="text" id="zipcodeBlock" name="zipcode" {% if entity.zipcode is defined and entity.zipcode is not empty %}value="{{entity.zipcode}}"{% else %}placeholder="55555"{% endif %}/></span>
+            <div class="help-block alert-danger"></div>
+        </div>
+    {% endif %}
+    
+{% endblock %}
+
+{% block locationsScriptBlock %}
+    
+{#    <script>#}
+    
+    function states(country_id) {
+        $.ajax({
+                type: 'POST',
+                dataType:'json',
+                url: '{{path('level_licensor_country_states_select')}}',
+                data:{
+                    country_id: country_id
+                },
+                success:function(response){
+                    $("#stateBlock option").remove();
+                    if(response.status == 1){
+                        $("#stateBlock").append('<option value="">Select...</option>');
+                        $.each(response.states, function(key, value){
+                            $("#stateBlock").append('<option value="'+key+'">'+value+'</option>');
+                        });
+                    }else{
+                        $("#stateBlock").append('<option value="">'+response.states+'</option>');
+                    }
+                    removeReadOnly();
+                }
+            });
+        return;
+    }
+    
+    function removeReadOnly() {
+        if($("#stateBlock").is('[readonly=""]')){
+            $("#stateBlock").attr("readonly",false);
+        }
+    }
+    
+    var theAutocompletePath = $('#pathCities').attr('xpath'); 
+    
+    $('#countryBlock').change(function() {
+    {# city field reset #}
+        $('#cityBlock').val('');
+    {# get states by country #}
+        var country_id = $('#countryBlock').val();
+        if(country_id != '') {
+    {# llamado a la función que carga los estados por país #}
+            states(country_id);
+            var structurePath = '{{path('level_licensor_country_cities_autocomplete', {'cId': '__DATA__'})}}';
+            theAutocompletePath = structurePath.replace(/__DATA__/, country_id);
+            $('#cityBlock').autocomplete( {   
+                source: theAutocompletePath,
+                minLength: 1,
+                select: function( event, ui ) {
+                    if(ui.item.label != 'Not Matched Results!' && ui.item.label != 'Error: Conutry Not Found!') {
+                        var aux = ui.item.label;
+                        var id_aux = ui.item.id;
+                        var aux_label_id = '';
+
+                        $('#pathCities').val(id_aux);
+                        $.ajax({
+                            type: 'POST',
+                            cache: false,
+                            dataType: 'json',
+                            url: '{{path('level_licensor_country_states_select')}}',
+                            data: {idco: country_id, idci: id_aux},
+                            success: function(r) {
+                                if(r.result == '__OK__') {
+                                    if(r.manual == '__NO__') {
+                                        $('#theStatesx').html(r.html);
+                                    }
+                                    else {
+                                        
+                                    }
+                                }
+                            },
+                            error: function() {
+
+                            }
+                        });
+                    }
+                    else {
+                        event.preventDefault();
+                        $(this).val('');
+                    }
+                },
+            }); 
+            
+        } else {
+            $("#stateBlock option").remove();
+            $("#stateBlock").append('<option value="">Select...</option>');
+            $("#cityBlock").autocomplete("destroy");
+            removeReadOnly();
+        }
+        
+    });
+     
+    $('#cityBlock').keyup(function(event) { 
+        var keyPressed = event.keyCode;
+        var cityPVal = $('#pathCities').val();
+
+        var autoText = '';
+        autoText = $(this).val();
+        if(autoText == '' || ((keyPressed != 13 && keyPressed != 9) && ($.isNumeric(cityPVal)))) {
+            removeReadOnly();
+            
+            $('#cityBlock').val('');
+            $('#pathCities').val('');
+            $('#countryBlock').change();
+        }
+    });
+    
+    {% if not (entity.city is defined and entity.city is not empty) %}
+    
+        $('#countryBlock').val(1);
+        $('#countryBlock').change();
+    
+    {% endif %}
+    
+{% endblock %}

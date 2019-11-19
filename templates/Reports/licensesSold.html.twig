@@ -1,0 +1,78 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'Reports'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Licenses Sold</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="{{path('reports')}}"><i class="fa fa-list"></i> Reports</a></li>
+                    <li class="active"><i class="fa fa-list"></i> Licenses Sold</li>
+                </ol>
+            </div>
+
+            <div class="col-sm-12">
+                <form class="well nlblk cien" action="{{path('report_licenses_sold')}}" method="POST" >
+                        <label class="col-sm-3">Select Range Dates To Search Licenses Sold</label>
+                            <div class="datetimepicker-maxdate-1 col-sm-2">
+                                <input type="text" value="{{ dates['startDate']|date("m/d/Y") }}" name="startDate" class="form-control" autocomplete="off"/>
+                            </div>
+                            <div class="datetimepicker-maxdate-2 col-sm-2">
+                                <input type="text" value="{{ dates['endDate']|date("m/d/Y") }}" name="endDate" class="form-control" autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-5">
+                                <input class="btn btn-primary" type="submit" value="search"/>
+                            </div>
+                </form>
+            </div>
+
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                    <thead>
+                        <tr>
+                            <th>Restaurant Name</th>
+                            <th>Date</th>
+                            <th>Price Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set total = 0 %}
+                        {% for entity in entities %}
+                            {% set total = total + entity.lsTotalPrice %}
+                            <tr>
+                                <td>{{ entity.lsRestaurantName|title }}</td>
+                                <td>{{ entity.lsDate|date('m/d/Y') }}</td>
+                                <td>$ {{ entity.lsTotalPrice }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="3">Data Not Found</td></tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="2"><strong>Total</strong>
+                            <td ><strong>$ {{ total }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block scripts %}
+{#<script>#}
+var today = new Date();
+$(".datetimepicker-maxdate-1").datetimepicker({
+    pickTime: false,
+    maxDate: today.yyyymmdd()
+});
+$(".datetimepicker-maxdate-2 input").click(function(){
+    var minDate = $(".datetimepicker-maxdate-1 input").val();
+    minDate = new Date(minDate);
+    minDate = minDate.yyyymmdd();
+    console.log(minDate)
+    $(".datetimepicker-maxdate-2").datetimepicker({
+        pickTime: false,
+        minDate: minDate,
+        maxDate: today.yyyymmdd()
+    });
+});
+    {% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'Default/mainFancy.html.twig' %}
+{% block title 'Restaurant Loyalty Configuration' %}
+{% set disabledUpdatePoint = false %}
+    {% block content %}
+        <h1 style="margin-left: 20px; margin-top: -10px; margin-bottom: 15px;">Restaurant Loyalty Configuration</h1>
+        <label id="localPtrValue" style="float:right; color: #505050; {% if (entities.useLocalPoints == false and entities.useGlobalPoints == true) or (entities.useLocalPoints == false and entities.useGlobalPoints == false) %} display:none; {% endif %}">Local Points Value: 1pt = {{localRatio|number_format(2)}}$</label>
+        <label id="globalPtrValue" style="float:right; color: #505050; {% if entities.useLocalPoints == true and entities.useGlobalPoints == false %} display:none; {% endif %}">Global Points Value: 1pt = {{globalRatio|number_format(2)}}$</label>
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Configuration Points</a></li>
+            <li id="pointConfLocal" {% if entities.useLocalPoints == true and entities.useGlobalPoints == false %} pointConfLocal="true" {% elseif entities.useLocalPoints == false and entities.useGlobalPoints == false  %} pointConfLocal= '0' {% else  %}  pointConfLocal="false" {% endif %} >
+                <a id="pointConfLocal2" href="#"><label>Configuration Points Local</label></a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active"> 
+                <form name="configLoyalty" id="loyaltyConf" action="{{path('update_loyalty_config')}}" method="post" class="form-horizontal">
+                    <table class="table table-bordered tablesorter records_list">
+                        <thead>
+                        <tr class="valign halign">
+                            <th>Local / Global Points</th>
+                            {% if entities.useLocalPoints == false and entities.useGlobalPoints == true %}
+                                <th>Give Points In Purchases With Points?</th>
+                            {% endif %}
+                            <th>Minimum Exchange of points</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>    
+                                {{ form_widget(form.id,{'attr':{'class':'form-control  input-form', 'value':entities.id} }) }}
+                                {{ form_widget(form.license,{'attr':{'class':'form-control  input-form', 'value':entities.license.id} }) }}
+                                <td>
+                                    <div class="container-personalizer">
+                                        <ul class="list">
+                                            <li class="list__item">
+                                                <input type="radio" class="radio-btn" name="restaurant_loyalty_config[typePoint]" {% if entities.useLocalPoints == true and entities.useGlobalPoints == false  %} checked {% endif %}  value="local" id="a-opt" />
+                                                <label for="a-opt" class="label">Local</label>
+                                            </li>
+                                            
+                                            <li class="list__item">
+                                                <input type="radio" class="radio-btn" name="restaurant_loyalty_config[typePoint]" {% if entities.useGlobalPoints == true and entities.useLocalPoints == false %} checked {% endif %}  value="global" id="b-opt" />
+                                                <label for="b-opt" class="label">Global</label>
+                                            </li>
+                                            
+                                            <li class="list__item">
+                                                <input type="radio" class="radio-btn" name="restaurant_loyalty_config[typePoint]" {% if entities.useGlobalPoints == false and entities.useLocalPoints == false %} checked {% endif %}   value="desactivados" id="c-opt" />
+                                                <label for="c-opt" class="label">Desactivate points</label>
+                                            </li>	
+                                        </ul>
+                                    </div>
+                                </td>
+                                {% if entities.useLocalPoints == false and entities.useGlobalPoints == true %}
+                                    {% set disabledUpdatePoint = true %}
+                                    <td>                                  
+                                        <div class="col-xs-offset-2 col-xs-4" style="margin-left: 139px;">                                                
+                                            {{ form_widget(form.earnPointsInPurchaseWithPoints, {'attr': {'class':'col-sm-12','data-toggle':'toggle','data-off':'No','data-on':'Yes','data-onstyle':'primary','data-offstyle':'default'} }) }}                                                      
+                                        </div>
+                                    </td>
+                                {% endif %}
+                                <td>
+                                    <div class="col-xs-offset-2 col-xs-6">
+                                        {{ form_widget(form.minimumPointAmountToExchange,{'attr':{'class':'form-control  input-form',  'readonly':disabledUpdatePoint, 'value':entities.minimumPointAmountToExchange} }) }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                                    
+                    <div class="form-group text-right" style="margin-top: 20px; margin-right: 0px;">
+                        <label id="notify_msg" style="float: left; margin-left: 210px; margin-top: 10px;">                            
+                        </label>
+                        <div id="modificationDiv">
+                            <button id="cancelbtn" class="btn btn-danger" >Cancel</button>
+
+                            <button id="update_loyalty_config" class="btn btn-primary" type="submit" >Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="menu1" class="tab-pane fade">                
+            </div>
+        </div>
+{% endblock %}
+
+{% block scripts %}
+    {#<script>#}
+    $('#pointConfLocal').click(function () {
+        var confiPointLocal = $(this).attr('pointConfLocal');
+        if (confiPointLocal !== "true") {
+            $("#notify_msg").fadeIn("slow");
+            if (confiPointLocal === "false") { 
+                $("#notify_msg").text('Please desactivate the global points.').css("color", "red");
+            } else {
+                $("#notify_msg").text('You must have activated the local points').css("color", "red");
+            }
+            timeToClose = 0;
+            setInterval(function() {
+            timeToClose++;
+            if(timeToClose == 2) {
+                $("#notify_msg").fadeOut("slow");
+            }
+            },2200);
+        }else{
+            $("#pointConfLocal2").attr('href','{{ path('level_licensor_update_loyalty_configuration',{'id':entities.license.id, 'type': 2}) }}');
+        }
+    });
+    
+    $(function() {
+        $('#restaurant_loyalty_config_useLocalPoints').change(function() {
+            if ($(this).prop('checked') == false) {
+                $("#localPtrValue").fadeOut( 800, function() {
+                    $("#globalPtrValue" ).fadeIn( 800 );
+                });
+            } else {
+                $("#globalPtrValue").fadeOut( 800, function() {
+                    $("#localPtrValue" ).fadeIn( 800 );
+                });
+            }
+        });
+    });
+
+    $('#cancelbtn').click(function () {
+        window.parent.$.fancybox.close();
+    });
+    
+    {% if toClose is defined and toClose %}
+        $("#notify_msg").text('Loyalty configuration updated!').css("color", "green");
+        timeToClose = 0;
+        setInterval(function() {
+        timeToClose++;
+
+        if(timeToClose == 2) {
+            $("#notify_msg").fadeOut("slow");
+        }
+
+        },2200);
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% if is_granted('ROLE_SUPER_ADMIN') or (app.session is defined and app.session.get('activeModules') is not empty) %}
+    <ul class="nav navbar-nav side-nav" id="panelLeft">
+        <li class="{% if menu is defined and menu == 'dashboard' %}active{% endif %} icomn1"><a href="{{path('adspace_dashboard')}}">&nbsp;&nbsp;Dashboard</a></li>
+        {#{% if is_granted('ROLE_SUPER_ADMIN') %}#}
+        {#<li class="{% if menu is defined and menu == 'databases'%}active{% endif %} icomn5 dropdown"><a href="{{path('index_management')}}">&nbsp;&nbsp;Management</a></li> cornflowerblue #}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+{#                <li class="{% if menu is defined and menu == 'databases'%}active{% endif %} icomn5 dropdown">#}
+{#                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">&nbsp;&nbsp;Management <b class="caret"></b></a>#}
+{#                    <ul class="dropdown-menu" {% if menu is defined and menu == 'databases' %}style="display: block;"{% endif %}>#}
+{#                        <li><a href="{{ path('index_databases_list') }}" {% if submenu is defined and submenu == 'databases_list' %} class="active"{% endif %}>&nbsp;&nbsp;Licenses Databases</a></li>#}
+{#                        <li><a href="{{ path('adpoint_management_list') }}" {% if submenu is defined and submenu == 'general_imformation' %} class="active"{% endif %}>&nbsp;&nbsp;AdPoint Information</a></li>#}
+{#                        <li><a href="{{ path('crons_management') }}" {% if submenu is defined and submenu == 'crons_management' %} class="active"{% endif %}>&nbsp;&nbsp;Crons Management</a></li>#}
+{#                        <li><a href="{{ path('iud_pushykey') }}" {% if submenu is defined and submenu == 'uids_and_keys' %} class="active"{% endif %}>&nbsp;&nbsp;UIDs And Pushy Keys</a></li>#}
+{#                        <li><a href="{{ path('new_update_push_apk', {'theReq': 0}) }}" {% if submenu is defined and submenu == 'send_apk_push' %} class="active"{% endif %}>&nbsp;&nbsp;Send APK Push Update</a></li>#}
+{#                        <li><a href="{{ path('send_custom_push_notification', {'theReq': 0}) }}" {% if submenu is defined and submenu == 'send_custom_notification_push' %} class="active"{% endif %}>&nbsp;&nbsp;Send Notification Push</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+            {% endif %}
+        {#{% endif %}#}
+        {#<li class="{% if menu is defined and menu == 'licenses'%}active{% endif %} icomn4"><a href="{{path('adpoint_reports')}}">&nbsp;&nbsp;Reports</a></li>#}
+        {% if (constant('App\\Entity\\Module::MODULE_LICENSOR_ACCOUNT') in app.session.get('activeModules')) or is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="{% if menu is defined and menu == 'accounts'%}active{% endif %} icomn3"><a href="{{path('adpoint_accounts')}}">&nbsp;&nbsp;Accounts</a></li>
+        {% endif %}
+        {% if (constant('App\\Entity\\Module::MODULE_LICENSOR_COMPANY') in app.session.get('activeModules')) or is_granted('ROLE_SUPER_ADMIN') %}
+            <li class="{% if menu is defined and menu == 'companies'%}active{% endif %} icomn2"><a href="{{path('adpoint_companies')}}">&nbsp;&nbsp;Resellers</a></li>
+        {% endif %}
+    </ul>
+{% endif %}

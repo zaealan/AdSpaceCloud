@@ -1,0 +1,85 @@
+{# Plantilla usada para almacenar los macros utilizados en los twigs de este bundle #}
+
+{% macro buttonsItemsPerPage(paginator, url, params, orderBy, paramsUrl)%}
+    <div class="col-lg-6" style="text-align: right; margin-bottom: 3px;">
+        View 
+        {% for range in paginator.pageRanges%}
+            {#validamos si se envian parametros adicionales a la url base, de lo contrario solo ponemos los items por pagina#}
+            {% set normalParams = {'itemsPerPage': range} %}
+            {%if paramsUrl is not empty%}
+                {% set normalParams = normalParams|merge(paramsUrl) %}
+            {%endif%}
+            <a href="{{ path(url, normalParams)}}{{ params }}{{ orderBy }}" {%if range == paginator.itemsPerPage%} style="text-decoration: underline;"{%endif%}>{{range}}</a>{%if loop.last == false %}&nbsp;|&nbsp;{%endif%}
+        {%endfor%}
+        {% set normalParams = {'itemsPerPage': paginator.totalItems} %}
+        {%if paramsUrl is not empty%}
+            {% set normalParams = normalParams|merge(paramsUrl) %}
+        {%endif%}
+        {% if paginator.totalItems > 0 %}
+        &nbsp;|&nbsp;<a href="{{ path(url, normalParams)}}{{ params }}{{ orderBy }}" {%if paginator.totalItems == paginator.itemsPerPage%} style="text-decoration: underline;"{%endif%}>All</a>
+        {% endif %}
+    </div>
+{%endmacro%}
+
+{% macro constructPaginator(paginator, url, params, orderBy, text, paramsUrl)%}
+        <div class="col-lg-6" style="height: 50px; padding-top: 12px;">
+            {% if paginator.totalItems > 0%}
+                {% if (paginator.currentPage * paginator.itemsPerPage) <= paginator.totalItems%}
+                    {% set itemsOnPage = paginator.currentPage * paginator.itemsPerPage%}
+                {%else%}
+                    {% set itemsOnPage = paginator.totalItems %}
+                {%endif%}
+            Showing {{(paginator.previousPage * paginator.itemsPerPage)+1}} to <span class="itemsShowing">{{itemsOnPage}}</span> of <span class="itemsShowing">{{paginator.totalItems}}</span> {{text|default('entries')}}
+            {%endif%}
+        </div>
+        <div class="col-lg-6" style="text-align: right;">            
+            {% if paginator.totalItems > paginator.itemsPerPage %}
+                <ul class="pagination" style="margin-top: 8px;">
+                    {% if paginator.currentPage > 1 %}
+                        {% set normalParams = { 'page': paginator.previousPage, 'itemsPerPage': paginator.itemsPerPage} %}
+                        {%if paramsUrl is not empty%}
+                            {% set normalParams = normalParams|merge(paramsUrl) %}
+                        {%endif%}
+                        <li><a href="{{ path(url, normalParams) }}{{ params }}{{ orderBy }}">Previous</a></li>
+                    {% else %}
+                        <li class="disabled"><a  href="javascript: void(0);">Previous</a></li>
+                    {% endif %}
+                    {% for page in paginator.minPageInRange..paginator.maxPageInRange %}
+                        {% if page == paginator.currentPage %}
+                            <li class="active"><a href="">{{ page }}</a></li>
+                        {% else %}
+                            {% set normalParams = { 'page': page, 'itemsPerPage': paginator.itemsPerPage } %}
+                            {%if paramsUrl is not empty%}
+                                {% set normalParams = normalParams|merge(paramsUrl) %}
+                            {%endif%}
+                            <li><a href="{{ path(url, normalParams) }}{{ params }}{{ orderBy }}">{{ page}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if paginator.currentPage < paginator.lastPage %}
+                        {% set normalParams = { 'page': paginator.nextPage, 'itemsPerPage': paginator.itemsPerPage }%}
+                        {%if paramsUrl is not empty%}
+                            {% set normalParams = normalParams|merge(paramsUrl) %}
+                        {%endif%}
+                        <li><a href="{{ path(url, normalParams)}}{{ params }}{{ orderBy }}">Next</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="javascript: void(0);">Next</a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+{%endmacro%}
+
+    
+{% macro textItemsOnList(paginator, text) %}
+    <div class="col-lg-6" >
+        {% if paginator.totalItems > 0 %}
+            {% if (paginator.currentPage * paginator.itemsPerPage) <= paginator.totalItems %}
+                {% set itemsOnPage = paginator.currentPage * paginator.itemsPerPage %}
+            {% else %}
+                {% set itemsOnPage = paginator.totalItems %}
+            {% endif %}
+        Showing {{(paginator.previousPage * paginator.itemsPerPage)+1}} to <span class="itemsShowing">{{itemsOnPage}}</span> of <span class="itemsShowing">{{paginator.totalItems}}</span> {{text|default('entries')}}
+        {% endif %}
+    </div>
+{% endmacro %}
+

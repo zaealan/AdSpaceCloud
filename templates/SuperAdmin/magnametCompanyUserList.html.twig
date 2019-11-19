@@ -1,0 +1,101 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'User Managment'%}
+{% block content %}
+    <div class="row numpad">
+        <div class="col-lg-12">
+            <h1>User List</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}">
+                        <i class="fa fa-home"></i> Dashboard</a></li>
+                <li class="active"><i class="icon-file-alt"></i> User Managment List</li>
+                <a class="btn btn-primary pull-right bottomnew" href="{{ path('user_new') }}">New User</a>
+            </ol>
+            {% include 'Default/messageNotification.html.twig' %}
+        </div>
+            
+        <div class="col-lg-12 table-responsive">
+            <table class="table table-bordered table-hover tablesorter records_list">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Creation Date</th>
+                        <th>Status</th>
+                        <th>User Parent</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.usName|title }}</td>
+                            <td>{{ entity.usLastName|title }}</td>
+                            <td>{{ entity.usEmail }}</td>
+                            <td>{{ entity.usPhoneNumber }}</td>
+                            <td>{% if entity.usDateCreated %}{{ entity.usDateCreated|date('m/d/Y') }}{% endif %}</td>
+                            <td>{{ entity.getTextStatus }}</td>
+                            <td>{{ entity.usUserParent|title }}</td>
+                            <td>
+                                <ul>
+                                    <a class="editUser" href="{{path('user_edit', { 'id': entity.id })}}">
+                                        <img src="{{ asset('/images/editts.png') }}" alt="Edit User" title="Edit User"/>
+                                    </a>&nbsp;
+                                    <a title="Edit Privileges" href="{{path('super_managment_user_privileges',{ 'id':entity.id })}}"><img src="{{ asset('/images/lock.png ')}}" width="30" height="30" alt="Edit Privileges" title="Edit Privileges"/></a>&nbsp;
+                                    <a class="deleteUser" href="javascript:"
+                                       {#{% if vendor.vendorType == constant('ePoliceBook\\BackendBundle\\Entity\\Buyer::VENDOR_TYPE_BUYER') %}#}
+                                       data_path="{{path('user_delete',  {'id': entity.id})}}"
+                                       user_type="{{entity.getTextType()}}"
+                                       user_name="{{entity.usName~' '~entity.usLastName}}"                                          
+                                       {#{% endif %}#}>
+                                        <img src="{{ asset('/images/deletex.png ')}}" alt="Delete" title="Delete"/>
+                                    </a>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    
+        $('.deleteUser').click(function () {
+            var clickedU = $(this);
+            var pathUrl = clickedU.attr('data_path');
+            var nameUse = clickedU.attr('user_name');
+            var typeUse = clickedU.attr('user_type');
+            var oneParam = 1;
+
+            bootbox.confirm('Do you want to delete the <strong>' + nameUse + '</strong> ' + typeUse + ' user?',
+                function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            type: 'POST',
+                            url: pathUrl,
+                            dataType: 'json',
+                            data: {
+                                otherParam :oneParam
+                            },
+                            cache: false,
+                            success: function (r) {
+                                if (r.result == '__OK__') {
+                                    clickedU.closest('tr').remove();
+                                }
+                                else {
+                                    bootbox.alert(r.msg)
+                                }
+                            },
+                            error: function (r) {
+                                bootbox.alert(r.msg)
+                            }
+                        });
+                    }
+                });
+        });
+
+{% endblock %}
+

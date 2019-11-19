@@ -1,0 +1,712 @@
+{% extends 'Default/main.html.twig' %}
+{% import 'Default/filters.html.twig' as filters  %}
+{% block title 'Licenses'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Licenses List By Account ({{account|title}})</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Accounts List</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Licenses By Account</li>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+
+            <div class="col-lg-12">
+                <form method="post" action="{{ path('adpoint_points_list',  {'accountId': account.id}) }}">
+                    <div class="jumbotron sinpad">
+                        <div class="containerSearchFields">     
+                        {{ form_widget(form.alLicenseUsername,{'attr':{'placeholder':'Nickname', 'class':'form-control pull-left input-form', 'value':search.alLicenseUsername|default('')} }) }} 
+                        {{ form_widget(form.alContacName,{'attr':{'placeholder':'Contac Name', 'class':'form-control title-case pull-left input-form', 'value':search.alContacName|default('')} }) }}        
+                        {{ form_widget(form.alLicenseStatus,{'attr':{'class':'form-control pull-left input-form', 'value':search.alLicenseStatus|default('')} }) }}         
+                        {{ form_widget(form.alLicenseEmail,{'attr':{'placeholder':'Email', 'class':'form-control title-case pull-left input-form-short', 'value':search.alLicenseEmail|default('')} }) }}   
+                        {{ form_widget(form.alRestaurantName,{'attr':{'placeholder':'Restaurant Name', 'class':'form-control title-case pull-left input-form', 'value':search.alRestaurantName|default('')} }) }} 
+                        {{ form_widget(form.deviceUid,{'attr':{'placeholder':'UID', 'class':'form-control pull-left input-form-short', 'value':search.deviceUid|default('')} }) }} 
+                        </div>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
+                     </div>
+                  {{ form_rest(form._token) }}
+                 </form>
+                 <br>
+            </div>
+                 
+            {% set paramsUrl = {'accountId': account.id} %}
+                 
+            {#{{ filters.textItemsOnList(paginator, 'Licenses')}}
+            {{ filters.buttonsItemsPerPage(paginator, 'account_licenses_list', params, orderBy.url, paramsUrl)}}#}
+            
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list">
+                    <thead>
+                        <tr>                            
+{#                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}#}
+                            {% set itemsPage = '&itemsPerPage='~itemsPerPage %}
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_contac_name': orderBy.order_by_contac_name.order }) }}{{ params~itemsPage }}">Contact Name</a>&nbsp; {{ orderBy.order_by_contac_name.htmlImage|default('')|raw }}</th>                
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_restaurant_name': orderBy.order_by_restaurant_name.order }) }}{{ params~itemsPage }}">Restaurant Name</a>&nbsp; {{ orderBy.order_by_restaurant_name.htmlImage|default('')|raw }}</th> 
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_license_email': orderBy.order_by_license_email.order }) }}{{ params~itemsPage }}">Email <strong>/</strong> Phone Number</a>&nbsp; {{ orderBy.order_by_license_email.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Address <strong>/</strong> Suit PO Box</th>
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_nickname': orderBy.order_by_nickname.order }) }}{{ params~itemsPage }}"> Nickname</a>&nbsp; {{ orderBy.order_by_nickname.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            {% set dbFull = 0 %}
+                            {#{% if entity['isDatabaseCreated'] and entity['isSchemaCreated'] %}
+                                {% set dbFull = 1 %}
+                            {% endif  %}#}
+                            <tr dbFull = "{{dbFull}}" entity_id = "{{ entity[0].id }}">
+                                <td>{{ entity[0].alContacName|title }}</td>
+                                <td>{{ entity[0].alRestaurantName|title }}</td>
+                                <td>{{ entity[0].alLicenseEmail }}<br>{{ entity[0].alPhoneNumber }}</td>
+                                <td>{{ entity[0].alAddres|title }}<br>{{ entity[0].alSuitPoBox }}</td>
+                                <td>{{ entity[0].alLicenseUsername }}</td>
+                                <td>
+                                    {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                        <a class="editLicense" href="{{path('adpoint_account_edit', { 'id': entity[0].id })}}">
+                                            <img src="{{ asset('/images/editts.png') }}" alt="Edit AdPoint" title="Edit AdPoint"/>
+                                        </a>
+                                    {% endif %}
+                                    {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
+                                        {% set imgSwitch = 'switchOff' %}
+                                        {% if entity[0].alLicenseStatus == 1 %}
+                                            {% set imgSwitch = 'switchOn' %}
+                                        {% endif%}
+                                        &nbsp;<a class="changeStatusLicense imgSwitch {{ imgSwitch }}" href="javascript:"
+                                                 data_path="{{path('adpoint_location_changeStatus',  {'id': entity[0].id})}}"
+                                                 license_name="{{entity[0].alRestaurantName}}"
+                                                 currentStatus="{{entity[0].alLicenseStatus}}" alt="{{ entity[0].getTextLicenseStatus }}" title="{{ entity[0].getTextLicenseStatus }}">
+                                            </a>
+                                        {% set classDevices = 'noMoreDevices' %}
+                                        {% if account.accountStatus() == 'Active' and entity[0].getTextLicenseStatus() == 'Active' %}
+                                            {% set classDevices = 'imgMoreDevice' %}    
+                                        {% endif %}
+                                        {#{% if entity[0].getTextLicenseStatus() == 'Active' %}
+                                            &nbsp;<a class="{{ classDevices }} fancybox.iframe" 
+                                                     href="{{ path('license_device_new',{'id':entity[0].id}) }}" 
+                                                     title="Add/Extend Device License" alt="Add/Extend Device License"></a>
+                                        {% endif %}#}
+                                        {% set hasDeviceAndroid = entity[0].hasAndroid and is_granted('ROLE_SUPER_ADMIN') %}
+                                        {% if entity[0].getTextLicenseStatus() == 'Active' %}
+                                            &nbsp;<a class="syncUp {% if not entity[0].hasAndroid %} imgDevices {% endif %}"
+                                                     href="javascript:"
+                                                     data_sync="{{ hasDeviceAndroid|default('0') }}"
+{#                                                     data_path="{{ path('level_manual_sync_for_android', {'id':entity[0].id}) }}"#}
+{#                                                     data_second_path="{{ path('level_manual_sync_for_android_done', {'id':entity[0].id}) }}"#}
+                                                     data_name="{{entity[0].alLicenseUsername}}"
+                                                     license_name="{{entity[0].alRestaurantName}}"
+                                                     title="Sync Up" alt="Sync Up">
+                                                </a>
+                                        {% endif %}
+                                        {% if entity[0].hasAndroid  and is_granted('ROLE_SUPER_ADMIN') and entity[0].getTextLicenseStatus() == 'Active' %}
+                                            &nbsp;<a class="syncDown"
+                                                     href="javascript:"
+                                                     data_sync="{{ hasDeviceAndroid|default('0') }}"
+{#                                                     data_path="{{ path('accountlicense_sync_up_down', {'id':entity[0].id}) }}"#}
+{#                                                     data_second_path="{{ path('level_web_manual_websync_to_deliver', {'id':'__DATA__'}) }}"#}
+                                                     data_name="{{entity[0].alLicenseUsername}}"
+                                                     license_name="{{entity[0].alRestaurantName}}"
+                                                     title="Sync Down" alt="Sync Down">
+                                                </a>
+                                        {% endif %}
+                                        {#{% if entity[0].getTextLicenseStatus() == 'Active' %}
+                                             &nbsp;<a class="fancybox.iframe loyaltyConfig" 
+                                                    href="{{ path('level_licensor_update_loyalty_configuration',{'id':entity[0].id, 'type': 1}) }}">
+                                                <img style="margin-top: -8px;" src="{{ asset('/images/payPoints.svg') }}" width="35" height="30" alt="update/Loyalty Configuration" title="update/Loyalty Configuration"/>
+                                            </a>
+                                        {% endif %}#}
+                                        {% if entity[0].getTextLicenseStatus() == 'Active' and entity[0].hasAndroid %}
+                                            &nbsp;<a {% if entity[0].deviceUid is empty %} class="devicesWarning imgDevices"  {% else %} class="devicesWarning" {% endif %}
+                                                href="javascript:" 
+{#                                                data_path="{{ path('accountlicense_release_uid_license', {'id':entity[0].id}) }}"#}
+                                                license_name="{{entity[0].alRestaurantName}}"
+                                                license_uid="{{entity[0].deviceUid}}"
+                                                license_push="{{entity[0].pushyKey}}"
+                                                license_nick="{{entity[0].alLicenseUsername}}"
+                                                title="Reset Bound To {{entity[0].deviceUid}} Device {% if entity[0].pushyKey is not empty %}With {{entity[0].pushyKey}} Push Key{% endif %}" alt="Reset Bound To {{entity[0].deviceUid}} Device">
+                                            </a>
+                                        {% endif %}
+                                        {% if entity[0].city is defined and entity[0].city is not empty %}
+                                            &nbsp;
+                                            <a class="editAccount" style="margin-top: -5px;" href="{{path('adpoint_adplans_list', { 'id': entity[0].id })}}">
+                                                <img src="{{ asset('/images/list.png') }}" width="26" height="26" alt="Advertise Plan List" title="Advertise Plan List"/>
+                                                <span class="badge listVV" style="margin-top: 4px;" title="Number of Advertise Plans">{% if entity[0].subnum is defined %}{{entity[0].subnum}}{% else %}0{% endif %}</span>
+                                            </a>
+                                            &nbsp;
+                                            <a class="editAccount" style="margin-top: -5px;" href="{{path('adpoint_adplans_new', { 'id': entity[0].id })}}" id="create_sublicense_ac_{{ entity[0].id }}" {% if entity[0].alLicenseStatus == 'Inactive' %} style="display:none;" {% endif %}>
+                                                <img src="{{ asset('/images/addLicense.png') }}" width="29" height="29" alt="Add Advertise Plan" title="Add Advertise Plan"/>
+                                            </a>
+                                        {% endif %}
+                                        {% if entity[0].hasLogedOMT and app.user.secondPass %}
+                                            &nbsp;<a class="loginCredentials fancybox.iframe" 
+{#                                                     href="{{ path('level_license_second_pass_protection',{'path':path('level_license_view_credentials',{'id':entity[0].id})|url_encode(), 'closeFancy':1} ) }}"  #}
+                                                     title="View Login Credentials For Lite License" 
+                                                     alt="View Login Credentials For Lite License"></a>
+                                        {% endif %}
+                                        
+                                        {% if not entity[0].hasLogedOMT and entity[0].hasAndroid %}
+                                            &nbsp;
+                                            <a>
+                                                <label 
+                                                    class="pepitoOmtClass" 
+                                                    style="cursor: pointer;" 
+                                                    title="Initiate Restaurant Export To OMT?" 
+                                                    license_name='{{entity[0]}}' 
+                                                    license_nick="{{entity[0].alLicenseUsername}}" 
+                                                    license_uid="{{entity[0].deviceUid}}" 
+{#                                                    data_path='{{ path('level_licensor_initiate_restaurant_export') }}' #}
+{#                                                    data_path2='{{ path('level_licensor_sync_all_for_all') }}' #}
+                                                    >
+                                                </label>
+                                            </a>
+                                            &nbsp;
+                                        {% endif %}
+                                        
+                                        {# stados de la licencia #}
+                                        {# 1:NULL, 2: HALF, 3:FULL #}
+                                        {#{% if entity['isDatabaseCreated'] %}
+                                            {% if entity['isSchemaCreated'] %}
+                                                <a target="_blank" href="{{level_web}}" class="imgStatus data3" title="Data Base complete" trstatus='3'></a>
+                                            {% else %}
+                                                <label class="imgStatus data2" title="Only Data Base less schema" trstatus='2'></label>
+                                            {% endif %}
+                                        {% else %}
+                                            <label class="imgStatus data1" title="No Data Base" trstatus='1'></label>
+                                        {% endif %}#}
+                                        </label>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="8">No Licenses Found</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+{#                {{ filters.constructPaginator(paginator, 'account_licenses_list', params, orderBy.url, 'Licenses', paramsUrl)}}#}
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block scripts %} 
+    $(".imgMoreDevice").click(function(){
+        var hasSession = getCurrentStatusSession();
+        if(hasSession === true){
+            $(".imgMoreDevice").fancybox({
+                width: '730px',
+                height: '540px',
+                autoSize: false
+            });
+        }else{
+            window.location.href = "{{ path('adspace_login') }}";
+        }
+        
+    });
+
+     $(".loyaltyConfig").click(function(){
+        var hasSession = getCurrentStatusSession();
+        if(hasSession === true){
+            $(".loyaltyConfig").fancybox({
+                width: '830px',
+                height: '350px',
+                autoSize: false
+            });
+        }else{
+            window.location.href = "{{ path('adspace_login') }}";
+        }
+        
+    });
+
+    $(".loginCredentials").click(function(){
+        var hasSession = getCurrentStatusSession();
+        if (hasSession === true) {
+            $(".loginCredentials").fancybox({
+                width: '800px',
+                height: '325px',
+                autoSize: false
+            });
+        } else {
+            window.location.href = "{{ path('adspace_login') }}";
+        }
+    });
+    
+    var devicesWarningClicked = 0;
+    
+    $('.devicesWarning').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nameUid = clickedU.attr('license_uid');
+        var namePush = clickedU.attr('license_push');
+        var nameNick = clickedU.attr('license_nick');
+
+        if (devicesWarningClicked == 0) {
+            
+            var bootBoxMsg = 'Do you want to reset the bound with the server device in <strong>' + nameUse + '</strong> License with <strong>' + nameUid + '</strong> UID?';
+        
+            if (namePush != '') {
+                bootBoxMsg = 'Do you want to reset the bound with the server device in <strong>' + nameUse + '</strong> License with <strong>' + nameUid + '</strong> UID and <strong>' + namePush + '</strong> push key?';
+            } 
+          
+            bootbox.confirm(bootBoxMsg,
+            function (result) {
+                if (result == true) {
+                    devicesWarningClicked = 1;
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (r) {
+                            if (r.result == '__OK__') {
+                                clickedU.addClass('imgDevices');
+                                bootbox.hideAll();
+                                if (r.result == '__OK__' && r.idpush > 0) {
+                                    var secondPathUrl = r.url;
+
+                                    showLoadingDialog(r.msg);
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: secondPathUrl,
+                                        dataType: 'json',
+                                        data: {
+                                            nickname: nameNick,
+                                            push: r.idpush
+                                        },
+                                        cache: false,
+                                        success: function (re) {
+                                            clickedU.addClass('imgDevices');
+                                            bootbox.hideAll();
+
+                                            bootbox.alert(re.msg + ' moving forward with the sync process previous to the device release');
+                                        },
+                                        error: function (re) {
+                                            bootbox.alert(re.msg);
+                                            clickedU.removeAttr('disabled');
+                                        }
+                                    });
+                                } else {
+                                    bootbox.alert(re.msg);
+                                    clickedU.removeAttr('disabled');
+                                }
+                            }
+                            else {
+                                bootbox.alert(r.msg);
+                            }
+                        },
+                        error: function (r) {
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        } else {
+            bootbox.alert('Bound with the Android server already released!');
+        }
+    });
+    
+    var syncDownClicked = 0;
+
+    $('.syncDown').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var licName = clickedU.attr('data_name');
+        var nameUse = clickedU.attr('license_name');
+ 
+        if (syncDownClicked == 0) {
+            syncDownClicked = 1;
+        
+            showLoadingDialog('Starting synchronization proccess.. Please wait..');
+            clickedU.addClass('imgDevices');
+       
+            $.ajax({
+                type: 'POST',
+                url: pathUrl,
+                dataType: 'json',
+                data: {
+                    nickname: licName
+                },
+                cache: false,
+                success: function (re) {
+                    bootbox.hideAll();
+                    if (re.result == '__OK__' && re.syncId > 0) {
+                        var secondPathUrl = clickedU.attr('data_second_path');
+                        secondPathUrl = secondPathUrl.replace(/__DATA__/, re.syncId);
+                      
+                        showLoadingDialog(re.msg);
+                        
+                        $.ajax({
+                            type: 'POST',
+                            url: secondPathUrl,
+                            dataType: 'json',
+                            data: {
+                                nickname: licName
+                            },
+                            cache: false,
+                            success: function (r) {
+                                clickedU.addClass('imgDevices');
+                                bootbox.hideAll();
+                                
+                                bootbox.alert(r.msg);
+                            },
+                            error: function (r) {
+                                bootbox.alert(r.msg);
+                                clickedU.removeAttr('disabled');
+                            }
+                        });
+                    } else {
+                        bootbox.alert(re.msg);
+                    }
+                },
+                error: function (r) {
+                    bootbox.alert(r.msg);
+                    clickedU.removeAttr('disabled');
+                }
+            });
+        }
+    });
+
+    var syncUpClicked = 0;
+    
+    $('.syncUp').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var licName = clickedU.attr('data_name');
+        var nameUse = clickedU.attr('license_name');
+
+        if (syncUpClicked == 0) {
+            showLoadingDialog('Requesting to Android server a synchronization.. Please wait..');
+
+            $.ajax({
+                type: 'POST',
+                url: pathUrl,
+                dataType: 'json',
+                data: {
+                    nickname: licName
+                },
+                cache: false,
+                success: function (r) {
+                    bootbox.hideAll();
+                    if (r.result == '__OK__') {
+                        showLoadingDialog('Request petition send.. Waiting for the Android response..');
+
+                        var secondPathUrl = clickedU.attr('data_second_path');
+                
+                        $.ajax({
+                            type: 'POST',
+                            url: secondPathUrl,
+                            dataType: 'json',
+                            data: {
+                                nickname: licName,
+                                lastId: r.lastId
+                            },
+                            cache: false,
+                            success: function (r) {
+                                syncUpClicked = 1;
+                                clickedU.addClass('imgDevices');
+                                bootbox.hideAll();
+                                bootbox.alert(r.msg);
+                            },
+                            error: function (r) {
+                                bootbox.alert(r.msg);
+                            }
+                        });
+                    } else {
+                        bootbox.alert(r.msg);
+                    }
+                    window.reload();
+                },
+                error: function (r) {
+                    bootbox.alert(r.msg);
+                }
+            });
+        } else {
+        
+        }
+    });
+
+    $('.changeStatusLicense').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        /*var typeUse = clickedU.attr('user_type');*/
+        var newStatus = (clickedU.attr('currentStatus') == 1) ? 2 : 1;
+
+        bootbox.confirm('Do you want to change the status for <strong>' + nameUse + '</strong> License?',
+        function (result) {
+            if (result == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: pathUrl,
+                    dataType: 'json',
+                    data: {
+                        newStatus: newStatus
+                    },
+                    cache: false,
+                    success: function (r) {
+                        if (r.result == '__OK__') {
+                            clickedU.attr('currentStatus', r.newStatus);
+                            clickedU.closest('tr')
+                                    .find('.txtLicenseStatus').text(r.txtNewLicenseStatus);
+                            if (newStatus == 2) {
+                                $(clickedU).removeClass('switchOn').addClass('switchOff');
+                                $(clickedU).siblings(".imgMoreDevice").addClass('noMoreDevices').removeClass('imgMoreDevice');
+                            } else {
+                                $(clickedU).removeClass('switchOff').addClass('switchOn');
+                                $(clickedU).siblings(".noMoreDevices").addClass('imgMoreDevice').removeClass('noMoreDevices');
+                            }
+                            
+                            location.reload();
+                        }
+                        else {
+                            bootbox.alert(r.msg)
+                        }
+                    },
+                    error: function (r) {
+                        bootbox.alert(r.msg)
+                    }
+                });
+            }
+        });
+    });
+
+    var trNoDBFull = $("tr[dbFull=0]");
+    if(trNoDBFull.length > 0){
+        intervalNoDb = setInterval(searchStatusNoDBFull, 10000);
+    }
+    
+    var exportClicked = 0;
+    
+    $('.pepitoOmtClass').click(function () {
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('license_nick');
+
+        if (!clickedU.hasClass('imgDevices') && exportClicked == 0) {
+            bootbox.confirm('Do you want to export <strong>' + nameUse + '</strong> restaurant to <strong> OpenMyTab </strong>?',
+            function (result) {
+                if (result == true) {
+                    exportClicked = 1;
+                    showLoadingDialog('Initiating <strong>' + nameUse + '</strong> restaurant export.. Please wait a few minutes until the process is finished..');
+                    $.ajax({
+                        type: 'POST',
+                        url: pathUrl,
+                        data: {
+                            nickname : nickUse
+                        },
+                        cache: false,
+                        success: function (r) {
+                            var timeToClose = 0;
+
+                            bootbox.hideAll();
+                            
+                            if (r.result == '__OK__' && typeof r.canRetry === 'undefined') {
+                                bootbox.alert(r.msg);
+                                
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+
+                                ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU);
+                            }
+
+                            if (r.result == '__OK__' && r.canRetry == 0) {
+                                bootbox.alert(r.msg);
+                            
+                                clickedU.addClass('imgDevices');
+                                clickedU.css('cursor','');
+
+                                ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU);
+                            }
+                            
+                            if (r.result == '__OK__' && r.canRetry == 1) {
+                                bootbox.hideAll();
+                                bootbox.dialog({
+                                title: 'Rewrite an already exported restaurant?',
+                                message: 'Restaurant already exported to omt.. Do you want to rewrite the <strong>' + nameUse + '</strong> restaurant in omt with all the level infromation.. <br><br><strong>Note: </strong>This proccess will overwrite al the previous information of the restaurant in OpenMyTab and can`t be undone.',
+                                buttons: {
+                                        cancel: {
+                                            label: '<i class="fa fa-times"></i> Cancel',
+                                            className: 'btn-default',
+                                            callback: function (result) {
+                                                bootbox.hideAll();
+                                            }
+                                        },
+                                        confirm: {
+                                            label: '<i class="fa fa-check"></i> Rewrite Restaurant',
+                                            className: 'btn-primary',
+                                            callback: function (result) {
+                                                ajaxFordRewriteExportedRestaurant(pathUrl, clickedU);
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            
+                            if (r.result == '__KO__') {
+                                bootbox.alert(r.msg);
+                            }
+                        }, 
+                        error: function (r) {
+                            exportClicked = 0;
+                            bootbox.hideAll();
+                            bootbox.alert(r.msg);
+                        }
+                    });
+                }
+            });
+        }
+    });
+            
+{% endblock %}
+
+{% block functions_javascript %}
+
+    function searchStatusNoDBFull(){
+        var trNoDBFull = $("tr[dbFull=0]");
+        var trId = new Array();
+        $(trNoDBFull).each(function(data, val){
+            var idEntity = $(val).attr("entity_id");
+            trId.push(idEntity);
+        });
+        $.ajax({
+            url: "{#{{ path('accountlicense_search_nodatabase') }}#}",
+            type:"post",
+            data:{trId: trId},
+            dataType:"json",
+            success: function(data){
+                if(data.msn == "__KO__"){
+                    console.log("error", data.response);
+                    return;
+                }
+                var arrLicStatus = data.result;
+                $(arrLicStatus).each(function(data, val){
+                    /*
+                     * estados retornados de las licencias creadas
+                     * 1: NULL
+                     * 2: HALFT
+                     */
+                    var trId = $("tr[entity_id="+val.licenseId+"]");
+                    var trLblSts = $(trId).find('.imgStatus');
+                    if(val.status > $(trLblSts).attr('trstatus')){
+
+                        if(val.status == 2){
+
+                            $(trLblSts).addClass("data2").removeClass("data1").attr("title", "Only Data Base less schema");
+                        }
+                        else if(val.status == 3){
+                            $(trId).attr('dbFull', 1);
+                            $(trLblSts).addClass("data3").removeClass("data1 data2").attr("title", "Data Base complete");;
+                        }
+                    }
+                });
+                var trNoDBFull = $("tr[dbFull=0]");
+                if(trNoDBFull.length == 0){
+                    clearInterval(intervalNoDb);
+                }
+            }
+        });
+    }
+
+    function showLoadingDialog(msg) {
+        bootbox.hideAll();
+        bootbox.dialog({
+            closeButton: false,
+            message: '<p>' + msg + '</p><p class="bootbox-padding" style="margin-top: 10px; text-align: center; margin-bottom: -25px;"><i class="fa fa-spin fa-spinner" style="font-size:48px; margin-right: 5%"></i></p>',
+            
+        });
+    }
+
+    function ajaxFordRewriteExportedRestaurant(pathUrl, clickedU) {
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('license_nick');
+
+        clickedU.addClass('imgDevices');
+        
+        var bootBoxMsg = 'Rewriting <strong>' + nameUse + '</strong> restaurant, this process may take a couple of minutes, please wait...';
+        
+        showLoadingDialog(bootBoxMsg);
+
+        $.ajax({
+            type: 'POST',
+            url: pathUrl,
+            data: {
+                nickname : nickUse,
+                rewrite : 1
+            },
+            cache: false,
+            success: function (r) {
+                var timeToClose = 0;
+
+                if (r.result == '__OK__') {
+                    clickedU.addClass('imgDevices');
+                    clickedU.css('cursor','');
+
+                    bootbox.hideAll();
+                    bootbox.alert(r.msg);
+
+                    ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU);
+                }
+            },
+            error: function (r) {
+                exportClicked = 0;
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            }
+        });
+    }
+    
+    function ajaxFordMakeAFullSyncRequestAfterOMTExport(clickedU) {
+        var nameUse = clickedU.attr('license_name');
+        var nickUse = clickedU.attr('license_nick');
+        var uidUse = clickedU.attr('license_uid');
+        var newPath = clickedU.attr('data_path2');
+
+        var bootBoxMsg = 'Sending full sync request to <strong>' + nameUse + '</strong> restaurant, this process may take a couple of minutes, please wait...';
+        
+        showLoadingDialog(bootBoxMsg);
+
+        var request = {nickname:nickUse, uid:uidUse};
+        var myJsonRequest = JSON.stringify(request);
+        
+        $.ajax({
+            type: 'POST',
+            url: newPath,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: myJsonRequest,
+            cache: false,
+            success: function (r) {
+                var timeToClose = 0;
+
+                if (r.data.result == '__OK__' && r.data.status == 200) {
+                    clickedU.addClass('imgDevices');
+                    clickedU.css('cursor','');
+
+                    bootbox.hideAll();
+                    bootbox.alert(r.data.msg);
+
+                    setInterval(function() {
+                    timeToClose++;
+
+                    if(timeToClose == 3) {
+                        location.reload();
+                    }
+
+                    },1500);
+                } else {
+                    bootbox.hideAll();
+                    bootbox.alert(r.msg);
+                }
+            },
+            error: function (r) {
+                exportClicked = 0;
+                bootbox.hideAll();
+                bootbox.alert(r.msg);
+            }
+        });
+    }
+    
+{% endblock %}
+

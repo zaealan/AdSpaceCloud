@@ -5,23 +5,66 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
 
+############################## s3 keys
+    amazon_key: AKIAIJC3I56ARDDNY2QA
+    amazon_secret: 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
+    amazon_bucket_region: us-east-1
+    amazon_bucket_name: kijho-level
+    amazon_api_version: "2006-03-01"
+
+    s3_access_key_id: '%amazon_key%'
+    s3_secret_access_key: '%amazon_secret%'
+    s3_bucket_region: '%amazon_bucket_region%'
+    s3_identity_pool_id: us-east-1:aefdd410-d873-4d05-addf-ee3728233370
+    s3_bucket_name: '%amazon_bucket_name%'
+##############################
+
+############################## gmg key
+    gmg_api_key: AIzaSyC65sjn7Xvoex2ufkf46T_KUdoEj-Vdf30
+    gmg_timezone_api_key: AIzaSyCGXw0oFqnP332Kp_eEnYy7-i7UKZn3fO8
+##############################
+
+############################## Application special directories
+    app_directory_versions_dir: '%kernel.project_dir%/public/uploads/android/versions/'
+##############################
+
+
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: true
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Form,Tests,Util,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Util\AccessControl:
+        arguments: ["@doctrine.orm.entity_manager","@service_container","@security.token_storage", "@session"]
+        
+    access_control:
+        alias: App\Util\AccessControl
+        public: true
+
+    adspace_s3_storage:
+      class: App\Services\AmazonS3Service
+      arguments:  ["@service_container"]
+      public: true
+
+    App\Kernel: '@kernel'
+
+    real_kernel:
+      alias: App\Kernel
+      public: true
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

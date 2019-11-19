@@ -1,0 +1,15 @@
+{% extends 'Default/mailStructure.html.twig' %}
+{% block title %}{{title|default('Hi,')}}{% endblock %}
+{% block content %}
+
+    {{ message|raw }}
+    
+    {% if linkToPurchasesVehicles is defined and linkToPurchasesVehicles == true %}
+        <a href="{{url('bmak_dashboard_purchased_vehicles')}}" target="_blank">Download Bill of Sale</a>
+    {% elseif linkToSoldVehicles is defined and linkToSoldVehicles == true %}
+        <a href="{{url('bmak_dashboard_sold')}}" target="_blank">Download Bill of Sale</a>
+    {% endif %}
+    <br>
+    <p>{{ footer|default('Change test,') }}</p>
+    <p>{{ footer2|default('Change test Team') }}</p>
+{% endblock %}

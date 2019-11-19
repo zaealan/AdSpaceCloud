@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>User</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Usid</th>
+                <td>{{ entity.usId }}</td>
+            </tr>
+            <tr>
+                <th>Usname</th>
+                <td>{{ entity.usName }}</td>
+            </tr>
+            <tr>
+                <th>Uslastname</th>
+                <td>{{ entity.usLastName }}</td>
+            </tr>
+            <tr>
+                <th>Usemail</th>
+                <td>{{ entity.usEmail }}</td>
+            </tr>
+            <tr>
+                <th>Usphonenumber</th>
+                <td>{{ entity.usPhoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>Usdatecreated</th>
+                <td>{{ entity.usDateCreated|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Usstatus</th>
+                <td>{{ entity.usStatus }}</td>
+            </tr>
+            <tr>
+                <th>Ususerparent</th>
+                <td>{{ entity.usUserParent }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('user') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('user_edit', { 'id': entity.usId }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

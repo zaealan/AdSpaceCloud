@@ -1,0 +1,82 @@
+{% extends 'Default/main.html.twig' %}
+{#{% use 'Default/locationsBlockForm.html.twig' %}#}
+{% use 'Default/locationsAddresAutocompleteForm.html.twig' %}
+{% block title 'Reseller Edit'%}
+    {% block content %}
+
+        <div class="col-lg-12">
+            <h1>Edit Reseller</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}">
+                        <i class="fa fa-home"></i> Dashboard</a></li>
+                <li><a href="{{path('adpoint_companies')}}">
+                        <i class="fa fa-list"></i> Resellers List</a></li>
+                <li class="active"><i class="icon-file-alt"></i> Edit Reseller</li>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+
+        <div class="col-lg-12" >
+            <form action="{{path('adpoint_company_update', {'id': entity.id})}}" method="POST">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label>Reseller Name</label><em>*</em>
+                        {{form_widget(form.coCompanyName,{ 'attr': {'class': 'form-control','placeholder':'Company Name', 'maxlength':'30', 'required':'required'} })}}
+                        <div class="help-block alert-danger">
+                            {{form_errors(form.coCompanyName)}}     
+                        </div>  
+                    </div>
+                    <div class="form-group">
+                        <label>Reseller Identification</label><em>*</em>
+                        {{form_widget(form.coCompanyIdentification,{ 'attr': {'class': 'form-control','placeholder':'Company Identification', 'maxlength':'30', 'required':'required'} })}}
+                        <div class="help-block alert-danger">
+                            {{form_errors(form.coCompanyIdentification)}}     
+                        </div>  
+                    </div>
+
+                    {{form_widget(form._token)}}
+
+                </div>
+
+                <div class="col-xs-6">
+                    {#{% block locationsBlock %}
+                        {{parent()}}
+                    {% endblock %}#}
+                    {% block autocompAddressBlock %}
+                        {{parent()}}
+                    {% endblock %}
+                    {{form_widget(form._token)}}
+                </div>
+                <div class="col-xs-12">
+                    <hr>
+                    <div class="col-xs-6">
+                        <label>License's price for the server device</label><em>*</em>
+                        {{ form_widget(formRates.lrPriceServerAndroid, { 'attr': {'class':'form-control is-digit','placeholder':'$99.99', 'maxlength':'6', 'arr-ascii':'[46]','onKeyPress':'javascript: return testDigit(this, event);', 'value':licenseRates[0].lrPrice} }) }}
+                        <div class="help-block alert-danger">
+                            {{form_errors(formRates.lrPriceServerAndroid) }}     
+                        </div>
+
+                        <label>License's price for the client device</label><em>*</em>    
+                        {{ form_widget(formRates.lrPriceClientAndroid, { 'attr': {'class':'form-control is-digit','placeholder':'$99.99', 'maxlength':'6', 'arr-ascii':'[46]', 'onKeyPress':'javascript: return testDigit(this, event);', 'value':licenseRates[1].lrPrice} }) }}
+                        <div class="help-block alert-danger">
+                            {{form_errors(formRates.lrPriceClientAndroid) }}     
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group" style="margin-top: 30px;">
+                        <button class="btn btn-primary pull-right save-btn" type="submit">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    {% endblock %}
+
+    {% block scripts %} 
+
+        {#{% block locationsScriptBlock %}
+            {{parent()}}
+        {% endblock %}#}
+
+    {% endblock %}

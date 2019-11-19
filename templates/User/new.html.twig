@@ -1,0 +1,189 @@
+{% extends 'Default/main.html.twig' %}
+{% block title 'User New'%}
+    {% block content %}
+        <div class="col-lg-12">
+            <h1>User Registration</h1>
+            <ol class="breadcrumb">
+                <li><a href="{{path('adspace_dashboard')}}">
+                        <i class="fa fa-home"></i> Dashboard
+                    </a>
+                </li>
+                {% if company.id is defined and company.id is not empty %}
+                    <li><a href="{{path('adpoint_companies')}}">
+                        <i class="fa fa-list"></i> Resellers List</a>
+                    </li>
+                    <li><a href="{{path('adpoint_managment_company_users_list',{'companyId':company.id})}}">
+                            <i class="fa fa-list"></i> Reseller User List
+                        </a>
+                    </li>
+                {% else %}
+                    <li><a href="{{path('adpoint_users')}}">
+                            <i class="fa fa-list"></i> User List
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="active"><i class="icon-file-alt"></i> New User</li>
+            </ol>
+            {% include 'Default/messageNotification.html.twig'%}
+        </div>
+                    
+        <div class="col-lg-12" >
+            <form action="{{path('adpoint_user_create')}}" method="POST">
+
+{#                {% if reseller_id is defined and reseller_id is not empty %}#}
+                {% if company.id is defined and company.id is not empty %}
+                    <input type="hidden" name="reseller_id"
+                           id="reseller_id"
+                           value="{{ company.id }}"/>
+                {% endif %}
+
+
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>First Name</label><em>*</em>
+                            {{form_widget(form.usName,{ 'attr': {'class': 'form-control','placeholder':'Name', 'maxlength':'30', 'required':'required'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.usName)}}     
+                            </div>  
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label><em>*</em>
+                            {{form_widget(form.usLastName,{ 'attr': {'class': 'form-control','placeholder':'Last Name', 'maxlength':'30', 'required':'required'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.usLastName)}}     
+                            </div>  
+                        </div>
+                        <div class="form-group">
+                            <label>E-Mail</label><em>*</em>
+                            {{form_widget(form.usEmail,{ 'attr': {'class': 'form-control','placeholder':'you@mailer.com', 'maxlength':'30', 'required':'required'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.usEmail)}}     
+                            </div>  
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label><em>*</em>
+                            {{form_widget(form.usPhoneNumber,{ 'attr': {'class': 'form-control phone_number','placeholder':'(000) 000-0000', 'maxlength':'30'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.usPhoneNumber)}}     
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            {% if company.id is defined and company.id is not empty %}
+                                <label>Reseller</label>
+                                <input type="text" name="resellerName" value="{{ company.coCompanyName }}" class="form-control" readonly>
+                                <input type="hidden" name="levellicensor_levellicensorbundle_user[usCompany]" value="{{ company.id }}" class="form-control" readonly>
+                            {% else %}
+                                <label>Reseller</label><em>*</em>
+                                {{form_widget(form.usCompany,{ 'attr': {'class': 'form-control', 'maxlength':'30', 'required':'required'} })}}
+                                <div class="help-block alert-danger">
+                                    {{form_errors(form.usCompany)}}     
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label>User Type</label><em>*</em>
+                            {{form_widget(form.usType,{ 'attr': {'class': 'form-control', 'maxlength':'30', 'required':'required'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.usType)}}     
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="form-group">
+                            <label>Nickname</label><em>*</em>
+                            {{form_widget(form.username,{ 'attr': { 'autocomplete':'off', 'class': 'form-control nickname','placeholder':'Nickname', 'maxlength':'10', 'required':'required'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.username)}}     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a href=":javascript" class="link-password" id="generate">Generate Password</a>
+                            <label style="color: red; font-size: 18px" id="random"></label>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label><em>*</em>
+                            {{form_widget(form.password.first,{ 'attr': { 'autocomplete':'off', 'class': 'form-control','placeholder':'Pass', 'maxlength':'30', 'required':'required' } })}}
+
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.password.first)}}     
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label><em>*</em>  
+                            {{form_widget(form.password.second,{ 'attr': { 'autocomplete':'off', 'class':'form-control','placeholder':'Confirm Pass', 'maxlength':'30', 'required':'required' } })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.password.second)}}
+                            </div>
+                        </div>
+                    </div>
+                    {{form_widget(form._token)}}
+
+                    <div class="form-group" style="margin-top: 30px;">
+                        <button class="btn btn-primary pull-right save-btn" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+
+            {% endblock %}
+
+                {#{Bloque de javascript para validaciones de }#}
+                {#{los campos de texto del formulario}#}
+
+                {% block scripts %}
+{#                    <script type="text/javascript">#}
+
+                    $('#levellicensor_levellicensorbundle_user_username').val('');
+                    $('#levellicensor_levellicensorbundle_user_password_first').val('');
+
+                    $('#levellicensor_levellicensorbundle_user_password_first').attr('required','required');
+                    $('#levellicensor_levellicensorbundle_user_password_second').attr('required','required');
+                    $('#levellicensor_levellicensorbundle_user_password_username').attr('required','required');
+
+                    $('.link-password').click(function(e) {
+                    /* First check which link was clicked */
+                    linkId = $(this).attr('id');
+                    if (linkId == 'generate') {
+                    /* If the generate link then create the password variable from the generator function
+                    This function takes two parameters: integer value for password $.password(n, optional:boolean);
+                    length and optional boolean value true if you want to include special characters in your generated passwords.*/
+                    password = $.password(8); 
+
+                    $('#levellicensor_levellicensorbundle_user_password_first').empty().hide().append(password).fadeIn('slow').val(password);
+                    $('#levellicensor_levellicensorbundle_user_password_second').empty().hide().append(password).fadeIn('slow').val(password);
+
+                    /* Empty the random tag then append the password and fade In */
+                    $('#random').empty().hide().append(password).fadeIn('slow');
+                    } 
+                    e.preventDefault();
+                    });
+                    
+                    
+{#                    $('.save-btn').click(function(){console.log(123456);});#}
+                    $('.nickname').focusout(function(){
+                        var element = $(this);
+                        var username = element.val();
+                        if(username !== ""){
+                            $.ajax({
+                                type: 'POST',
+                                url : '{{ path('adpoint_search_username') }}',
+                                dataType : 'json',
+                                data:{
+                                    username: username
+                                },
+                                success: function(data){
+                                    if(data.userExist == 1){
+                                        $(element).val("");
+                                        $("[name*=password]").val("");
+                                        bootbox.alert("The user already exists in the workspace");
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    
+                    
+{#                    </script>#}
+                {% endblock %}
+

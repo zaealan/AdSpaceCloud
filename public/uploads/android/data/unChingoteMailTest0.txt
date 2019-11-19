@@ -1,0 +1,1 @@
+Creating and using -> /var/www/html/public/uploads/android/data/unChingoteMailTest0.txt at '11/04/2018 11:25:07'Start Executing Test Mailing RabbitunChingoteMailTest: to zaealan@gmail.comSending email from -> info@levelpos.comSend mail result -> 1Sending mail to: "pepito"

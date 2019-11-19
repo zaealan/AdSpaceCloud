@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{% block title %} {% endblock %}</title>
+        {#<link rel="shortcut icon" type="image/ico" href="{{ asset('bundles/bmakbackend/images/favicon.png ')}}" />#}
+        {% block head_style %}
+
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap2-toggle.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-datetimepicker.min.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/sb-admin.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('/css/jquery-ui.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}">
+
+        {% endblock %}
+        {% block other_styles %}
+        {% endblock %}
+    </head>
+    <body style="margin-top: 0px; background-image: none;">
+        <div id="wrapper" style="padding-left: 0px;">
+            <div id="page-wrapper" style="padding: 17px;">
+                {% block content %}
+                {% endblock %}
+            </div><!-- /#page-wrapper -->
+
+        </div><!-- /#wrapper -->
+
+        <!-- JavaScript -->
+        {% block javascripts %}
+
+            <script src="{{ asset('/js/jquery-1.12.2.min.js') }}"></script>
+            <script src="{{ asset('/js/jquery-ui.js') }}"></script>
+            <script src="{{ asset('/js/moment.min.js') }}"></script>
+            <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('/js/bootstrap-datetimepicker.min.js') }}"></script>
+            <script src="{{ asset('/js/scripts.js') }}"></script>
+            <script src="{{ asset('/js/bootstrap-toggle.min.js') }}"></script>
+            <script src="{{ asset('/js/jquery.numberFormat.js') }}"></script>
+            <script src="{{ asset('/js/jquery.number.min.js') }}"></script>
+            <script src="{{ asset('/js/jquery.maskedinput.js') }}"></script>
+
+            <script type="text/javascript" src="{{ asset('/js/webshim/minified/extras/modernizr-custom.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('/js/webshim/minified/polyfiller.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('/js/webshim/minified/shims/form-validation.js') }}"></script>
+        {% endblock javascripts %}
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("input:text:visible:first").focus();
+
+                /*
+                 * Comas para todos los campos numericos en el evento key up
+                 */
+                $(document).on("keyup", '.input_number', function ()
+                {
+                    var val = $(this).val();
+
+                    val = val.replace(/[\D]+/g, "");
+                    val = val.replace(/$0+/g, "");
+
+                    if (val.length > 0) {
+                        $(this).val($.number(val));
+                    }
+                });
+
+
+                /*
+                 * Clase para validar solo numeros en el evento key down
+                 */
+                $(document).on("keydown", '.only_numbers', function (e)
+                {
+                    var key;
+                    if (window.event) {
+                        key = window.event.keyCode;   //IE
+                    } else {
+                        key = e.which;                //firefox
+                    }
+                    if (!((key >= 48 && key <= 57) || (key >= 96 && key <= 105) || key == 8 || key == 9 || key == 0 || key == 46)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+
+
+                /*Formato para los numeros de celulares*/
+                $(function ($) {
+                    $(".phone_number").mask("(999) 999-9999", {placeholder: " "});
+                });
+
+                $('.upper-case').keyup(function () {
+                    var text = $(this).val();
+                    text = text.toUpperCase();
+
+                    $(this).val(text);
+                });
+
+                $('.lower-case').keyup(function () {
+                    var text = $(this).val();
+                    text = text.toLowerCase();
+
+                    $(this).val(text);
+                });
+
+                $('.title-case').keyup(function () {
+                    var text = $(this).val();
+                    text = text.replace(/\w\S*/g, function (txt) {
+                        return txt.charAt(0).toUpperCase() + txt.substr(1);
+                    });
+                    $(this).val(text);
+                });
+
+                /*
+                 * funcionalidad JS para retornar la fecha actual en string
+                 * y utulizarla por el datapicker para el minDate
+                 * @returns {String} fecha en formato yyyy-mm-dd incluido los guiones
+                 */
+                Date.prototype.yyyymmdd = function () {
+                    var yyyy = this.getFullYear().toString();
+                    var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
+                    var dd = this.getDate().toString();
+                    return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
+                };
+
+                var today = new Date();
+                $(".datetimepicker").datetimepicker({
+                    pickTime: false
+                });
+                $(".datetimepicker-mindate").datetimepicker({
+                    pickTime: false,
+                    minDate: today.yyyymmdd()
+                });
+                $(".datetimepicker-maxdate").datetimepicker({
+                    pickTime: false,
+                    maxDate: today.yyyymmdd()
+                });
+
+            {% block scripts %}
+            {% endblock %}
+                });
+
+                /**
+                 * Esta funcion permite validar que solo se escriban numeros en un campo de texto
+                 */
+                function onlyNumbers(e)
+                {
+                    var key;
+                    if (window.event) {
+                        key = window.event.keyCode;   //IE
+                    } else {
+                        key = e.which;                //firefox
+                    }
+                    if (!((key >= 48 && key <= 57) || key == 8 || key == 9 || key == 0 || key == 46)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                var timeToClose = 0;
+                function closeFancyOnTime()
+                {
+                    setInterval(function () {
+                        timeToClose++;
+
+                        if (timeToClose == 2)
+                        {
+                            window.parent.$.fancybox.close();
+                        }
+
+                    }, 1000);
+                }
+
+
+                function validarLetras(e) { // 1
+                    tecla = (document.all) ? e.keyCode : e.which;
+                    if (tecla == 8)
+                        return true; // backspace
+                    if (tecla == 32)
+                        return true; // espacio
+                    if (e.ctrlKey && tecla == 86) {
+                        return true;
+                    } //Ctrl v
+                    if (e.ctrlKey && tecla == 67) {
+                        return true;
+                    } //Ctrl c
+                    if (e.ctrlKey && tecla == 88) {
+                        return true;
+                    } //Ctrl x
+
+                    patron = /[a-zA-Z]/; //patron
+
+                    te = String.fromCharCode(tecla);
+                    return patron.test(te); // prueba de patron
+                }
+
+                function number_format(number, decimals, dec_point, thousands_sep) {
+                    //   example 1: number_format(1234.56);
+                    //   returns 1: '1,235'
+                    //   example 2: number_format(1234.56, 2, ',', ' ');
+                    //   returns 2: '1 234,56'
+                    //   example 3: number_format(1234.5678, 2, '.', '');
+                    //   returns 3: '1234.57'
+                    //   example 4: number_format(67, 2, ',', '.');
+                    //   returns 4: '67,00'
+                    //   example 5: number_format(1000);
+                    //   returns 5: '1,000'
+                    //   example 6: number_format(67.311, 2);
+                    //   returns 6: '67.31'
+                    //   example 7: number_format(1000.55, 1);
+                    //   returns 7: '1,000.6'
+                    //   example 8: number_format(67000, 5, ',', '.');
+                    //   returns 8: '67.000,00000'
+                    //   example 9: number_format(0.9, 0);
+                    //   returns 9: '1'
+                    //  example 10: number_format('1.20', 2);
+                    //  returns 10: '1.20'
+                    //  example 11: number_format('1.20', 4);
+                    //  returns 11: '1.2000'
+                    //  example 12: number_format('1.2000', 3);
+                    //  returns 12: '1.200'
+                    //  example 13: number_format('1 000,50', 2, '.', ' ');
+                    //  returns 13: '100 050.00'
+                    //  example 14: number_format(1e-8, 8, '.', '');
+                    //  returns 14: '0.00000001'
+
+                    number = (number + '')
+                            .replace(/[^0-9+\-Ee.]/g, '');
+                    var n = !isFinite(+number) ? 0 : +number,
+                            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                            s = '',
+                            toFixedFix = function (n, prec) {
+                                var k = Math.pow(10, prec);
+                                return '' + (Math.round(n * k) / k)
+                                        .toFixed(prec);
+                            };
+                    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+                    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
+                            .split('.');
+                    if (s[0].length > 3) {
+                        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+                    }
+                    if ((s[1] || '')
+                            .length < prec) {
+                        s[1] = s[1] || '';
+                        s[1] += new Array(prec - s[1].length + 1)
+                                .join('0');
+                    }
+                    return s.join(dec);
+                }
+            {% block functions_javascript %}
+            {% endblock %}
+        </script>
+    </body>
+</html>
