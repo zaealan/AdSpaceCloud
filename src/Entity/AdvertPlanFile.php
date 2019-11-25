@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\AccountLicense;
 
 /**
@@ -121,6 +122,108 @@ class AdvertPlanFile {
      * @ORM\Column(name="duration_in_seconds", type="integer", length=8, nullable=false)
      */
     private $timeDurationInSeconds;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="file_type", type="string", length=255, nullable=false)
+     */
+    private $fileType;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="number_of_watches", type="integer", length=8, nullable=true)
+     */
+    private $numberOfWatches;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="number_of_interaction", type="integer", length=8, nullable=true)
+     */
+    private $numberOfInteractions;
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="number_of_requested_info", type="integer", length=8, nullable=true)
+     */
+    private $numberOfRequestedInfo;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="advetr_client_email", type="string", length=100, nullable=false)
+     * @Assert\Email(message = "The email '{{ value }}' is not a valid")
+     */
+    private $clientEmail;
+    
+    /**
+     * @return type
+     */
+    public function getNumberOfWatches() {
+        return $this->numberOfWatches;
+    }
+
+    /**
+     * @return type
+     */
+    public function getNumberOfInteractions() {
+        return $this->numberOfInteractions;
+    }
+
+    /**
+     * @return type
+     */
+    public function getNumberOfRequestedInfo() {
+        return $this->numberOfRequestedInfo;
+    }
+
+    /**
+     * @return type
+     */
+    public function getClientEmail() {
+        return $this->clientEmail;
+    }
+
+    /**
+     * @param type $numberOfWatches
+     */
+    public function setNumberOfWatches($numberOfWatches) {
+        $this->numberOfWatches = $numberOfWatches;
+    }
+
+    /**
+     * @param type $numberOfInteractions
+     */
+    public function setNumberOfInteractions($numberOfInteractions) {
+        $this->numberOfInteractions = $numberOfInteractions;
+    }
+
+    /**
+     * @param type $numberOfRequestedInfo
+     */
+    public function setNumberOfRequestedInfo($numberOfRequestedInfo) {
+        $this->numberOfRequestedInfo = $numberOfRequestedInfo;
+    }
+
+    /**
+     * @param type $clientEmail
+     */
+    public function setClientEmail($clientEmail) {
+        $this->clientEmail = $clientEmail;
+    }
+
+    /**
+     * @return type
+     */
+    public function getFileType() {
+        return $this->fileType;
+    }
+
+    /**
+     * @param type $fileType
+     */
+    public function setFileType($fileType) {
+        $this->fileType = $fileType;
+    }
 
     /**
      * @return type

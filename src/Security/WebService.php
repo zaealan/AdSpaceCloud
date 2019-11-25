@@ -11,8 +11,8 @@ namespace App\Security;
 class WebService {
 
     private $meta = ['meta' => [
-            'copyright' => 'Open My Tab',
-            'authors' => ['Luis Fernando Granados', 'Luis Enrique Robledo Lopez'],
+            'copyright' => 'AdSpaceCloud',
+            'authors' => ['Luis Enrique Robledo Lopez'],
         ],
         'links' => [
             'self' => '',

@@ -28,7 +28,8 @@
                     {% else %}
                         action="{{path('adpoint_adplans_update', { 'subId': entity.id })}}"
                     {% endif %}
-                     id="create_license" method="POST">
+                     id="create_license" method="POST" enctype="multipart/form-data">
+{#                {{ form_start(form, {'action': path('adpoint_adplans_create', { 'id': entity.advertPlace.id }), 'method': 'post', 'attr': {'id': 'create_license'} }) }}#}
                     <div>
                         <div class="col-xs-6">
                             <div class="form-group">
@@ -54,7 +55,7 @@
                                 <label>Starting Date </label><em>*</em>
                                 {{form_widget(form.startingDate,{ 'attr': {'class': 'form-control datetimepickerHM'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.startingDate)}}     
+                                    {#{{form_errors(form.startingDate)}}#}     
                                 </div>
                             </div>
 
@@ -62,19 +63,73 @@
                                 <label>Ending Date </label><em>*</em>
                                 {{form_widget(form.endingDate,{ 'attr': {'class': 'form-control datetimepickerHM'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.endingDate)}}     
+                                    {#{{form_errors(form.endingDate)}}#}     
                                 </div>
                             </div>
                         </div>
                     </div> 
-                                
+                             
                     <hr>
-
                     <div class="col-xs-12">
-                        {% for tag in fileForms %}
-                            {{form_widget(tag.fileName,{ 'attr': {'class': 'form-control'} })}}
-                        {% endfor %}
+                        <label style="font-size: 18px;">Advert Plan Images </label>
+                        <br>
+                        <br>
                     </div>
+                    
+                    {#{% for i in 0..clientsNumber %}
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>File </label><em>*</em>
+                                {{form_widget(form.fileName[i],{ 'attr': {'class': 'form-control'} })}}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>File Type </label><em>*</em>
+                                {{form_widget(form.fileType[i],{ 'attr': {'class': 'form-control'} })}}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Duration In Seconds </label><em>*</em>
+                                {{form_widget(form.timeDurationInSeconds[i],{ 'attr': {'class': 'form-control'} })}}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Client Email </label><em>*</em>
+                                {{form_widget(form.clientEmail[i],{ 'attr': {'class': 'form-control', 'placeholder':'some@email.com'} })}}
+                            </div>
+                        </div>
+                    {% endfor %}#}
+                    
+                    {% for tag in fileForms %}
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>File </label><em>*</em>
+                                {{form_widget(tag.fileName,{ 'attr': {'class': 'form-control'} })}}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>File Type </label><em>*</em>
+                                {{form_widget(tag.fileType,{ 'attr': {'class': 'form-control'} })}}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Duration In Seconds </label><em>*</em>
+                                {{form_widget(tag.timeDurationInSeconds,{ 'attr': {'class': 'form-control'} })}}
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Client Email </label><em>*</em>
+                                {{form_widget(tag.clientEmail,{ 'attr': {'class': 'form-control', 'placeholder':'some@email.com'} })}}
+                            </div>
+                        </div>
+                        {{form_widget(tag._token)}}
+                    {% endfor %}
                     
                     {{form_widget(form._token)}}
 
@@ -82,6 +137,7 @@
                         <button class="btn btn-primary pull-right save-btn" type="submit" style="margin-right: 15px; margin-top: 20px;">{% if isNew is defined and isNew != false %}Save{% else %}Update{% endif %}</button>
                     </div>
                 </form>
+{#                {{ form_end(form) }}#}
             </div>
         </div>
        

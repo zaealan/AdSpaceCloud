@@ -1,0 +1,3 @@
+GET -> http://adspace-cloud.loc/AdSpaceWS/notifyAdvertPlanCollectedData?placeNickname=unicentr_5&advertPlanFileId=1&deviceId=pepitoDev1&numberOfWatches=7&numberOfInteractions=3
+
+{"meta":{"copyright":"AdSpaceCloud","authors":["Luis Enrique Robledo- Nov. 24\/2019"]},"links":{"self":"\/AdSpaceWS\/notifyAdvertPlanCollectedData?placeNickname=unicentr_5\u0026advertPlanFileId=1\u0026deviceId=pepitoDev1\u0026numberOfWatches=7\u0026numberOfInteractions=3"},"data":"AdvertPlan file counters with \u00271\u0027 id updated successfully!"}

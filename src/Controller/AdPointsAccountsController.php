@@ -30,6 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Controller\ParametersNormalizerController;
 use DateTime;
 use App\Form\AdvertPlanFileType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * Description of AdPointsAccountsController
@@ -568,14 +569,20 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         $entity = new AdvertisePlan();
         $entity->setAdvertPlace($entityLicense);
-        $form = $this->createSublicenseForm($entity);
+        $form = $this->createSublicenseForm($entity, 2);
         
-        $entityFile = new AdvertPlanFile();
-        $fileForms[] = $this->createAdvertPlanFileForm($entityFile)->createView();
+//        dump($form->createView());
+//        die;
+        
+        for ($i = 0; $i < $this->realContainer->getParameter('default_clients_per_plan'); ++$i) {
+            $entityFile = new AdvertPlanFile();
+            $fileForms[] = $this->createAdvertPlanFileForm($entityFile, ($i + 2))->createView();
+        }
 
         return $this->render('AccountLicense\Sublicense\new.html.twig', [
                     'entity' => $entity,
                     'form' => $form->createView(),
+                    'clientsNumber' => 2,
                     'fileForms' => $fileForms,
                     'menu' => 'accounts',
                     'isNew' => true
@@ -589,12 +596,13 @@ class AdPointsAccountsController extends ParametersNormalizerController {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createSublicenseForm(AdvertisePlan $entity) {
+    private function createSublicenseForm(AdvertisePlan $entity, $clientsNumber, $selectedChoice = null, $selectedSeconds = null) {
         $form = $this->createForm(AdvertisePlanType::class, $entity, [
             'action' => $this->generateUrl('adpoint_adplans_create', ['id' => $entity->getAdvertPlace()->getId()]),
+            'clientsNumber' => $clientsNumber,
+            'selected_choice' => $selectedChoice,
+            'selected_seconds_choice' => $selectedSeconds,
         ]);
-
-        $form->add('submit', SubmitType::class, ['label' => 'Create']);
 
         return $form;
     }
@@ -606,16 +614,20 @@ class AdPointsAccountsController extends ParametersNormalizerController {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createAdvertPlanFileForm(AdvertPlanFile $entity) {
+    private function createAdvertPlanFileForm(AdvertPlanFile $entity, $formNumber, $selectedChoice = null, $selectedSeconds = null) {
+        
         $form = $this->createForm(AdvertPlanFileType::class, $entity, [
             'action' => '#',
+            'selected_choice' => $selectedChoice,
+            'selected_seconds_choice' => $selectedSeconds,
+            'form_number' => $formNumber
         ]);
 
         return $form;
     }
     
     /**
-     * Crear sublicencias
+     * Crear AdvertisePlan
      * @param Request $request
      * @param type $id
      * @param type $channel
@@ -634,9 +646,6 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         $params = $request->request->getIterator()->getArrayCopy();
 
-        /*
-         * Encontrar la licencia segun el ID dado
-         */
         $license = $em->getRepository('App:AccountLicense')->find($id);
 
         if (!$license) {
@@ -691,29 +700,79 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
             $em->flush();
             
-//            dump('Cool!!');
-//            die;
+            for ($i = 0; $i < $this->realContainer->getParameter('default_clients_per_plan'); ++$i) {
+                $entityFile = new AdvertPlanFile();
+                $auxForm = $this->createAdvertPlanFileForm($entityFile, ($i + 2));
+                $auxForm->handleRequest($request);
+                
+                $fileForms[] = $auxForm->createView();
+                
+                $advertFile = $auxForm['fileName']->getData();
+                
+                if ($advertFile) {
+                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
 
+                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
+                    
+                    try {
+                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
+                        
+                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                            $msnError = 'An error occurred while creating your directory in server ';
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                        } else {
+                            $entityFile->setFileName($newFilename);
+                            $entityFile->setAdvertPlan($sublicense);
+                            $entityFile->setOriginalName($originalFilename);
+                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                $entityFile->setExtension('jpg');
+                                $entityFile->setMimetype('image/jpg');
+                            } else {
+                                $entityFile->setMimetype($advertFile->getMimeType());
+                                $entityFile->setExtension($advertFile->getClientOriginalExtension());
+                            }
+                            $entityFile->setLicense($license);
+                            $entityFile->setAdvertPlan($sublicense);
+
+                            $entityFile->setSorting($i + 1);
+                            $entityFile->setIsUploadedInAws(false);
+                            $entityFile->setSize($advertFile->getSize());
+                            $entityFile->setTitle(isset($params['title']) ? $params['title'] : null);
+                            $entityFile->setDescription(isset($params['description']) ? $params['description'] : null);
+                            
+                            $advertFile->move(
+                                $theAccountLicenseDirector,
+                                $newFilename
+                            );
+                        }
+                    } catch (FileException $e) {
+                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan error <strong>" . $ex->getMessage() . "</strong>");
+                    }
+                    
+                    $em->persist($entityFile);
+                    $em->flush();
+                }
+            }
+            
             $this->get('session')->getFlashBag()->add('msgNotification', "AdPointPlan saved successfully!");
 
-            return $this->redirect($this->generateUrl('adpoint_adplans_list', [
-                                'id' => $license->getId()]));
+            return $this->redirect($this->generateUrl('adpoint_adplans_list', ['id' => $license->getId()]));
         } catch (\Exception $ex) {
-//            dump('Chingoo!! ' . $ex->getMessage());
-//            die;
-            
-            $form = $this->createSublicenseForm($sublicense);
+            $form = $this->createSublicenseForm($sublicense, 2);
             $form->handleRequest($request);
             
-            $this->get('session')->getFlashBag()->add('msgError', "Sublicense with <strong>" . $ex->getMessage() . "</strong>");
+            $this->get('session')->getFlashBag()->add('msgError', "Advert Plan error <strong>" . $ex->getMessage() . "</strong>");
         }
         
-        return $this->render('AccountLicense\Sublicense\new.html.twig', array(
+        return $this->render('AccountLicense\Sublicense\new.html.twig', [
                     'entity' => $sublicense,
                     'form' => $form->createView(),
+                    'fileForms' => $fileForms,
                     'menu' => 'accounts',
                     'isNew' => true
-        ));
+        ]);
     }
 
     /**

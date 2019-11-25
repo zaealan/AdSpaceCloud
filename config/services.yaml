@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
 
+    base_adspacecloud_host: '%env(adspacecloud_host)%'
+
 ############################## s3 keys
     amazon_key: AKIAIJC3I56ARDDNY2QA
     amazon_secret: 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
@@ -25,7 +27,11 @@ parameters:
 ##############################
 
 ############################## Application special directories
+    advert_plan_files_directory: '%kernel.project_dir%/public/uploads/advertPlans'
     app_directory_versions_dir: '%kernel.project_dir%/public/uploads/android/versions/'
+##############################
+
+    default_clients_per_plan: 2
 ##############################
 
 

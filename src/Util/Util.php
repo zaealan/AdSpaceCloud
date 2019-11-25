@@ -7,6 +7,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use App\Entity\City;
@@ -39,6 +40,92 @@ use Datetime;
  */
 class Util {
 
+    /**
+     * Funcion para crear y verificar permisos del directorio
+     * de una licencia en la base de datos
+     * @author Aealan Z <lrobledo@kijho.com> 11/06/2016
+     * @param type $container Contenedor de la aplicacion
+     * @param type $accountLicenseData Datos de la coneccion con la base de datos lvl web
+     * @param type $nickname Nickname de la licencia del usuario
+     */
+    public static function beautifyActiveAdvertFullArray($container, $licenseToSync, $theActivePlanArray, $activePlanFilesArray) {
+        
+        foreach($activePlanFilesArray as $key => $activePlanSingleFile) {
+            $imagePathAux1 = $container->getParameter('base_adspacecloud_host') . 'uploads/advertPlans/' . $licenseToSync->getAlAccountLicense()->getAcName();
+            $imagePathAux2 = str_replace(' ', '_', $imagePathAux1);
+            
+            $imagePath = $imagePathAux2 . '/' . $licenseToSync->getAlLicenseUsername();
+            $imagePathFinal = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['fileName'];
+            
+            $activePlanFilesArray[$key]['filePath'] = $imagePathFinal;
+        }
+        
+        $theActivePlanArray['files'] = $activePlanFilesArray;
+        
+        return $theActivePlanArray;
+    }
+    
+    /**
+     * Funcion para crear y verificar permisos del directorio
+     * de una licencia en la base de datos
+     * @author Aealan Z <lrobledo@kijho.com> 11/06/2016
+     * @param type $container Contenedor de la aplicacion
+     * @param type $accountLicenseData Datos de la coneccion con la base de datos lvl web
+     * @param type $nickname Nickname de la licencia del usuario
+     */
+    public static function createLicenseDirectory($container, $accountLicenseData, $nickname) {
+        
+        $theAccountDirector = $container->getParameter('advert_plan_files_directory') . '/' . $accountLicenseData->getAlAccountLicense()->getAcName();
+        $theAccountDirector = str_replace(' ', '_', $theAccountDirector);
+
+        $respArray = static::validateDirWritableReadable($theAccountDirector);
+
+        $theAccountLicenseDirector = $theAccountDirector . '/' . $nickname;
+        $theAccountLicenseDirector = str_replace(' ', '_', $theAccountLicenseDirector);
+
+        $respArray = static::validateDirWritableReadable($theAccountLicenseDirector);
+
+        return $respArray;
+    }
+
+    /**
+     * Metodo para validar si un directoryo existe y si tiene los permisos
+     * correctos para ser utilizados por licensor
+     * @author Aealan Z <lrobledo@kijho.com> 11/06/2016
+     * @param string $theAccountDirector ruta del directorio a validar
+     * @return array arreglo con indices indicando si fue exitosa o no la
+     * validacion del directorio
+     */
+    public static function validateDirWritableReadable($theAccountDirector) {
+        $fs = new Filesystem();
+        $respArray = [];
+
+        $respArray['result'] = '__OK__';
+        $respArray['msg'] = '';
+        $respArray['directory'] = $theAccountDirector;
+
+        try {
+            if (!is_dir($theAccountDirector)) {
+                $fs->mkdir($theAccountDirector, 0774);
+            }
+
+            if (!is_writable($theAccountDirector)) {
+                $respArray['result'] = '__KO__';
+                $respArray['msg'] = 'Not allowed to write in directory';
+            }
+
+            if (!is_readable($theAccountDirector)) {
+                $respArray['result'] = '__KO__';
+                $respArray['msg'] = 'Not allowed to read directory ';
+            }
+        } catch (IOExceptionInterface $e) {
+            $respArray['result'] = '__KO__';
+            $respArray['msg'] = 'Not allowed to create or modify directory ' . $e->getPath();
+        }
+
+        return $respArray;
+    }
+    
     /**
      * Funcion que permite crear usuario en motor de base de datos mysql con
      * permisos especificos el cual es utilizado para la base de datos de cada

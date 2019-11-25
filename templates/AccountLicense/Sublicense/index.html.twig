@@ -9,7 +9,7 @@
                 <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Account List</a></li>
                 <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Advertise Places List</a></li>
                 <li class="active"><i class="icon-file-alt"></i> Advertise Plan List</li>
-                <a class="btn btn-primary pull-right" href="{#{{ path('adpoint_account_new') }}#}">New Advertise Plan</a>
+                <a class="btn btn-primary pull-right" href="{{path('adpoint_adplans_new', { 'id': entity.id })}}">New Advertise Plan</a>
             </ol>
             {% include 'Default/messageNotification.html.twig'%}
         </div>
