@@ -26,7 +26,7 @@ if [ "$1" = 'supervisord' ]; then
     chgrp -R www-data var/cache var/log
     chmod -R g+w var/cache var/log
 
-    composer install --prefer-dist --no-progress --no-suggest --no-interaction
+    composer install --no-progress --no-suggest --no-interaction
 
     php bin/console d:s:u --force
 
