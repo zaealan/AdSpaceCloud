@@ -8,8 +8,8 @@ services:
                 TIMEZONE: ${TIMEZONE}
                 PHP_VERSION: ${PHP_VERSION}
                 DECODE: ${DECODE}
-        environment:
-            DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${PROJECT_NAME}-db:3306/${MYSQL_DATABASE}
+        environment:        
+            DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DATABASE_HOST}:3306/${MYSQL_DATABASE}
         container_name: ${PROJECT_NAME}-php      
         volumes:
             - ./:/var/www/html
