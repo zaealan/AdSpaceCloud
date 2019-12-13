@@ -19,8 +19,11 @@ services:
             - app          
         labels:
             - 'traefik.enable=true'
-            - "traefik.http.routers.${PROJECT_NAME}-php.rule=Host(`${DOMAIN_NAME}`)"
-            - 'traefik.docker.network=app'   
+            - 'traefik.http.routers.${PROJECT_NAME}-php.rule=Host(`${DOMAIN_NAME}`)'
+            - "traefik.http.routers.${PROJECT_NAME}-php.entrypoints=websecure"
+            - "traefik.http.routers.${PROJECT_NAME}-php.tls=true"
+            - "traefik.http.routers.${PROJECT_NAME}-php.tls.certresolver=leresolver"
+            - 'traefik.docker.network=app'  
 networks:
     app:
         external:
