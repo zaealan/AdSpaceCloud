@@ -24,6 +24,8 @@ services:
                 PHP_VERSION: ${PHP_VERSION}
                 DECODE: ${DECODE}
         container_name: ${PROJECT_NAME}-php
+        environment:
+            DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${PROJECT_NAME}-db:3306/${MYSQL_DATABASE}
         depends_on:
            - db         
         volumes:

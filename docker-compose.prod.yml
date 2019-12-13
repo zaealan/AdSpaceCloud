@@ -1,0 +1,29 @@
+version: '2.4'
+
+services:
+    php:
+        build:
+            context: .docker/php7.x-apache-supervisor
+            args:
+                TIMEZONE: ${TIMEZONE}
+                PHP_VERSION: ${PHP_VERSION}
+                DECODE: ${DECODE}
+        environment:
+            DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${PROJECT_NAME}-db:3306/${MYSQL_DATABASE}
+        container_name: ${PROJECT_NAME}-php      
+        volumes:
+            - ./:/var/www/html
+            - ./var/apache2/:/var/log/apache2
+        networks:
+            - internal
+            - app          
+        labels:
+            - 'traefik.enable=true'
+            - "traefik.http.routers.${PROJECT_NAME}-php.rule=Host(`${DOMAIN_NAME}`)"
+            - 'traefik.docker.network=app'   
+networks:
+    app:
+        external:
+            name: app             
+    internal:
+        name: ${PROJECT_NAME}

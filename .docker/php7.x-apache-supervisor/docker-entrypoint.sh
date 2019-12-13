@@ -12,10 +12,16 @@ if [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$1" = 'supervisord' ]; then
-       echo "Any code that you need to execute in container starting procces" 
-       echo "*************************"
-       echo "******  Your code  ******"
-       echo "*************************"
+    if [ ! -d "public/uploads" ]; then
+        mkdir -p public/uploads
+    fi
+    chgrp -R www-data var/cache var/log
+    chmod -R g+w var/cache var/log
+
+    composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+    php bin/console d:s:u --force
+
 fi
 
 exec "$@"
