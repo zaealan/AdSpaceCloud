@@ -15,13 +15,13 @@ if [ "$1" = 'supervisord' ]; then
     if [ ! -d "public/uploads" ]; then
         mkdir -p public/uploads
     fi
-    
+
     if [ ! -d "var/cache" ]; then             
         mkdir var/cache
     fi
 
-    if [ ! -d "var/logs" ]; then             
-        mkdir var/logs              
+    if [ ! -d "var/log" ]; then             
+        mkdir var/log              
     fi
     chgrp -R www-data var/cache var/log
     chmod -R g+w var/cache var/log
