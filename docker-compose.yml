@@ -1,0 +1,60 @@
+version: '2.4'
+
+services:
+    db:
+        image: mysql:5.7
+        container_name: ${PROJECT_NAME}-db
+        command: --sql_mode="NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+        volumes:
+            - ".docker/.data/db:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        networks:
+            - internal
+        labels:
+            - traefik.enable=false
+    php:
+        build:
+            context: .docker/php7.x-apache-supervisor
+            args:
+                TIMEZONE: ${TIMEZONE}
+                PHP_VERSION: ${PHP_VERSION}
+                DECODE: ${DECODE}
+        container_name: ${PROJECT_NAME}-php
+        depends_on:
+           - db         
+        volumes:
+            - ./:/var/www/html
+            - ./var/apache2/:/var/log/apache2
+        networks:
+            - internal
+            - app          
+        labels:
+            - 'traefik.enable=true'
+            - "traefik.http.routers.${PROJECT_NAME}-php.rule=Host(`${DOMAIN_NAME}`)"
+            - 'traefik.docker.network=app'   
+            
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: ${PROJECT_NAME}-phpmyadmin
+    #   The configuration file of phpmyadmin/phpmyadmin (/www/config.inc.php) say by default the host name of database server if 'db' :
+    #   $hosts = array('db');
+    #   So if your database name container is not 'db', you should add the environment variable PMA_HOST= (or PMA_HOSTS if multi db servers) with the right name (databaseContainer in your case)
+        environment:
+            PMA_HOST: ${PROJECT_NAME}-db          
+        networks:
+            - internal
+            - app
+        labels:
+            - 'traefik.enable=true'
+            - "traefik.http.routers.${PROJECT_NAME}-phpmyadmin.rule=Host(`${PHPMYADMIN_DOMAIN_NAME}`)"
+            - 'traefik.docker.network=app'
+networks:
+    app:
+        external:
+            name: app             
+    internal:
+        name: ${PROJECT_NAME}

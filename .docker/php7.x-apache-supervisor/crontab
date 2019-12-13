@@ -1,0 +1,1 @@
+*/1 * * * * root echo "hello world"
