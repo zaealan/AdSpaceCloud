@@ -669,6 +669,8 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         $sublicense = new AdvertisePlan();
         
         try {
+            $auxNowDate = Util::getCurrentDate();
+            
             $startingDateTime = new DateTime($startingDate);
             $endingDateTime = new DateTime($endingDate);
 
@@ -686,6 +688,12 @@ class AdPointsAccountsController extends ParametersNormalizerController {
             $sublicense->setEndingDate($endingDateTime);
             $sublicense->setStatus(AdvertisePlan::ADVERT_PLAN_STATUS_SCHEDULED);
             $sublicense->setRerunTimes(0);
+            
+            if ($startingDateTime < $auxNowDate && $auxNowDate < $endingDateTime) {
+                $sublicense->setStatus(AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING);
+            } else {
+                $sublicense->setStatus(AdvertisePlan::ADVERT_PLAN_STATUS_SCHEDULED);
+            }
             
             $someDefaultPoint = 1;
             $baseNumberOfAvertises = $someDefaultPoint * 15;
