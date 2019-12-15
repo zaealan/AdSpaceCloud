@@ -686,7 +686,6 @@ class AdPointsAccountsController extends ParametersNormalizerController {
             $sublicense->setCreatedDate($actualDate);
             $sublicense->setStartingDate($startingDateTime);
             $sublicense->setEndingDate($endingDateTime);
-            $sublicense->setStatus(AdvertisePlan::ADVERT_PLAN_STATUS_SCHEDULED);
             $sublicense->setRerunTimes(0);
             
             if ($startingDateTime < $auxNowDate && $auxNowDate < $endingDateTime) {
