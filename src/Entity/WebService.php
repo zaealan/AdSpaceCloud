@@ -42,6 +42,7 @@ class WebService {
     const CODE_WRONG_ARGUMENTS = 185;
     const CODE_NOT_ALLOWED_METHOD = 190;
     const CODE_SUCCESS = 200;
+    const CODE_OK_CREATED = 201;
     const CODE_PARTIAL_SUCCESS = 206;
     const CODE_SUCCESS_NOT_MODIFIED = 304;
     const CODE_HOST_NOT_CONNECT = 2003;
