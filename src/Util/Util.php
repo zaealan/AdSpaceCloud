@@ -51,7 +51,7 @@ class Util {
     public static function beautifyActiveAdvertFullArray($container, $licenseToSync, $theActivePlanArray, $activePlanFilesArray) {
         
         foreach($activePlanFilesArray as $key => $activePlanSingleFile) {
-            $imagePathAux1 = $container->getParameter('base_adspacecloud_host') . 'uploads/advertPlans/' . $licenseToSync->getAlAccountLicense()->getAcName();
+            $imagePathAux1 = $container->getParameter('base_adspacecloud_host') . '/uploads/advertPlans/' . $licenseToSync->getAlAccountLicense()->getAcName();
             $imagePathAux2 = str_replace(' ', '_', $imagePathAux1);
             
             $imagePath = $imagePathAux2 . '/' . $licenseToSync->getAlLicenseUsername();
