@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
  * Description of AdvertPlanFileType
@@ -82,6 +83,79 @@ class AdvertPlanFileType extends AbstractType {
                     'mapped' => true,
                     'choices' => $choicesTimeInSeconds,
                     'data' => $this->seconds,
+                ])
+                
+                ///////////
+                
+                ->add('backGroundFileName', FileType::class, [
+                    'label' => 'Background Image',
+                    'mapped' => true,
+                    'required' => true
+                ])
+                ->add('logoFileName', FileType::class, [
+                    'label' => 'Logo Image',
+                    'mapped' => true,
+                    'required' => true
+                ])
+                ->add('dev1FileName', FileType::class, [
+                    'label' => 'Descriptive Image 1',
+                    'mapped' => true,
+                    'required' => true
+                ])
+                ->add('dev1Description', TextareaType::class, [
+                    'label' => 'Descriptive Text 1',
+                    'mapped' => true,
+                    'required' => true
+                ])
+                ->add('dev2FileName', FileType::class, [
+                    'label' => 'Descriptive Image 2',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev2Description', TextareaType::class, [
+                    'label' => 'Descriptive Text 2',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev3FileName', FileType::class, [
+                    'label' => 'Descriptive Image 3',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev3Description', TextareaType::class, [
+                    'label' => 'Descriptive Text 3',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev4FileName', FileType::class, [
+                    'label' => 'Descriptive Image 4',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev4Description', TextareaType::class, [
+                    'label' => 'Descriptive Text 4',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev5FileName', FileType::class, [
+                    'label' => 'Descriptive Image 5',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev5Description', TextareaType::class, [
+                    'label' => 'Descriptive Text 5',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev6FileName', FileType::class, [
+                    'label' => 'Descriptive Image 6',
+                    'mapped' => true,
+                    'required' => false
+                ])
+                ->add('dev6Description', TextareaType::class, [
+                    'label' => 'Descriptive Text 6',
+                    'mapped' => true,
+                    'required' => false
                 ])
                 ->add('clientEmail', EmailType::class, [
                     'required' => true,

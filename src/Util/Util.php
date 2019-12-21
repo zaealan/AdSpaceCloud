@@ -55,9 +55,28 @@ class Util {
             $imagePathAux2 = str_replace(' ', '_', $imagePathAux1);
             
             $imagePath = $imagePathAux2 . '/' . $licenseToSync->getAlLicenseUsername();
-            $imagePathFinal = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['fileName'];
             
-            $activePlanFilesArray[$key]['filePath'] = $imagePathFinal;
+            $activePlanFilesArray[$key]['filePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['fileName'];
+            
+            $activePlanFilesArray[$key]['backgroundFilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['backGroundFileName'];
+            $activePlanFilesArray[$key]['logoFilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['logoFileName'];
+            $activePlanFilesArray[$key]['dev1FilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['dev1FileName'];
+            
+            if (isset($activePlanSingleFile['dev2FileName']) && $activePlanSingleFile['dev2FileName'] != null && $activePlanSingleFile['dev2FileName'] != '') {
+                $activePlanFilesArray[$key]['dev2FilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['dev2FileName'];
+            }
+            if (isset($activePlanSingleFile['dev3FileName']) && $activePlanSingleFile['dev3FileName'] != null && $activePlanSingleFile['dev3FileName'] != '') {
+                $activePlanFilesArray[$key]['dev3FilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['dev3FileName'];
+            }
+            if (isset($activePlanSingleFile['dev4FileName']) && $activePlanSingleFile['dev4FileName'] != null && $activePlanSingleFile['dev4FileName'] != '') {
+                $activePlanFilesArray[$key]['dev4FilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['dev4FileName'];
+            }
+            if (isset($activePlanSingleFile['dev5FileName']) && $activePlanSingleFile['dev5FileName'] != null && $activePlanSingleFile['dev5FileName'] != '') {
+                $activePlanFilesArray[$key]['dev5FilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['dev5FileName'];
+            }
+            if (isset($activePlanSingleFile['dev6FileName']) && $activePlanSingleFile['dev6FileName'] != null && $activePlanSingleFile['dev6FileName'] != '') {
+                $activePlanFilesArray[$key]['dev6FilePath'] = str_replace(' ', '_', $imagePath) . '/' . $activePlanSingleFile['dev6FileName'];
+            }
         }
         
         $theActivePlanArray['files'] = $activePlanFilesArray;

@@ -29,7 +29,6 @@
                         action="{{path('adpoint_adplans_update', { 'subId': entity.id })}}"
                     {% endif %}
                      id="create_license" method="POST" enctype="multipart/form-data">
-{#                {{ form_start(form, {'action': path('adpoint_adplans_create', { 'id': entity.advertPlace.id }), 'method': 'post', 'attr': {'id': 'create_license'} }) }}#}
                     <div>
                         <div class="col-xs-6">
                             <div class="form-group">
@@ -71,64 +70,105 @@
                              
                     <hr>
                     <div class="col-xs-12">
-                        <label style="font-size: 18px;">Advert Plan Images </label>
+                        <label style="font-size: 22px; font-weight: bold;">Advert Plan Clients / Images </label>
                         <br>
                         <br>
                     </div>
                     
-                    {#{% for i in 0..clientsNumber %}
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>File </label><em>*</em>
-                                {{form_widget(form.fileName[i],{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>File Type </label><em>*</em>
-                                {{form_widget(form.fileType[i],{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>Duration In Seconds </label><em>*</em>
-                                {{form_widget(form.timeDurationInSeconds[i],{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="form-group">
-                                <label>Client Email </label><em>*</em>
-                                {{form_widget(form.clientEmail[i],{ 'attr': {'class': 'form-control', 'placeholder':'some@email.com'} })}}
-                            </div>
-                        </div>
-                    {% endfor %}#}
-                    
                     {% for tag in fileForms %}
-                        <div class="col-xs-3">
+                        <div class="col-xs-12">
+                            <label style="font-size: 16px;">Client # {{loop.index}} </label>
+                        </div>
+                        <hr>
+                        <div class="col-xs-6">
                             <div class="form-group">
-                                <label>File </label><em>*</em>
+                                <label>Monitor File </label><em>*</em>
                                 {{form_widget(tag.fileName,{ 'attr': {'class': 'form-control'} })}}
                             </div>
-                        </div>
-                        <div class="col-xs-3">
                             <div class="form-group">
-                                <label>File Type </label><em>*</em>
-                                {{form_widget(tag.fileType,{ 'attr': {'class': 'form-control'} })}}
+                                <label>Background File </label><em>*</em>
+                                {{form_widget(tag.backGroundFileName,{ 'attr': {'class': 'form-control'} })}}
                             </div>
-                        </div>
-                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <label>Logo File </label><em>*</em>
+                                {{form_widget(tag.logoFileName,{ 'attr': {'class': 'form-control'} })}}
+                            </div>
                             <div class="form-group">
                                 <label>Duration In Seconds </label><em>*</em>
                                 {{form_widget(tag.timeDurationInSeconds,{ 'attr': {'class': 'form-control'} })}}
                             </div>
-                        </div>
-                        <div class="col-xs-3">
                             <div class="form-group">
                                 <label>Client Email </label><em>*</em>
                                 {{form_widget(tag.clientEmail,{ 'attr': {'class': 'form-control', 'placeholder':'some@email.com'} })}}
                             </div>
                         </div>
+                        <div class="col-xs-6">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Descriptive File 1 </label><em>*</em>
+                                    {{form_widget(tag.dev1FileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label>Descriptive File 2 </label>
+                                    {{form_widget(tag.dev2FileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Description Text 1 </label><em>*</em>
+                                    {{form_widget(tag.dev1Description,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Description Text 2 </label>
+                                    {{form_widget(tag.dev2Description,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Descriptive File 3 </label>
+                                    {{form_widget(tag.dev3FileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label>Descriptive File 4 </label>
+                                    {{form_widget(tag.dev4FileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Description Text 3 </label>
+                                    {{form_widget(tag.dev3Description,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Description Text 4 </label>
+                                    {{form_widget(tag.dev4Description,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Descriptive File 5 </label>
+                                    {{form_widget(tag.dev5FileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label>Descriptive File 6 </label>
+                                    {{form_widget(tag.dev6FileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label>Description Text 5 </label>
+                                    {{form_widget(tag.dev5Description,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Description Text 6 </label>
+                                    {{form_widget(tag.dev6Description,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                            </div>
+                        </div>   
                         {{form_widget(tag._token)}}
+                        <br>
                     {% endfor %}
                     
                     {{form_widget(form._token)}}
@@ -137,7 +177,6 @@
                         <button class="btn btn-primary pull-right save-btn" type="submit" style="margin-right: 15px; margin-top: 20px;">{% if isNew is defined and isNew != false %}Save{% else %}Update{% endif %}</button>
                     </div>
                 </form>
-{#                {{ form_end(form) }}#}
             </div>
         </div>
        

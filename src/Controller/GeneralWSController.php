@@ -42,8 +42,13 @@ class GeneralWSController extends ApiController {
         if ($deviceId == null) {
             $deviceId = $request->query->get('deviceId');
         }
+        
+        $androidDeviceId = $request->request->get('androidDeviceId');
+        if ($androidDeviceId == null) {
+            $androidDeviceId = $request->query->get('androidDeviceId');
+        }
 
-        if ($deviceId == '' || $deviceId == null || $placeId == '' || $placeId == null) {
+        if ((($deviceId == '' || $deviceId == null) && ($androidDeviceId == '' || $androidDeviceId == null)) || $placeId == '' || $placeId == null) {
             return $this->setStatusCode(WebService::HTTP_CODE_BAD_REQUEST)
                             ->respondWithError('Wrong data!'
                                 , WebService::CODE_OBJECT_NOT_FOUND, $this->getMeta($request));
@@ -64,6 +69,12 @@ class GeneralWSController extends ApiController {
                             ->respondWithError('Place logued with other active device!'
                                 , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
         }
+        
+        if ($licenseToSync->getAndroidDeviceUid() != $androidDeviceId && ($licenseToSync->getAndroidDeviceUid() != null || $licenseToSync->getAndroidDeviceUid() != '') && ($androidDeviceId != null || $androidDeviceId != '')) {
+            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
+                            ->respondWithError('Place logued with other active tablet device!'
+                                , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
+        }
 
         $licenseSuspect = $em->getRepository('App:AccountLicense')->findBy(['deviceUid' => $deviceId]);
 
@@ -73,7 +84,13 @@ class GeneralWSController extends ApiController {
                                 , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
         }
 
-        $licenseToSync->setDeviceUid($deviceId);
+        if ($deviceId) {
+            $licenseToSync->setDeviceUid($deviceId);
+        }
+        
+        if ($androidDeviceId) {
+            $licenseToSync->setAndroidDeviceUid($androidDeviceId);
+        }
 
         $em->persist($licenseToSync);
         $em->flush();

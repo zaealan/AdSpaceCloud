@@ -153,6 +153,12 @@ class AccountLicense {
      * @ORM\Column(name="al_device_uid", type="string", length=60, nullable=true, unique=true)
      */
     private $deviceUid;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="al_android_device_uid", type="string", length=60, nullable=true, unique=true)
+     */
+    private $androidDeviceUid;
 
     /**
      * @var boolean
@@ -382,6 +388,20 @@ class AccountLicense {
      */
     private $scheduleMenuChecked;
 
+    /**
+     * @return type
+     */
+    public function getAndroidDeviceUid() {
+        return $this->androidDeviceUid;
+    }
+
+    /**
+     * @param type $androidDeviceUid
+     */
+    public function setAndroidDeviceUid($androidDeviceUid) {
+        $this->androidDeviceUid = $androidDeviceUid;
+    }
+        
     /**
      * @return \DateTime
      */
