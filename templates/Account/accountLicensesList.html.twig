@@ -131,8 +131,13 @@
                                             &nbsp;
                                             <a class="editAccount" style="margin-top: -5px;" href="{{path('adpoint_adplans_list', { 'id': entity[0].id })}}">
                                                 <img src="{{ asset('/images/list.png') }}" width="26" height="26" alt="Advertise Plan List" title="Advertise Plan List"/>
-                                                <span class="badge listVV" style="margin-top: 4px;" title="Number of Advertise Plans">{% if entity[0].subnum is defined %}{{entity[0].subnum}}{% else %}0{% endif %}</span>
+                                                <span class="badge listCheduled" style="margin-top: 4px;" title="Cheduled Advertise Plans">{% if entity[0].cheduledNum is defined %}{{entity[0].cheduledNum}}{% else %}0{% endif %}</span>
+                                                <span class="badge listActive" style="margin-top: 4px;" title="Active Advertise Plans">{% if entity[0].activeNum is defined %}{{entity[0].activeNum}}{% else %}0{% endif %}</span>
+                                                <span class="badge listOld" style="margin-top: 4px;" title="Old Advertise Plans">{% if entity[0].oldNum is defined %}{{entity[0].oldNum}}{% else %}0{% endif %}</span>
                                             </a>
+                                            &nbsp;
+                                            &nbsp;
+                                            &nbsp;
                                             &nbsp;
                                             <a class="editAccount" style="margin-top: -5px;" href="{{path('adpoint_adplans_new', { 'id': entity[0].id })}}" id="create_sublicense_ac_{{ entity[0].id }}" {% if entity[0].alLicenseStatus == 'Inactive' %} style="display:none;" {% endif %}>
                                                 <img src="{{ asset('/images/addLicense.png') }}" width="29" height="29" alt="Add Advertise Plan" title="Add Advertise Plan"/>

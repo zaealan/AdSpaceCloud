@@ -98,7 +98,7 @@ class GeneralWSController extends ApiController {
         $actualDate = Util::getCurrentDate();
 
         $advertPlanRepository = $em->getRepository('App:AdvertisePlan');
-        $activePlanArray = $advertPlanRepository->getActualActiveAdvertPlanForDevice($actualDate->format('Y-m-d H:i'));
+        $activePlanArray = $advertPlanRepository->getActualActiveAdvertPlanForDevice($licenseToSync->getId(), $actualDate->format('Y-m-d H:i'));
 
         if (!isset($activePlanArray[0])) {
             return $this->metaResponse($request, 'There is no active AdvertPlan for this place...'

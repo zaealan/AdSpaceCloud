@@ -136,8 +136,8 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                 $count = count($entitiesToPaginate);
                 for ($i = 0; $i < $count; ++$i) {
                     $searchL['alAccountLicense'] = $entitiesToPaginate[$i]->getId();
-                    $entitiesToPaginate[$i]->licenseNum = $em->getRepository('App:AccountLicense')
-                            ->accountLicensesForSuperAdminUsers($searchL, '', true);
+                    
+                    $entitiesToPaginate[$i]->licenseNum = $em->getRepository('App:AccountLicense')->accountLicensesForSuperAdminUsers($searchL, '', true);
                 }
             } else {
                 $entitiesToPaginate = [];
@@ -253,10 +253,22 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                 $entitiesToPaginate = [];
             }
 
-//            foreach ($entitiesToPaginate as $key => $license) {
-//                $subLicensesByLicense = $em->getRepository('App:SubLicense')->findBy(['license' => $license[0]->getId()]);
-//                $entitiesToPaginate[$key][0]->subnum = count($subLicensesByLicense);
-//            }
+            foreach ($entitiesToPaginate as $key => $license) {
+                $actualDate = Util::getCurrentDate()->format('Y-m-d H:i:s');
+                
+                $activeAdvertPlans = $em->getRepository('App:AdvertisePlan')->getActualActiveAdvertPlanForDevice($license[0]->getId(), $actualDate);
+                $cheduledAdvertPlans = $em->getRepository('App:AdvertisePlan')->getCheduledAdvertPlanForDevice($license[0]->getId(), $actualDate);
+                $oldAdvertPlans = $em->getRepository('App:AdvertisePlan')->getOldAdvertPlanForDevice($license[0]->getId(), $actualDate);
+                
+                $entitiesToPaginate[$key][0]->activeNum = count($activeAdvertPlans);
+                $entitiesToPaginate[$key][0]->cheduledNum = count($cheduledAdvertPlans);
+                
+                if (count($oldAdvertPlans) > 9) {
+                    $entitiesToPaginate[$key][0]->oldNum = '+9';
+                } else {
+                    $entitiesToPaginate[$key][0]->oldNum = count($oldAdvertPlans);
+                }
+            }
 
 //            $entities = $paginator->paginate($entitiesToPaginate)->getResult();
         } else {

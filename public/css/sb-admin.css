@@ -288,7 +288,9 @@ table.tablesorter thead {
         width: 225px;
     }
     #panelLeft > li > a{color:#eee;}
-    .listVV { position: absolute; margin-left: -15px; margin-top: -10px; background-color: #ff9900;}
+    .listCheduled { position: absolute; margin-left: -1.4%; margin-top: -0.7%; background-color: #ff9900;}
+    .listActive { position: absolute; margin-left: -0.5%; margin-top: -0.7%; background-color: #208050;}
+    .listOld { position: absolute; margin-left: 0.5%; margin-top: -0.7%; background-color: #aaa;}
 
     .icomn12 {
         background-position: 8px 12px;

@@ -67,8 +67,12 @@
                                     {% if (constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN')) and entity.licenseNum is defined and entity.licenseNum is not empty and entity.licenseNum != '0' %}
                                         <a class="editAccount" href="{{path('adpoint_points_list', { 'accountId': entity.id })}}">
                                             <img src="{{ asset('/images/list.png') }}" width="26" height="26" alt="Advertise Places List" title="Advertise Places List"/>
-                                            <span class="badge listVV" title="Number of Licenses">{{entity.licenseNum}}</span>
-                                        </a>&nbsp;
+                                            <span class="badge listActive" title="Advertise Places">{% if entity.licenseNum is defined %}{{entity.licenseNum}}{% else %}0{% endif %}</span>
+                                        </a>
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
+                                        &nbsp;
                                     {% endif %}
                                     {% if (constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_CREATE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN')) and entity.accountStatus() == 'Active' %}
                                         <a class="editAccount" href="{{path('adpoint_point_new', { 'id': entity.id })}}" id="create_license_ac_{{ entity.id }}" {% if entity.accountStatus() == 'Inactive' %} style="display:none;" {% endif %}>

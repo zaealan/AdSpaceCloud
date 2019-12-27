@@ -20,18 +20,18 @@ class AdvertisePlanRepository extends EntityRepository {
      * @param type $dayTime
      * @return type
      */
-    public function getActualActiveAdvertPlanForDevice($actualDate) {
+    public function getActualActiveAdvertPlanForDevice($palceId, $actualDate) {
         $em = $this->getEntityManager();
 
         $dql = "SELECT advertPl.id, advertPl.name, advertPl.description, (advertPl.startingDate) AS startingDate, (advertPl.endingDate) AS endingDate "
                 . "FROM App:AdvertisePlan advertPl "
                 . "JOIN App:AdvertPlanFile advertFl WITH advertFl.advertPlan = advertPl.id "
-                . "WHERE advertPl.status = :active AND '$actualDate' > advertPl.startingDate AND '$actualDate' < advertPl.endingDate "
+                . "WHERE advertPl.status = :active AND '$actualDate' > advertPl.startingDate AND '$actualDate' < advertPl.endingDate AND advertPl.advertPlace = :placeId "
                 . "ORDER BY advertPl.startingDate ASC ";
         $consult = $em->createQuery($dql);
         $consult->setMaxResults(1);
         
-        $consult->setParameters(['active' => AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING]);
+        $consult->setParameters(['active' => AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING, 'placeId' => $palceId]);
 
         return $consult->getResult();
     }
@@ -57,5 +57,56 @@ class AdvertisePlanRepository extends EntityRepository {
 
         return $consult->getArrayResult();
     }
+    
+    
+    /**
+     * Consulta para conocer la cantidad de pagos con tarjeta en estado
+     * -PRE- segun la fecha seleccionada
+     * @author Aealan Z <lrobledo@kijho.com> 29/07/2016
+     * @param DateTime $dateCheck fecha para consultar los pagos no asentados
+     * @param type $dayTime
+     * @return type
+     */
+    public function getCheduledAdvertPlanForDevice($palceId, $actualDate) {
+        $em = $this->getEntityManager();
+
+        $dql = "SELECT advertPl.id, advertPl.name, advertPl.description, (advertPl.startingDate) AS startingDate, (advertPl.endingDate) AS endingDate "
+                . "FROM App:AdvertisePlan advertPl "
+                . "JOIN App:AdvertPlanFile advertFl WITH advertFl.advertPlan = advertPl.id  "
+                . "WHERE '$actualDate' < advertPl.startingDate AND advertPl.advertPlace = :placeId "
+                . "ORDER BY advertPl.startingDate ASC ";
+        $consult = $em->createQuery($dql);
+        $consult->setMaxResults(1);
+        
+        $consult->setParameters(['placeId' => $palceId]);
+
+        return $consult->getResult();
+    }
+    
+    
+    /**
+     * Consulta para conocer la cantidad de pagos con tarjeta en estado
+     * -PRE- segun la fecha seleccionada
+     * @author Aealan Z <lrobledo@kijho.com> 29/07/2016
+     * @param DateTime $dateCheck fecha para consultar los pagos no asentados
+     * @param type $dayTime
+     * @return type
+     */
+    public function getOldAdvertPlanForDevice($palceId, $actualDate) {
+        $em = $this->getEntityManager();
+
+        $dql = "SELECT advertPl.id, advertPl.name, advertPl.description, (advertPl.startingDate) AS startingDate, (advertPl.endingDate) AS endingDate "
+                . "FROM App:AdvertisePlan advertPl "
+                . "JOIN App:AdvertPlanFile advertFl WITH advertFl.advertPlan = advertPl.id "
+                . "WHERE '$actualDate' > advertPl.endingDate AND advertPl.advertPlace = :placeId "
+                . "ORDER BY advertPl.startingDate ASC ";
+        $consult = $em->createQuery($dql);
+        $consult->setMaxResults(1);
+        
+        $consult->setParameters(['placeId' => $palceId]);
+
+        return $consult->getResult();
+    }
+    
     
 }
