@@ -31,7 +31,7 @@ parameters:
     app_directory_versions_dir: '%kernel.project_dir%/public/uploads/android/versions/'
 ##############################
 
-    default_clients_per_plan: 2
+    default_clients_per_plan: 10
 ##############################
 
 

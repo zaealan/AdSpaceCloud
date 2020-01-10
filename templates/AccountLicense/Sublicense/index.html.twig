@@ -18,8 +18,8 @@
             <table class="table table-bordered table-hover tablesorter records_list table-striped">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Channel</th>
+                        <th>Advertise Plan Name</th>
+                        <th>Description</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -29,32 +29,25 @@
                             <td>{{ entity.name }}</td>
                             <td>{{ entity.description }}</td>
                             <td>
-                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
-                                    &nbsp;
-                                    <a class="editAccount" href="{{path('adpoint_adplans_edit', { 'subId': entity.id })}}">
-                                        <img src="{{ asset('/images/editts.png') }}" alt="Edit Sublicense" title="Edit Sublicense"/>
-                                    </a>
-                                {% endif %}
-                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
-                                    &nbsp;
-                                    <a {% if entity.status == constant('App\\Entity\\AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING') %} class="devicesWarning imgDevices"  {% else %} class="devicesWarning" {% endif %}
-                                        style="top: 10px; margin-left: 10px;"
-                                        href="javascript:" 
-                                       {# data_path="{{ path('account_sublicense_release_uid_license', {'id':entity.id}) }}" #}
-                                        license_name="{{entity.name}}"
-                                        license_uid="{{entity.name}}"
-                                        license_push="{{entity.name}}"
-                                        title="Reset Bound To {{entity.name}} Device {% if entity.name is not empty %}With {{entity.name}} Push Key{% endif %}" alt="Reset Bound To Device">
-                                    </a>
-                                {% endif %}
-                                {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_DELETE') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
-                                    &nbsp;
-                                    <a class="deleteSub" href="javascript:"
-                                       {# data_path="{{ path('level_sublicenses_delete',  {'id': entity.id}) }}" #}
-                                        sub_name="{{ entity.name|title }}">
-                                        <img src="{{ asset('/images/deletex.png ') }}" alt="Delete" title="Delete"/>
-                                    </a>
-                                {% endif %}
+                                &nbsp;
+                                <a class="editAccount" href="{{path('adpoint_adplans_edit', { 'subId': entity.id })}}">
+                                    <img style="margin-top: 5px; height: 35px; width: 35px;" src="{{ asset('/images/moreInfo.png') }}" alt="Clients Advertise Info" title="Clients Advertise Info"/>
+                                </a>
+                                {#&nbsp;
+                                <a class="deleteSub" href="javascript:"
+                                    sub_name="{{ entity.name|title }}">
+                                    <img src="{{ asset('/images/watchers.png') }}" alt="{{entity.numberOfWatches}} Watchers" title="{{entity.numberOfWatches}} Watchers"/>
+                                </a>
+                                &nbsp;
+                                <a class="deleteSub" href="javascript:"
+                                    sub_name="{{ entity.name|title }}">
+                                    <img src="{{ asset('/images/interactions.png') }}" alt="{{entity.numberOfInteractions}} Interactions" title="{{entity.numberOfInteractions}} Interactions"/>
+                                </a>
+                                &nbsp;
+                                <a class="deleteSub" href="javascript:"
+                                    sub_name="{{ entity.name|title }}">
+                                    <img src="{{ asset('/images/inquiring.png') }}" alt="{{entity.numberOfRequestedInfo}} Requested Info" title="{{entity.numberOfRequestedInfo}} Requested Info"/>
+                                </a>#}
                             </td>
                         </tr>
                     {% else %}

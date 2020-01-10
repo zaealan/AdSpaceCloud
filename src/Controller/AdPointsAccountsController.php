@@ -546,8 +546,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
             throw $this->createAccessDeniedException('License not found');
         }
 
-        $entities = $em->getRepository('App:AdvertisePlan')
-                ->findBy(['advertPlace' => $id]);
+        $entities = $em->getRepository('App:AdvertisePlan')->findBy(['advertPlace' => $id]);
 
         return $this->render('AccountLicense\Sublicense\index.html.twig', [
                     'entities' => $entities,
