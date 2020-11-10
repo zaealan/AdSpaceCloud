@@ -1,22 +1,16 @@
-FROM alpine as ioncube_loader
-RUN apk --no-cache add curl \
-  	&& curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
-	&& tar -xvzf ioncube.tar.gz
-
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 ARG TIMEZONE
 
 LABEL MAINTAINER frcho <luisfer1g@gmail.com>
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG PHP_VERSION=${PHP_VERSION}
-ARG DECODE=${DECODE}
 
 RUN \
     if [ "${PHP_VERSION}" = "7.3" ]; then \
         apt-get update && \
         apt-get install -y software-properties-common && \
-        LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php; \   
+        LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php; \
     fi && \
     apt-get update && \
     apt-get install -y --no-install-recommends --no-install-suggests apt-utils \
@@ -51,9 +45,8 @@ COPY "uploads.ini" "/etc/php/${PHP_VERSION}/cli/conf.d/uploads.ini"
 COPY "uploads.ini" "/etc/php/${PHP_VERSION}/apache2/conf.d/uploads.ini"
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer --version
-
+COPY --from=composer:1.10.17 /usr/bin/composer /usr/bin/composer
+RUN composer -V
 # |--------------------------------------------------------------------------
 # | prestissimo
 # |--------------------------------------------------------------------------
@@ -78,13 +71,6 @@ ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
-
-COPY --from=ioncube_loader /ioncube/ioncube_loader_lin_${PHP_VERSION}.so /usr/local/ioncube/
-
-RUN if [ "${DECODE}" = "ioncube" ]; then \ 
-        echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/${PHP_VERSION}/apache2/conf.d/00-ioncube.ini && \
-        echo "zend_extension=/usr/local/ioncube/ioncube_loader_lin_${PHP_VERSION}.so" > /etc/php/${PHP_VERSION}/cli/conf.d/00-ioncube.ini; \
-    fi
 
 # Configure Apache
 RUN rm -rf /var/www/* \

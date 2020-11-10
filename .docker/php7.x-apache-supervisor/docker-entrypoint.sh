@@ -16,19 +16,19 @@ if [ "$1" = 'supervisord' ]; then
         mkdir -p public/uploads
     fi
 
-    if [ ! -d "var/cache" ]; then             
+    if [ ! -d "var/cache" ]; then
         mkdir var/cache
     fi
 
-    if [ ! -d "var/log" ]; then             
-        mkdir var/log              
+    if [ ! -d "var/log" ]; then
+        mkdir var/log
     fi
     chgrp -R www-data var/cache var/log
     chmod -R g+w var/cache var/log
 
-    #composer install --no-interaction
+    composer install --prefer-dist --no-progress --no-interaction --no-scripts --optimize-autoloader
 
-    #php bin/console d:s:u --force
+    # php bin/console d:s:u --force
 
 fi
 

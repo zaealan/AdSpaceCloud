@@ -4,7 +4,6 @@ services:
     db:
         image: mysql:5.7
         container_name: ${PROJECT_NAME}-db
-        command: --sql_mode="NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
         volumes:
             - ".docker/.data/db:/var/lib/mysql"
         environment:
@@ -25,20 +24,21 @@ services:
                 DECODE: ${DECODE}
         container_name: ${PROJECT_NAME}-php
         environment:
-            DATABASE_URL: mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${PROJECT_NAME}-db:3306/${MYSQL_DATABASE}
+            - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${PROJECT_NAME}-db:3306/${MYSQL_DATABASE}
+            - COMPOSER_MEMORY_LIMIT=-1
         depends_on:
-           - db         
+            - db
         volumes:
             - ./:/var/www/html
             - ./var/apache2/:/var/log/apache2
         networks:
             - internal
-            - app          
+            - app
         labels:
             - 'traefik.enable=true'
             - "traefik.http.routers.${PROJECT_NAME}-php.rule=Host(`${DOMAIN_NAME}`)"
-            - 'traefik.docker.network=app'   
-            
+            - 'traefik.docker.network=app'
+
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: ${PROJECT_NAME}-phpmyadmin
@@ -46,7 +46,7 @@ services:
     #   $hosts = array('db');
     #   So if your database name container is not 'db', you should add the environment variable PMA_HOST= (or PMA_HOSTS if multi db servers) with the right name (databaseContainer in your case)
         environment:
-            PMA_HOST: ${PROJECT_NAME}-db          
+            PMA_HOST: ${PROJECT_NAME}-db
         networks:
             - internal
             - app
@@ -57,6 +57,6 @@ services:
 networks:
     app:
         external:
-            name: app             
+            name: app
     internal:
         name: ${PROJECT_NAME}
