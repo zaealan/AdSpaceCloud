@@ -1,142 +1,216 @@
 {% extends 'Default/main.html.twig' %}
-{% block title 'New Advertise Plan'%}
-{% block content %}
-    <div class="row numpad">
-        <div class="col-lg-12">
-            <h1>Advertise Plan Creation</h1>
-            <ol class="breadcrumb">
-                <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
-                <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Account List</a></li>
-                <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Advertise Places List</a></li>
-                <li class="active"><i class="icon-file-alt"></i> Advertise Plan List</li>
-                <a class="btn btn-primary pull-right" href="{{path('adpoint_adplans_new', { 'id': entity.id })}}">New Advertise Plan</a>
-            </ol>
-            {% include 'Default/messageNotification.html.twig'%}
-        </div>
-            
-        <div class="col-lg-12 table-responsive">
-            <table class="table table-bordered table-hover tablesorter records_list table-striped">
-                <thead>
-                    <tr>
-                        <th>Advertise Plan Name</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entity in entities %}
+{% block title 'Lista De Planes De Publicidad'%}
+    {% block content %}
+        <div class="row numpad">
+            <div class="col-lg-12">
+                <h1>Lista De Planes De Publicidad En: {{ entity }}</h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Panel</a></li>
+                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Lista De Cuentas</a></li>
+                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Puntos De Publicidad</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Lista De Planes De Publicidad En: {{ entity }}</li>
+                    <a class="btn btn-primary pull-right" href="{{path('adpoint_adplans_new', { 'id': entity.id })}}">Nuevo Plan De Publicidad</a>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
+            </div>
+
+            <div class="col-lg-12 table-responsive">
+                <table class="table table-bordered table-hover tablesorter records_list table-striped">
+                    <thead>
                         <tr>
-                            <td>{{ entity.name }}</td>
-                            <td>{{ entity.description }}</td>
-                            <td>
-                                &nbsp;
-                                <a class="editAccount" href="{{path('adpoint_adplans_edit', { 'subId': entity.id })}}">
-                                    <img style="margin-top: 5px; height: 35px; width: 35px;" src="{{ asset('/images/moreInfo.png') }}" alt="Clients Advertise Info" title="Clients Advertise Info"/>
-                                </a>
-                                {#&nbsp;
-                                <a class="deleteSub" href="javascript:"
-                                    sub_name="{{ entity.name|title }}">
-                                    <img src="{{ asset('/images/watchers.png') }}" alt="{{entity.numberOfWatches}} Watchers" title="{{entity.numberOfWatches}} Watchers"/>
-                                </a>
-                                &nbsp;
-                                <a class="deleteSub" href="javascript:"
-                                    sub_name="{{ entity.name|title }}">
-                                    <img src="{{ asset('/images/interactions.png') }}" alt="{{entity.numberOfInteractions}} Interactions" title="{{entity.numberOfInteractions}} Interactions"/>
-                                </a>
-                                &nbsp;
-                                <a class="deleteSub" href="javascript:"
-                                    sub_name="{{ entity.name|title }}">
-                                    <img src="{{ asset('/images/inquiring.png') }}" alt="{{entity.numberOfRequestedInfo}} Requested Info" title="{{entity.numberOfRequestedInfo}} Requested Info"/>
-                                </a>#}
-                            </td>
+                            <th style="width: 20%;">Nombre Plan Publicidad</th>
+                            <th style="width: 40%;">Descripcion</th>
+                            <th style="width: 20%;">Estado</th>
+                            <th style="width: 20%;">Opciones</th>
                         </tr>
-                    {% else %}
-                        <tr><td colspan="3">No Advertise Plans For List</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.name }}</td>
+                                <td>{{ entity.description }}</td>
+                                <td>
+                                    <label style="font-weight: bold;
+                                           {% if entity.status == constant('App\\Entity\\AdvertisePlan::ADVERT_PLAN_STATUS_SCHEDULED') %} color: #777777;
+                                           {% elseif entity.status == constant('App\\Entity\\AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING') %} color: #008200;
+                                           {% elseif entity.status == constant('App\\Entity\\AdvertisePlan::ADVERT_PLAN_STATUS_FINISHED') %} color: #fbcb09;
+                                           {% endif %}">{{ entity.getTextStatus() }}</label>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                    <a class="editAccount" {#href="{{path('adpoint_adplans_edit', { 'subId': entity.id })}}"#}>
+                                        <img style="margin-top: 5px; height: 35px; width: 35px;" src="{{ asset('/images/moreInfo.png') }}" alt="Informacion Clientes Publicidad" title="Informacion Clientes Publicidad"/>
+                                    </a>
+                                    &nbsp;
+                                    <a  href="javascript:"
+                                        class="devicesWarningX"
+                                        data_path="{{ path('unlink_licenses_uid_request', {'id':entity.id}) }}"
+                                        license_name="{{entity.advertPlace.alRestaurantName}}"
+                                        license_username="{{entity.advertPlace.alLicenseUsername}}"
+                                        license_uid="{{entity.advertPlace.deviceUid}}"
+                                        license_push="{{entity.advertPlace.pushyKey}}"
+                                        >
+                                        <img style="margin-top: 5px; height: 35px; width: 35px;" src="{{ asset('/images/activate.png') }}" alt="Modificar Estatud Del Plan De Publicidad" title="Modificar Estatud Del Plan De Publicidad"/>
+                                    </a>
+                                    {#&nbsp;
+                                    <a class="deleteSub" href="javascript:"
+                                        sub_name="{{ entity.name|title }}">
+                                        <img src="{{ asset('/images/watchers.png') }}" alt="{{entity.numberOfWatches}} Watchers" title="{{entity.numberOfWatches}} Watchers"/>
+                                    </a>
+                                    &nbsp;
+                                    <a class="deleteSub" href="javascript:"
+                                        sub_name="{{ entity.name|title }}">
+                                        <img src="{{ asset('/images/interactions.png') }}" alt="{{entity.numberOfInteractions}} Interactions" title="{{entity.numberOfInteractions}} Interactions"/>
+                                    </a>
+                                    &nbsp;
+                                    <a class="deleteSub" href="javascript:"
+                                        sub_name="{{ entity.name|title }}">
+                                        <img src="{{ asset('/images/inquiring.png') }}" alt="{{entity.numberOfRequestedInfo}} Requested Info" title="{{entity.numberOfRequestedInfo}} Requested Info"/>
+                                    </a>#}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td colspan="3">No Hay Planes De Publicidad Para Mostrar</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-{% endblock %}
+    {% endblock %}
 
-{% block scripts %}
+    {% block scripts %}
 
-    $(".deleteSub").click(function() {
+        {#<script>#}
+
+        $(".deleteSub").click(function() {
         var subLic = $(this);
         var pathUrl = subLic.attr('data_path');
         var sub_name = subLic.attr('sub_name');
         var oneParam = '';
-        
-        bootbox.confirm('Do you want to delete the <strong>' + sub_name + '</strong> sublicense?',
-        function (result) {
-            if (result == true) {
-                $.ajax({
-                    type: 'POST',
-                    url: pathUrl,
-                    dataType: 'json',
-                    data: {
-                        otherParam : oneParam
-                    },
-                    cache: false,
-                    success: function (r) { 
-                    if (r.result == '__OK__') {
-                            subLic.closest('tr').remove();
-                        }
-                        else {
-                            bootbox.alert(r.msg);
-                        }
-                    },
-                    error: function (r) {
-                        bootbox.alert(r.msg);
-                    }
-                });
-            }
+
+        bootbox.confirm('Quiere eliminar el siguiente plan de publicidad <strong>' + sub_name + '</strong>?',
+        function(result) {
+        if (result == true) {
+        $.ajax({
+        type: 'POST',
+        url: pathUrl,
+        dataType: 'json',
+        data: {
+        otherParam: oneParam
+        },
+        cache: false,
+        success: function(r) {
+        if (r.result == '__OK__') {
+        subLic.closest('tr').remove();
+        } else {
+        bootbox.alert(r.msg);
+        }
+        },
+        error: function(r) {
+        bootbox.alert(r.msg);
+        }
         });
-    });
-    
-    var devicesWarningClicked = 0;
-    
-    $('.devicesWarning').click(function () {
+        }
+        });
+        });
+
+        var devicesWarningClicked = 0;
+
+        $('.devicesWarningX').click(function() {
+
         var clickedU = $(this);
         var pathUrl = clickedU.attr('data_path');
         var nameUse = clickedU.attr('license_name');
-        var nameUid = clickedU.attr('license_uid');
-        var namePush = clickedU.attr('license_push');
+        var username = clickedU.attr('license_username');
 
-        if (devicesWarningClicked == 0) {
-            
-            var bootBoxMsg = 'Do you want to reset the bound with the station device in <strong>' + nameUse + '</strong> Sublicense with <strong>' + nameUid + '</strong> UID?';
-        
-            if (namePush != '') {
-                bootBoxMsg = 'Do you want to reset the bound with the station device in <strong>' + nameUse + '</strong> Sublicense with <strong>' + nameUid + '</strong> UID and <strong>' + namePush + '</strong> push key?';
-            } 
-        
-            bootbox.confirm(bootBoxMsg,
-            function (result) {
-                if (result == true) {
-                    devicesWarningClicked = 1;
-                    $.ajax({
-                        type: 'POST',
-                        url: pathUrl,
-                        dataType: 'json',
-                        cache: false,
-                        success: function (r) {
-                            if (r.result == '__OK__') {
-                                clickedU.addClass('imgDevices');
-                            }
-                            else {
-                                bootbox.alert(r.msg);
-                            }
-                        },
-                        error: function (r) {
-                            bootbox.alert(r.msg);
-                        }
-                    });
-                }
-            });
-        } else {
-            bootbox.alert('Bound with the station already released!');
+        var bootBoxMsg = 'Desea cambiar el estatus del plan de publicidad <strong>' + nameUse + ' (' + username + ') </strong>?';
+
+        bootbox.dialog({
+        title: 'Cambio De Estatus Del Plan De Publicidad',
+        message: bootBoxMsg,
+        buttons: {
+        cancel: {
+        label: '<i class="fa fa-times"></i> Cancel',
+        className: 'btn-default'
+        },
+        full: {
+        label: '<i class="fa fa-check"></i> Correr',
+        className: 'btn-success',
+        callback: function(result) {
+        resetDevice(clickedU, pathUrl, nameUse, 2);
         }
-    });
+        },
+        logs: {
+        label: '<i class="fa fa-check"></i>  En Espera',
+        className: 'btn-info',
+        callback: function(result) {
+        resetDevice(clickedU, pathUrl, nameUse, 1);
+        }
+        },
+        errors: {
+        label: '<i class="fa fa-check"></i> Detener',
+        className: 'btn-inf-levelAll',
+        callback: function(result) {
+        resetDevice(clickedU, pathUrl, nameUse, 3);
+        }
+        }
+        }
+        });
+        });
 
-{% endblock %}
+        {#</script>#}
+
+    {% endblock %}
+
+    {% block functions_javascript %}
+
+        function showLoadingDialog(msg) {
+        bootbox.hideAll();
+        bootbox.dialog({
+        closeButton: false,
+        message: '<p>' + msg + '</p><p class="bootbox-padding" style="margin-top: 10px; text-align: center; margin-bottom: -25px;"><i class="fa fa-spin fa-spinner" style="font-size:48px; margin-right: 5%"></i></p>',
+        });
+        }
+
+        {#<script>#}
+
+        function resetDevice(clickedU, pathUrl, nameUse, typeResetLogin) {
+
+        showLoadingDialog('Se esta cambiando el estatus del plan de publicidad <strong>"' + nameUse + '"</strong> ...');
+
+        $.ajax({
+        type: 'POST',
+        url: pathUrl,
+        dataType: 'json',
+        cache: false,
+        data: {typeResetLogin: typeResetLogin},
+        success: function(r) {
+        if (r.result == '__OK__') {
+
+        bootbox.hideAll();
+        bootbox.dialog({
+        message: r.msg,
+        closeButton: false
+        });
+        setTimeout(function() {
+        location.reload(true);
+        }, 2000);
+
+        clickedU.addClass('imgDevices');
+        } else {
+        bootbox.alert(r.msg);
+        setTimeout(function() {
+        bootbox.hideAll();
+        location.reload(true);
+        }, 2000);
+        }
+        },
+        error: function(r) {
+        bootbox.alert('Unknow error, please try again!');
+        }
+        });
+        }
+
+        {#</script>#}
+
+    {% endblock %}

@@ -1,6 +1,6 @@
 <div class="notificationDiv">
     {#{{ render(controller('App\\Controller\\Licensor\\DefaultController::getMyNotiesForTheBell')) }}#}
-    
+
     {#{% if app.session.flashbag.get('newNotificationCount')|length > 0 %}#}
     {#<div>
         <li class="dropdown alerts-dropdown mainRingBell">
@@ -83,15 +83,15 @@
     <li class="dropdown user-dropdown mainR" style="margin-top: 20px !important; margin-right: 10px !important;">
         <a href="#" id="blackletter" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if app.user is defined and app.user is not empty %}{{app.user|title}} ({{app.user.textType}}){% endif %} <b class="caret"></b></a>
         <ul class="dropdown-menu">
-            <li><a href="{#{{path('bmak_company_auction_edit_profile')}}#}"><i class="fa fa-user"></i> Profile</a></li>
-            {#{% for module in app.session.get('activeModules') %}
-               {%if module == constant('Bmak\\BmakBackendBundle\\Entity\\Module::MODULE_SETTINGS')%}
-                <li><a href="{{path('bmak_company_auction_setting')}}"><i class="fa fa-cogs"></i> Settings</a></li>
-               {%endif%}
-            {%endfor%}#}
-           {# <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>#}
+            <li><a href="{#{{path('bmak_company_auction_edit_profile')}}#}"><i class="fa fa-user"></i> Perfil</a></li>
+                {#{% for module in app.session.get('activeModules') %}
+                   {%if module == constant('Bmak\\BmakBackendBundle\\Entity\\Module::MODULE_SETTINGS')%}
+                    <li><a href="{{path('bmak_company_auction_setting')}}"><i class="fa fa-cogs"></i> Settings</a></li>
+                   {%endif%}
+                {%endfor%}#}
+                {# <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>#}
             <li class="divider"></li>
-            <li><a href="{{path('adspace_logout')}}"><i class="fa fa-power-off"></i> Log Out</a></li>
+            <li><a href="{{path('adspace_logout')}}"><i class="fa fa-power-off"></i> Salir</a></li>
         </ul>
     </li>
 </ul>

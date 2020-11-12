@@ -30,7 +30,7 @@ class ManagementController extends ParametersNormalizerController {
                         isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
                 return $this->redirect($this->generateUrl('adspace_login'
-                                        , ['msg' => 'Your session has expired. Please login again']));
+                                        , ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
 
                 throw $this->createAccessDeniedException('Access Denied');
@@ -56,7 +56,7 @@ class ManagementController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_DATA_BASES_MANAGEMENT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }

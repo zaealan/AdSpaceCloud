@@ -1,157 +1,157 @@
 {% extends 'Default/main.html.twig' %}
-{% block title 'User Edit'%}
+{% block title 'Editar Usuario'%}
     {% block content %}
 
         <div class="col-lg-12">
-            <h1>Edit User</h1>
+            <h1>Editar Usuario</h1>
             <ol class="breadcrumb">
                 <li><a href="{{path('adspace_dashboard')}}">
-                        <i class="fa fa-home"></i> Dashboard</a></li>
-                {% if reseller.id is defined and reseller.id is not empty %}
+                        <i class="fa fa-home"></i> Panel</a></li>
+                        {% if reseller.id is defined and reseller.id is not empty %}
                     <li><a href="{{path('adpoint_companies')}}">
-                        <i class="fa fa-list"></i> Resellers List</a>
+                            <i class="fa fa-list"></i> Lista De Vendedores</a>
                     </li>
                     <li><a href="{{path('adpoint_managment_company_users_list', {'companyId':reseller.id})}}">
-                            <i class="fa fa-list"></i> Reseller User List
+                            <i class="fa fa-list"></i> Lista De Usuarios Del Vendedor
                         </a>
                     </li>
 
                 {% else %}
                     <li><a href="{{path('adpoint_users')}}">
-                            <i class="fa fa-list"></i> User List
+                            <i class="fa fa-list"></i> Lista De Usuarios
                         </a>
                     </li>
                 {% endif %}
-                <li class="active"><i class="icon-file-alt"></i> Edit User</li>
+                <li class="active"><i class="icon-file-alt"></i> Editar Usuario</li>
             </ol>
             {% include 'Default/messageNotification.html.twig'%}
         </div>
-                   
+
         <div class="col-lg-12" >
             <form action="{{path('adpoint_user_update', {'id': entity.id})}}" method="POST">
-                
+
                 {% if reseller.id is defined and reseller.id is not empty %}
                     <input type="hidden" name="reseller_id"
                            id="reseller_id"
                            value="{{ reseller.id }}"/>
                 {% endif %}
-                
+
                 <div class="col-xs-6">
                     <div class="form-group">
-                        <label>First Name</label><em>*</em>
-                        {{form_widget(form.usName,{ 'attr': {'class': 'form-control','placeholder':'Name', 'maxlength':'30','required':'required'} })}}
+                        <label>Nombre</label><em>*</em>
+                        {{form_widget(form.usName,{ 'attr': {'class': 'form-control','placeholder':'Nombre', 'maxlength':'30','required':'required'} })}}
                         <div class="help-block alert-danger">
-                            {{form_errors(form.usName)}}     
-                        </div>  
+                            {{form_errors(form.usName)}}
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Last Name</label><em>*</em>
-                        {{form_widget(form.usLastName,{ 'attr': {'class': 'form-control','placeholder':'Last Name', 'maxlength':'30','required':'required'} })}}
+                        <label>Apellido</label><em>*</em>
+                        {{form_widget(form.usLastName,{ 'attr': {'class': 'form-control','placeholder':'Apellido', 'maxlength':'30','required':'required'} })}}
                         <div class="help-block alert-danger">
-                            {{form_errors(form.usLastName)}}     
-                        </div>  
+                            {{form_errors(form.usLastName)}}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>E-Mail</label><em>*</em>
                         {{form_widget(form.usEmail,{ 'attr': {'class': 'form-control','placeholder':'you@mailer.com', 'maxlength':'30','required':'required'} })}}
                         <div class="help-block alert-danger">
-                            {{form_errors(form.usEmail)}}     
-                        </div>  
+                            {{form_errors(form.usEmail)}}
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Phone Number</label><em>*</em>
+                        <label>Numero Telefonico</label><em>*</em>
                         {{form_widget(form.usPhoneNumber,{ 'attr': {'class': 'form-control phone_number','placeholder':'(000) 000-0000', 'maxlength':'30'} })}}
                         <div class="help-block alert-danger">
-                            {{form_errors(form.usPhoneNumber)}}     
-                        </div>  
+                            {{form_errors(form.usPhoneNumber)}}
+                        </div>
                     </div>
                 </div>
-                        
+
                 <div class="col-xs-6">
                     <div class="form-group">
                         {% if reseller.id is defined and reseller.id is not empty %}
-                            <label>Company</label>
+                            <label>Vendedor</label>
                             <input type="text" name="resellerName" value="{{ reseller.coCompanyName }}" class="form-control" readonly>
                             <input type="hidden" name="levellicensor_levellicensorbundle_user[usCompany]" value="{{ reseller.id }}" class="form-control" readonly>
                         {% else %}
-                            <label>Company</label><em>*</em>
-                            {{form_widget(form.usCompany,{ 'attr': {'class': 'form-control','placeholder':'Company', 'maxlength':'30','required':'required'} })}}
+                            <label>Vendedor</label><em>*</em>
+                            {{form_widget(form.usCompany,{ 'attr': {'class': 'form-control','placeholder':'Vendedor', 'maxlength':'30','required':'required'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.usCompany)}}     
+                                {{form_errors(form.usCompany)}}
                             </div>
                         {% endif %}
                     </div>
                     <div class="form-group">
                         {% if entity.usType == 1 %}
-                             <label>User Type:</label> Superadministrator 
-                             <input type="hidden" name="levellicensor_levellicensorbundle_user[usType]"
-                                    id="levellicensor_levellicensorbundle_user_usType"
-                                    value="1"/>
+                            <label>Tipo De Usuario:</label> Superadministrator
+                            <input type="hidden" name="levellicensor_levellicensorbundle_user[usType]"
+                                   id="levellicensor_levellicensorbundle_user_usType"
+                                   value="1"/>
                         {% else %}
-                        <label>User Type</label><em>*</em>
-                        {{form_widget(form.usType,{ 'attr': {'class': 'form-control','placeholder':'Company', 'maxlength':'30', 'required':'required'} })}}
-                        <div class="help-block alert-danger">
-                            {{form_errors(form.usType)}}     
-                        </div>
+                            <label>Tipo De Usuario</label><em>*</em>
+                            {{form_widget(form.usType,{ 'attr': {'class': 'form-control','placeholder':'Tipo De Usuario', 'maxlength':'30', 'required':'required'} })}}
+                            <div class="help-block alert-danger">
+                                {{form_errors(form.usType)}}
+                            </div>
                         {% endif %}
                     </div>
-                    
-                    
+
+
                     <div class="form-group">
                         <label>Nickname</label>
                         {{form_widget(form.username,{ 'attr': { 'autocomplete':'off', 'class': 'form-control','placeholder':'Nickname', 'maxlength':'10', 'readonly':'readonly' } })}}
                         <div class="help-block alert-danger">
-                            {{form_errors(form.username)}}     
+                            {{form_errors(form.username)}}
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
                         {{form_widget(form.password.first,{ 'attr': { 'autocomplete':'off', 'class': 'form-control','placeholder':'Pass', 'maxlength':'30' } })}}
-                        
+
                         <div class="help-block alert-danger">
-                            {{form_errors(form.password.first)}}     
+                            {{form_errors(form.password.first)}}
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Confirm Password</label>  
-                        {{form_widget(form.password.second,{ 'attr': { 'autocomplete':'off', 'class':'form-control','placeholder':'Confirm Pass', 'maxlength':'30' } })}}
+                        <label>Confirmar Password</label>
+                        {{form_widget(form.password.second,{ 'attr': { 'autocomplete':'off', 'class':'form-control','placeholder':'Confirmar Pass', 'maxlength':'30' } })}}
                         <div class="help-block alert-danger">
                             {{form_errors(form.password.second)}}
                         </div>
                     </div>
-                    
+
                     <hr>
-                    
+
                 </div>
                 {{form_widget(form._token)}}
 
                 <div class="form-group" style="margin-top: 30px;">
                     <br>
-                    <button class="btn btn-primary pull-right save-btn" type="submit">Save Changes</button>
+                    <button class="btn btn-primary pull-right save-btn" type="submit">Actualizar</button>
                 </div>
             </form>
         </div>
 
     {% endblock %}
 
-    {% block scripts %} 
-        
+    {% block scripts %}
+
         $('.link-password').click(function(e) {
-            /* First check which link was clicked */
-            linkId = $(this).attr('id');
-            if (linkId == 'generate') {
-                /* If the generate link then create the password variable from the generator function
-                This function takes two parameters: integer value for password $.password(n, optional:boolean);
-                length and optional boolean value true if you want to include special characters in your generated passwords.*/
-                password = $.password(8); 
+        /* First check which link was clicked */
+        linkId = $(this).attr('id');
+        if (linkId == 'generate') {
+        /* If the generate link then create the password variable from the generator function
+        This function takes two parameters: integer value for password $.password(n, optional:boolean);
+        length and optional boolean value true if you want to include special characters in your generated passwords.*/
+        password = $.password(8);
 
-                $('#levellicensor_levellicensorbundle_user_password_first').empty().hide().append(password).fadeIn('slow').val(password);
-                $('#levellicensor_levellicensorbundle_user_password_second').empty().hide().append(password).fadeIn('slow').val(password);
+        $('#levellicensor_levellicensorbundle_user_password_first').empty().hide().append(password).fadeIn('slow').val(password);
+        $('#levellicensor_levellicensorbundle_user_password_second').empty().hide().append(password).fadeIn('slow').val(password);
 
-                /* Empty the random tag then append the password and fade In */
-                $('#random').empty().hide().append(password).fadeIn('slow');
-            } 
-            e.preventDefault();
+        /* Empty the random tag then append the password and fade In */
+        $('#random').empty().hide().append(password).fadeIn('slow');
+        }
+        e.preventDefault();
         });
 
     {% endblock %}

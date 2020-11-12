@@ -1,15 +1,15 @@
 {% extends 'Default/main.html.twig' %}
 {% import 'Default/filters.html.twig' as filters  %}
-{% block title 'User Managment'%}
+{% block title 'Administrar Usuarios'%}
     {% block content %}
         <div class="row numpad">
             <div class="col-lg-12">
-                <h1>Reseller User List <small>({{entityReseller.coCompanyName|title}})</small></h1>
+                <h1>Lista De Usuarios Del Vendedor <small>({{entityReseller.coCompanyName|title}})</small></h1>
                 <ol class="breadcrumb">
-                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
-                    <li><a href="{{path('adpoint_companies')}}"><i class="fa fa-list"></i> Resellers List</a></li>
-                    <li class="active"><i class="icon-file-alt"></i> Reseller User List</li>
-                    <a class="btn btn-primary pull-right" href="{{ path('adpoint_new_reseller_user', {'reseller_id':entityReseller.id}) }}">New User</a>
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Panel</a></li>
+                    <li><a href="{{path('adpoint_companies')}}"><i class="fa fa-list"></i> Lista De Vendedores</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Lista De Usuarios Del Vendedor</li>
+                    <a class="btn btn-primary pull-right" href="{{ path('adpoint_new_reseller_user', {'reseller_id':entityReseller.id}) }}">Nuevo Usuario</a>
                 </ol>
                 {% include 'Default/messageNotification.html.twig' %}
             </div>
@@ -17,42 +17,42 @@
                 <form method="post" action="{{ path('adpoint_managment_company_users_list',  {'companyId': entityReseller.id}) }}">
                     <div class="jumbotron sinpad">
                         <div class="containerSearchFields">
-                         {{ form_widget(form.usName,{'attr':{'placeholder':'Name', 'class':'form-control title-case pull-left input-form-short', 'value':search.usName|default('')} }) }}        
-                         {{ form_widget(form.usEmail,{'attr':{'placeholder':'Email', 'class':'form-control title-case pull-left input-form-short', 'value':search.usEmail|default('')} }) }}        
-                         {{ form_widget(form.usStatus,{'attr':{'class':'form-control pull-left input-form-short', 'value':search.usStatus|default('')} }) }} 
-                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                             {{ form_widget(form.usType,{'attr':{'class':'form-control pull-left input-form', 'value':search.usType|default('')} }) }}         
-                         {% endif %}
+                            {{ form_widget(form.usName,{'attr':{'placeholder':'Nombre', 'class':'form-control title-case pull-left input-form-short', 'value':search.usName|default('')} }) }}
+                            {{ form_widget(form.usEmail,{'attr':{'placeholder':'Correo', 'class':'form-control title-case pull-left input-form-short', 'value':search.usEmail|default('')} }) }}
+                            {{ form_widget(form.usStatus,{'attr':{'class':'form-control pull-left input-form-short', 'value':search.usStatus|default('')} }) }}
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                {{ form_widget(form.usType,{'attr':{'class':'form-control pull-left input-form', 'value':search.usType|default('')} }) }}
+                            {% endif %}
                         </div>
-                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
-                     </div>
-                  {{ form_rest(form._token) }}
-                 </form>
-                 <br>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Buscar</button>
+                    </div>
+                    {{ form_rest(form._token) }}
+                </form>
+                <br>
             </div>
 
             {% set paramsUrl = {'companyId': entityReseller.id} %}
-                 
+
             {#{{ filters.textItemsOnList(paginator, 'Users')}}
             {{ filters.buttonsItemsPerPage(paginator, 'company_managment_companies_users_list', params, orderBy.url, paramsUrl)}}#}
-                 
+
             <div class="col-lg-12 table-responsive">
                 <table class="table table-bordered table-hover tablesorter records_list">
                     <thead>
                         <tr>
-                            
-{#                            $indexOrder = ['order_by_user_name', 'order_by_user_email', 'order_by_user_status', 'order_by_user_type'];#}
-{#                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}#}
-                            
+
+                            {#                            $indexOrder = ['order_by_user_name', 'order_by_user_email', 'order_by_user_status', 'order_by_user_type'];#}
+                            {#                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}#}
+
                             {% set itemsPage = '&itemsPerPage='~itemsPerPage %}
-                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_name': orderBy.order_by_user_name.order }) }}{{ params~itemsPage }}">Name</a>&nbsp; {{ orderBy.order_by_user_name.htmlImage|default('')|raw }}</th>
-                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_email': orderBy.order_by_user_email.order }) }}{{ params~itemsPage }}">Email</a>&nbsp; {{ orderBy.order_by_user_email.htmlImage|default('')|raw }}</th>
-                            <th style="cursor: default;">Phone Number</th>
+                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_name': orderBy.order_by_user_name.order }) }}{{ params~itemsPage }}">Nombre</a>&nbsp; {{ orderBy.order_by_user_name.htmlImage|default('')|raw }}</th>
+                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_email': orderBy.order_by_user_email.order }) }}{{ params~itemsPage }}">Correo</a>&nbsp; {{ orderBy.order_by_user_email.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Numero Telefonico</th>
                             <th style="cursor: default;">Creation Date</th>
-                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_type': orderBy.order_by_user_type.order }) }}{{ params~itemsPage }}">User Type</a>&nbsp; {{ orderBy.order_by_user_type.htmlImage|default('')|raw }}</th>
-                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_status': orderBy.order_by_user_status.order }) }}{{ params~itemsPage }}">Status</a>&nbsp; {{ orderBy.order_by_user_status.htmlImage|default('')|raw }}</th>
-                            <th style="cursor: default;">User Parent</th>
-                            <th style="cursor: default;">Actions</th>
+                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_type': orderBy.order_by_user_type.order }) }}{{ params~itemsPage }}">Tipo De Usuario</a>&nbsp; {{ orderBy.order_by_user_type.htmlImage|default('')|raw }}</th>
+                            <th><a style="color: #333;" href="{{ path('adpoint_managment_company_users_list', { 'companyId':entityReseller.id, 'order_by_user_status': orderBy.order_by_user_status.order }) }}{{ params~itemsPage }}">Estado</a>&nbsp; {{ orderBy.order_by_user_status.htmlImage|default('')|raw }}</th>
+                            <th style="cursor: default;">Usuario Padre</th>
+                            <th style="cursor: default;">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,64 +65,64 @@
                                 <td>{{ entity.getTextType() }}</td>
                                 <td>{{ entity.getTextStatus }}</td>
                                 <td>{{ entity.usUserParent|title|default('None') }}</td>
-                                <td>                               
+                                <td>
                                     <a class="editUser" href="{{path('adpoint_user_edit', { 'id': entity.id })}}">
-                                        <img src="{{ asset('/images/editts.png') }}" alt="Edit User" title="Edit User"/>
+                                        <img src="{{ asset('/images/editts.png') }}" alt="Editar Usuario" title="Editar Usuario"/>
                                     </a>
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                        &nbsp;&nbsp;<a title="Edit Privileges" href="{{path('adpoint_user_privileges', {'id':entity.id })}}"><img src="{{ asset('/images/lock.png ')}}" width="30" height="30" alt="Edit Privileges" title="Edit Privileges"/></a>
-                                    {% endif %}
+                                        &nbsp;&nbsp;<a title="Editar Permisos" href="{{path('adpoint_user_privileges', {'id':entity.id })}}"><img src="{{ asset('/images/lock.png ')}}" width="30" height="30" alt="Editar Permisos" title="Editar Permisos"/></a>
+                                        {% endif %}
                                     &nbsp;<a class="deleteUser" href="javascript:"
-                                       data_path="{{path('adpoint_user_delete',  {'id': entity.id})}}"
-                                       user_type="{{entity.getTextType()}}"
-                                       user_name="{{entity.usName|title~' '~entity.usLastName|title}}">
-                                       <img src="{{ asset('/images/deletex.png ')}}" alt="Delete" title="Delete"/>
+                                             data_path="{{path('adpoint_user_delete',  {'id': entity.id})}}"
+                                             user_type="{{entity.getTextType()}}"
+                                             user_name="{{entity.usName|title~' '~entity.usLastName|title}}">
+                                        <img src="{{ asset('/images/deletex.png ')}}" alt="Borrar" title="Borrar"/>
                                     </a>
                                 </td>
                             </tr>
                         {% else %}
-                            <tr><td colspan="8">No Data To List</td></tr>
+                            <tr><td colspan="8">No Hay Usuarios Para Mostrar</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
-{#                {{ filters.constructPaginator(paginator, 'company_managment_companies_users_list', params, orderBy.url, 'Users', paramsUrl)}}#}
+                {#                {{ filters.constructPaginator(paginator, 'company_managment_companies_users_list', params, orderBy.url, 'Users', paramsUrl)}}#}
             </div>
         </div>
     {% endblock %}
 
-{% block scripts %}
+    {% block scripts %}
         $('.deleteUser').click(function () {
-            var clickedU = $(this);
-            var pathUrl = clickedU.attr('data_path');
-            var nameUse = clickedU.attr('user_name');
-            var typeUse = clickedU.attr('user_type');
-            var oneParam = 1;
+        var clickedU = $(this);
+        var pathUrl = clickedU.attr('data_path');
+        var nameUse = clickedU.attr('user_name');
+        var typeUse = clickedU.attr('user_type');
+        var oneParam = 1;
 
-            bootbox.confirm('Do you want to delete the <strong>' + nameUse + '</strong> ' + typeUse + ' user?',
-                function (result) {
-                    if (result == true) {
-                        $.ajax({
-                            type: 'POST',
-                            url: pathUrl,
-                            dataType: 'json',
-                            data: {
-                                otherParam :oneParam
-                            },
-                            cache: false,
-                            success: function (r) {
-                                if (r.result == '__OK__') {
-                                    clickedU.closest('tr').remove();
-                                }
-                                else {
-                                    bootbox.alert(r.msg)
-                                }
-                            },
-                            error: function (r) {
-                                bootbox.alert(r.msg)
-                            }
-                        });
-                    }
-                });
+        bootbox.confirm('Usted quiere borrar al user <strong>' + nameUse + '</strong> ' + typeUse + '?',
+        function (result) {
+        if (result == true) {
+        $.ajax({
+        type: 'POST',
+        url: pathUrl,
+        dataType: 'json',
+        data: {
+        otherParam :oneParam
+        },
+        cache: false,
+        success: function (r) {
+        if (r.result == '__OK__') {
+        clickedU.closest('tr').remove();
+        }
+        else {
+        bootbox.alert(r.msg)
+        }
+        },
+        error: function (r) {
+        bootbox.alert(r.msg)
+        }
         });
-{% endblock %}
+        }
+        });
+        });
+    {% endblock %}
 

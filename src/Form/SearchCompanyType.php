@@ -27,11 +27,11 @@ class SearchCompanyType extends AbstractType {
 
         $this->status = $options['selected_choice'];
 
-        $choices = ['' => 'All Resellers',
-            Company::STATUS_ACTIVE => 'Active',
-            Company::STATUS_INACTIVE => 'Inactive'
+        $choices = ['' => 'Todos Los Vendedores',
+            Company::STATUS_ACTIVE => 'Activo',
+            Company::STATUS_INACTIVE => 'Inactivo'
         ];
-        
+
         $choices = Util::choiceFlip($choices);
 
         $builder

@@ -6,7 +6,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="shortcut icon" type="image/ico" href="{{ asset('/images/favicon.png ')}}" />
-        <title>Secure Area | AdSpace Cloud</title>
+        <title>Area Segura | Space Marketing Cloud</title>
 
         {% block head_style %}
 
@@ -25,9 +25,9 @@
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div id="adspheaderdiv" class="navbar-header" style="width: 100%">
                     <a href="javascript:void(0);">
-                        <figure class="logotype pull-left"><img alt="level" src="{{asset('/images/logoAdSpaceCloud.png')}}"></figure>
+                        <figure class="logotype pull-left"><img alt="level" src="{{asset('/images/logoAdSpaceCloud2.png')}}"></figure>
                     </a>
-                    <h1 class="newtitleh1 pull-left">AdSpace Cloud</h1>
+                    <h1 class="newtitleh1 pull-left">Space Marketing Cloud</h1>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling --><!-- /.navbar-collapse -->
@@ -43,26 +43,26 @@
                         {%endif%}
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                            <input type="text" id="username" placeholder="User Name" name="_username" autocomplete="off" class="form-control" {%if last_username is defined%}value="{{last_username}}"{%endif%} maxlength="10">
+                            <input type="text" id="username" placeholder="Usuario" name="_username" autocomplete="off" class="form-control" {%if last_username is defined%}value="{{last_username}}"{%endif%} maxlength="10">
                         </div>
                         <div class="form-group input-group">
                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                            <input class="form-control" id="password" type="Password"  name="_password" placeholder="Password" autocomplete="off">
+                            <input class="form-control" id="password" type="Password"  name="_password" placeholder="Contraseña" autocomplete="off">
                         </div>
-                        {% if error is defined and error is not empty %}                                                
+                        {% if error is defined and error is not empty %}
                             <div style="font-size: 16px; color: #FF0000; margin-bottom: 8px;">
                                 <img alt="" src="{{ asset('/images/alert.png') }}" width="24" height="24"/>
-                                User Name or Password Invalid
-                            </div> 
+                                Usuario o Contraseña Invalida
+                            </div>
                         {% elseif msg is defined and msg is not empty %}
                             <div style="font-size: 16px; color: #FF0000; margin-bottom: 8px;">
                                 <img alt="" src="{{ asset('/images/alert.png') }}" width="24" height="24"/>
                                 {{ msg | title }}
-                            </div> 
+                            </div>
                         {% endif %}
 
                         <div>
-                            <button id="btn-login" class="btn btn-primary btn-lg" type="submit">Sign in</button>
+                            <button id="btn-login" class="btn btn-primary btn-lg" type="submit">Login</button>
                             {#<a target="_blank" class="nlblk" style="margin-left: 15px; font-size: 12px " href="{{path('bmak_company_auction_forgot_code_pass', {'forgotCode':1})}}">Forgot Your User Name or Password?</a>#}
                         </div>
                     </form>
@@ -79,7 +79,7 @@
             var name = '';
             var pass = '';
 
-            $('#btn-login').click(function (e) {
+            $('#btn-login').click(function(e) {
                 e.preventDefault();
 
                 name = $('#username').val();
@@ -89,37 +89,37 @@
                     var model = '';
 
             {% if (sessionValue is defined and sessionValue >= 1) %}
-                            model = "{{sessionValue+1}}";
+                        model = "{{sessionValue+1}}";
             {% else %}
-                            model = 1;
+                        model = 1;
             {% endif %}
 
-                            $.ajax({
-                                type: 'POST',
-                                cache: false,
-                                url: "{{path('adspace_session_by_login')}}",
-                                data: 'model=' + model,
-                                dataType: 'JSON',
-                                success: function (r) {
-                                    if (r.result == '__OK__') {
-                                        checkSubm();
-                                    }
-                                },
-                                error: function () {
-
+                        $.ajax({
+                            type: 'POST',
+                            cache: false,
+                            url: "{{path('adspace_session_by_login')}}",
+                            data: 'model=' + model,
+                            dataType: 'JSON',
+                            success: function(r) {
+                                if (r.result == '__OK__') {
+                                    checkSubm();
                                 }
-                            });
-                        }
-                    });
+                            },
+                            error: function() {
 
-                    function checkSubm() {
-                        name = $('#username').val();
-                        pass = $('#password').val();
-
-                        if (name != "" && pass != "") {
-                            $('#form').submit();
-                        }
+                            }
+                        });
                     }
+                });
+
+                function checkSubm() {
+                    name = $('#username').val();
+                    pass = $('#password').val();
+
+                    if (name != "" && pass != "") {
+                        $('#form').submit();
+                    }
+                }
         </script>
     </body>
 </html>

@@ -30,7 +30,7 @@ class ReportsController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_REPORTS, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') && false === $this->get('security.authorization_checker')->isGranted('ROLE_REPORT_VIEWER')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -61,7 +61,7 @@ class ReportsController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_REPORTS, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') && false === $this->get('security.authorization_checker')->isGranted('ROLE_REPORT_VIEWER')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 //code for access denied
                 throw $this->createAccessDeniedException('Access Denied');

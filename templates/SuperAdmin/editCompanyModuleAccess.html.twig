@@ -1,163 +1,163 @@
 {% extends 'Default/main.html.twig' %}
-{% block title 'Company Privileges Management'%}
-{% block content %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h1>{{ company.coCompanyName|title }} &nbsp;&nbsp;<small>({{company.coCompanyIdentification|title}})</small></h1>
-            <ol class="breadcrumb">
-                <li><a href="{{path('adspace_dashboard')}}"><i class="icon-dashboard"></i> Dashboard</a></li>
-                 <li><a href="{{path('adpoint_companies')}}">
-                        <i class="fa fa-list"></i> Resellers List</a></li>
-                <li class="active"><i class="icon-file-alt"></i> Edit Company Privileges</li>
-            </ol>
-            {% include 'Default/messageNotification.html.twig'%}
-        </div>
-                     
-        <div class="col-lg-12">
-            <table class="table table-bordered table-hover tablesorter">
-                <thead>
-                    <tr>
-                        <th width="200px">Module</th>
-                        <th width="200px">Enable / Disable
-                            <div class="pull-right">
-                                <label for="enableDisableAll" style="display: inline; cursor:pointer;">Enable / Disable All</label>
-                                <input type="checkbox" style="display: inline;" id="enableDisableAll"/>
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% set lastParentEnabled = false %}
-                    {% for module in modulesCompany %}
-                    <tr {% if module.cmModule.parent is empty %}style="background-color: #dadada;"{% endif %}>
-                        {% if module.cmModule.parent is empty %}
-                            <td style="font-weight: bold; font-size: 16px;">{{module}}</td>
-                        {% else%}
-                            <td style="padding-left: 30px;">{{module}}</td>
-                        {% endif%}
-                        {% if module.cmModule.parent is empty %}
-                            {% if module.cmAccess == true %}
-                                {% set lastParentEnabled = true %}
-                            {% else%}
-                                {% set lastParentEnabled = false %}
-                            {% endif%}
-                        {% endif%}
-                        <td>
-                            <input type="checkbox" class="editPrivileges" module-id="{{module.cmId}}" {% if module.cmAccess == true %}checked="checked"{% endif %} 
-                            {% if module.cmModule.parent is not empty %}
-                                parent-id="{{module.cmModule.parent.id}}"
-                                {% if lastParentEnabled == false %}
-                                    disabled="disabled"
-                                {% endif %}
-                            {% else %}
-                                group-id="{{module.cmModule.id}}"
-                            {% endif %} />
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div style="display: none; width: 100%; float: right;" id="divWait">
-                <img src="{{ asset('/images/wait_small.gif') }}" alt="Processing..." title="Processing..."/>
-                <strong id="textProcess">Processing...</strong>
+{% block title 'Administracion De Permisos De Vendedor'%}
+    {% block content %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>{{ company.coCompanyName|title }} &nbsp;&nbsp;<small>({{company.coCompanyIdentification|title}})</small></h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="icon-dashboard"></i> Panel</a></li>
+                    <li><a href="{{path('adpoint_companies')}}">
+                            <i class="fa fa-list"></i> Lista De Vendedores</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Editar Permisos De Vendedor</li>
+                </ol>
+                {% include 'Default/messageNotification.html.twig'%}
             </div>
-            
-        </div>
-    </div>
-{% endblock %}
 
-{% block scripts %}
-    
-    $(".editPrivileges").click(function() {
+            <div class="col-lg-12">
+                <table class="table table-bordered table-hover tablesorter">
+                    <thead>
+                        <tr>
+                            <th width="200px">Modulo</th>
+                            <th width="200px">Activar / Desactivar
+                                <div class="pull-right">
+                                    <label for="enableDisableAll" style="display: inline; cursor:pointer;">Activar / Desactivar Todo</label>
+                                    <input type="checkbox" style="display: inline;" id="enableDisableAll"/>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set lastParentEnabled = false %}
+                        {% for module in modulesCompany %}
+                            <tr {% if module.cmModule.parent is empty %}style="background-color: #dadada;"{% endif %}>
+                                {% if module.cmModule.parent is empty %}
+                                    <td style="font-weight: bold; font-size: 16px;">{{module}}</td>
+                                {% else%}
+                                    <td style="padding-left: 30px;">{{module}}</td>
+                                {% endif%}
+                                {% if module.cmModule.parent is empty %}
+                                    {% if module.cmAccess == true %}
+                                        {% set lastParentEnabled = true %}
+                                    {% else%}
+                                        {% set lastParentEnabled = false %}
+                                    {% endif%}
+                                {% endif%}
+                                <td>
+                                    <input type="checkbox" class="editPrivileges" module-id="{{module.cmId}}" {% if module.cmAccess == true %}checked="checked"{% endif %}
+                                           {% if module.cmModule.parent is not empty %}
+                                               parent-id="{{module.cmModule.parent.id}}"
+                                               {% if lastParentEnabled == false %}
+                                                   disabled="disabled"
+                                               {% endif %}
+                                           {% else %}
+                                               group-id="{{module.cmModule.id}}"
+                                           {% endif %} />
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div style="display: none; width: 100%; float: right;" id="divWait">
+                    <img src="{{ asset('/images/wait_small.gif') }}" alt="Procesando..." title="Procesando..."/>
+                    <strong id="textProcess">Procesando...</strong>
+                </div>
+
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block scripts %}
+
+        $(".editPrivileges").click(function() {
         var object = $(this);
         var moduleId = object.attr('module-id');
         var check = $(this).is(':checked');
         var isActive = 0;
         if(check) {
-            isActive = 1;
+        isActive = 1;
         }
-        
+
         $("#divWait").toggle();
-        
+
         var moduleIds = [moduleId];
         var isParent = object.attr('group-id');
         if(isParent > 0) {
-            $(".editPrivileges").each(function() {
-                var children = $(this);
-                if(children.attr('parent-id') == isParent) {
-                    moduleIds.push(children.attr('module-id'));
-                    if(isActive == 0) {
-                        children.removeAttr('checked');
-                        children.attr('disabled','disabled');  
-                    }
-                    else {
-                        children.prop('checked',true);
-                        children.removeAttr('disabled');
-                    }
-                }
-            });
+        $(".editPrivileges").each(function() {
+        var children = $(this);
+        if(children.attr('parent-id') == isParent) {
+        moduleIds.push(children.attr('module-id'));
+        if(isActive == 0) {
+        children.removeAttr('checked');
+        children.attr('disabled','disabled');
         }
-        
+        else {
+        children.prop('checked',true);
+        children.removeAttr('disabled');
+        }
+        }
+        });
+        }
+
         changePrivileges(moduleIds, isActive);
-    });
-    
-    $("#enableDisableAll").click(function() {
+        });
+
+        $("#enableDisableAll").click(function() {
         var object = $(this);
         var check = $(this).is(':checked');
         var isActive = 0;
         if(check) {
-            isActive = 1;
+        isActive = 1;
         }
         $("#divWait").toggle();
-        
+
         var moduleIds = [];
-        
+
         $(".editPrivileges").each(function() {
-            var module = $(this);    
-            moduleIds.push(module.attr('module-id'));
-            if(isActive == 0) {
-                module.removeAttr('checked');
+        var module = $(this);
+        moduleIds.push(module.attr('module-id'));
+        if(isActive == 0) {
+        module.removeAttr('checked');
 
-                var haveParent = parseInt(module.attr('parent-id'));
-                if(haveParent > 0) {
-                  module.attr('disabled','disabled');
-                }
-            }
-            else {
-                module.prop('checked',true);
-                module.removeAttr('disabled');
-            }
+        var haveParent = parseInt(module.attr('parent-id'));
+        if(haveParent > 0) {
+        module.attr('disabled','disabled');
+        }
+        }
+        else {
+        module.prop('checked',true);
+        module.removeAttr('disabled');
+        }
         });
-        
-        changePrivileges(moduleIds, isActive);       
-    });
-{% endblock %}
 
-{% block functions_javascript %}
-    var companyId = '{{ company.Id }}';
-    
-    function changePrivileges(moduleIds, isActive) {
+        changePrivileges(moduleIds, isActive);
+        });
+    {% endblock %}
+
+    {% block functions_javascript %}
+        var companyId = '{{ company.Id }}';
+
+        function changePrivileges(moduleIds, isActive) {
         /*Convertimos el arreglo en un JSON*/
         var moduleIds = JSON.stringify(moduleIds);
-        
+
         $.ajax({
-            type: 'POST',
-            url: "{{path('adpoint_update_company_privileges')}}",
-            dataType: 'json',
-            async: false,
-            data:{moduleId:moduleIds, 
-                isActive:isActive,
-                companyId: companyId},
-            success: function(resp) {
-                $("#divWait").toggle();
-                if(resp.result == '__KO__') {
-                    bootbox.alert(resp.msg);
-                }
-            },
-            error: function(resp) {
-                bootbox.alert('Unknow error, try again');
-                $("#divWait").toggle();
-            }
+        type: 'POST',
+        url: "{{path('adpoint_update_company_privileges')}}",
+        dataType: 'json',
+        async: false,
+        data:{moduleId:moduleIds,
+        isActive:isActive,
+        companyId: companyId},
+        success: function(resp) {
+        $("#divWait").toggle();
+        if(resp.result == '__KO__') {
+        bootbox.alert(resp.msg);
+        }
+        },
+        error: function(resp) {
+        bootbox.alert('Error desconocido, intente de nuevo');
+        $("#divWait").toggle();
+        }
         });
-    }
-{% endblock %}
+        }
+    {% endblock %}

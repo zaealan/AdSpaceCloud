@@ -28,7 +28,7 @@ class UserController extends ParametersNormalizerController {
      * @Route("/", name="adpoint_users", options={ "method_prefix" = false })
      */
     public function index(Request $request) {
-        $lostSession = 'Your session has expired. Please login again';
+        $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
         return $this->redirect($this->generateUrl('adspace_login', ['msg' => $lostSession]));
     }
 
@@ -42,7 +42,7 @@ class UserController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_USERS_CREATE, $request);
         $validating = $this->validateAccess($access_control);
         if (!$validating) {
-            $lostSession = 'Your session has expired. Please login again';
+            $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
             return $this->redirect($this->generateUrl('adspace_login', ['msg' => $lostSession]));
         }
 
@@ -132,7 +132,7 @@ class UserController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_USERS_CREATE, $request);
         $validating = $this->validateAccess($access_control);
         if (!$validating) {
-            $lostSession = 'Your session has expired. Please login again';
+            $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
             return $this->redirect($this->generateUrl('adspace_login', array('msg' => $lostSession)));
         }
 
@@ -158,7 +158,7 @@ class UserController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_USERS, $request);
         $validating = $this->validateAccess($access_control);
         if (!$validating) {
-            $lostSession = 'Your session has expired. Please login again';
+            $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
             return $this->redirect($this->generateUrl('adspace_login', array('msg' => $lostSession)));
         }
 
@@ -185,7 +185,7 @@ class UserController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_USERS_EDIT, $request);
         $validating = $this->validateAccess($access_control);
         if (!$validating) {
-            $lostSession = 'Your session has expired. Please login again';
+            $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
             return $this->redirect($this->generateUrl('adspace_login', array('msg' => $lostSession)));
         }
 
@@ -334,7 +334,7 @@ class UserController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_USERS_EDIT, $request);
         $validating = $this->validateAccess($access_control);
         if (!$validating) {
-            $lostSession = 'Your session has expired. Please login again';
+            $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
             return $this->redirect($this->generateUrl('adspace_login', array('msg' => $lostSession)));
         }
 
@@ -511,7 +511,7 @@ class UserController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_USERS_CREATE, $request);
         $validating = $this->validateAccess($access_control);
         if (!$validating) {
-            $lostSession = 'Your session has expired. Please login again';
+            $lostSession = 'Su sesion ha expirado, porfavor ingrese nuevamente';
             return $this->redirect($this->generateUrl('adspace_login', array('msg' => $lostSession)));
         }
 

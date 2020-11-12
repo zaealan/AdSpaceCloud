@@ -28,3 +28,5 @@ yarn-error.log
 .docker/.data
 /nbproject
 /nbproject/private/
+
+adspace-cloudold-error_log

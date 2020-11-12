@@ -24,18 +24,18 @@ class SearchLicenseType extends AbstractType {
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+
         $this->status = $options['selected_choice'];
 
         $choices = ['' => 'All Licenses',
-            AccountLicense::LICENSE_STATUS_ACTIVE => 'Active',
-            AccountLicense::LICENSE_STATUS_INACTIVE => 'Inactive',
+            AccountLicense::LICENSE_STATUS_ACTIVE => 'Activo',
+            AccountLicense::LICENSE_STATUS_INACTIVE => 'Inactivo',
             3 => 'With Device',
             4 => 'Without Device',
         ];
-        
+
         $choices = Util::choiceFlip($choices);
-        
+
         $builder
                 ->add('alContacName', TextType::class, [
                     'required' => false

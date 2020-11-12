@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-
 use App\Util\Util;
 use App\Entity\AdvertPlanFile;
 
@@ -22,35 +21,42 @@ use App\Entity\AdvertPlanFile;
  */
 class AdvertisePlanType extends AbstractType {
 
-    private $numberOfClients = 2;
-    
+    private $numberOfClients = 15;
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        
+
         $this->numberOfClients = $options['clientsNumber'];
-        
+
 //        $this->status = $options['selected_choice'];
-//        
+//
 //        $choices = ['' => 'File Type',
 //            AdvertPlanFile::ADVERT_MAIN_IMAGE => 'Main Image',
 //            AdvertPlanFile::ADVERT_BACKGROUND_IMAGE => 'Background Image',
 //            AdvertPlanFile::ADVERT_ICON_IMAGE => 'Icon Image'
 //        ];
-//        
+//
 //        $choices = Util::choiceFlip($choices);
-//        
+//
 //        $this->seconds = $options['selected_seconds_choice'];
-//        
+//
 //        $choicesTimeInSeconds = ['' => 'Time In Seconds',
 //            15 => '15 Seconds',
 //            30 => '30 Seconds',
 //        ];
-//        
+//
 //        $choicesTimeInSeconds = Util::choiceFlip($choicesTimeInSeconds);
-        
+
+        $choicesNumberOfClients = ['Number of Clients' => ''];
+
+        for ($i = 0; $i < 30; ++$i) {
+            $auxString = '' . ($i + 1);
+            $choicesNumberOfClients[$auxString] = ($i + 1);
+        }
+
         $builder
                 ->add('name', TextType::class, [
                     'required' => true
@@ -82,8 +88,14 @@ class AdvertisePlanType extends AbstractType {
                     'required' => false,
                     'mapped' => false
                 ])
+                ->add('clientsNumber', ChoiceType::class, [
+                    'required' => false,
+                    'mapped' => true,
+                    'choices' => $choicesNumberOfClients,
+                    'data' => $this->numberOfClients,
+                ])
         ;
-        
+
 //        for ($i = $this->numberOfClients; $i > 0; --$i) {
 //            $builder->add('fileName'.$i, FileType::class, [
 //                    'label' => 'Advertise Plan File',
@@ -129,7 +141,7 @@ class AdvertisePlanType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'data_class' => 'App\Entity\AdvertisePlan',
-            'clientsNumber' => 2,
+            'clientsNumber' => $this->numberOfClients,
             'selected_choice' => null,
             'selected_seconds_choice' => null
         ]);

@@ -42,7 +42,7 @@ class CompaniesController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_COMPANY, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -175,7 +175,7 @@ class CompaniesController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_COMPANY_CREATE, $request);
         if ($access_control != AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -242,7 +242,7 @@ class CompaniesController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_COMPANY_CREATE, $request);
         if ($access_control != AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -298,7 +298,7 @@ class CompaniesController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_COMPANY_EDIT, $request);
         if ($access_control != AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -437,7 +437,7 @@ class CompaniesController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_COMPANY_EDIT, $request);
         if ($access_control != AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -589,7 +589,7 @@ class CompaniesController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_COMPANY, $request);
         if ($access_control != AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }

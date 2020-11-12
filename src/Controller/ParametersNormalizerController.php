@@ -6,6 +6,7 @@ use App\Controller\RealContainerBearerController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Argument\ServiceLocator;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Description of ParametersNormalizerController
@@ -17,14 +18,14 @@ class ParametersNormalizerController extends RealContainerBearerController {
      * @param type $propertyName
      * @return type
      */
-    public function __get($propertyName) {  
+    public function __get($propertyName) {
         if ($propertyName == "realContainer") {
             return $this->get('real_kernel')->getContainer();
         } else {
             return $this->$propertyName;
         }
     }
-    
+
     /**
      * Gets a container parameter by its name.
      *
@@ -44,4 +45,15 @@ class ParametersNormalizerController extends RealContainerBearerController {
 
         return $parameters[$name];
     }
+
+    /**
+     * @param type $responseToAjax
+     * @return Response
+     */
+    public function respondJsonAjax($responseToAjax) {
+        $r = new Response(json_encode($responseToAjax));
+        $r->headers->set('Content-Type', 'application/json');
+        return $r;
+    }
+
 }

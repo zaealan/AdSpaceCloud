@@ -1,49 +1,61 @@
 {% extends 'Default/main.html.twig' %}
 
-    {% if isNew is defined and isNew != false %}
-        {% set titleText = 'Advertise Plan New' %}
-    {% else %}
-        {% set titleText = 'Advertise Plan Update' %}
-    {% endif %}
-        
-    {% block title titleText %}
-    
+{% if isNew is defined and isNew != false %}
+    {% set titleText = 'Nuevo Plan De Publicidad' %}
+{% else %}
+    {% set titleText = 'Edicion Plan De Publicidad' %}
+{% endif %}
+
+{% block title titleText %}
+
     {% block content %}
         <div class="row numpad">
             <div class="col-lg-12">
-                <h1>Advertise Plan {% if isNew is defined and isNew != false %}Creation{% else %}Update{% endif %}</h1>
+                <h1>{% if isNew is defined and isNew != false %}Crear{% else %}Actualizar{% endif %} Plan De Publicidad</h1>
                 <ol class="breadcrumb">
-                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
-                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Account List</a></li>
-                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.advertPlace.alAccountLicense.id })}}"><i class="fa fa-list"></i> Advertise Places List</a></li>
-                    <li class="active"><i class="icon-file-alt"></i> Advertise Plan {% if isNew is defined and isNew != false %}Creation{% else %}Update{% endif %}</li>
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Panel</a></li>
+                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Listado De Cuentas</a></li>
+                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.advertPlace.alAccountLicense.id })}}"><i class="fa fa-list"></i> Lista De Planes De Publicidad</a></li>
+                    <li class="active"><i class="icon-file-alt"></i>  {% if isNew is defined and isNew != false %}Creacion{% else %}Actualizacion{% endif %} De Plan De Publicidad</li>
                 </ol>
                 {% include 'Default/messageNotification.html.twig'%}
             </div>
-                           
+
             <div class="col-lg-12" >
-                <form 
+                <form
                     {% if isNew is defined and isNew != false %}
                         action="{{path('adpoint_adplans_create', { 'id': entity.advertPlace.id })}}"
                     {% else %}
                         action="{{path('adpoint_adplans_update', { 'subId': entity.id })}}"
                     {% endif %}
-                     id="create_license" method="POST" enctype="multipart/form-data">
+                    id="create_license" method="POST" enctype="multipart/form-data">
                     <div>
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label>Device or Station Name</label><em>*</em>
-                                {{form_widget(form.name,{ 'attr': {'class': 'form-control','placeholder':'Device or Station Name', 'maxlength':'30'} })}}
+                                <label>Nombre Del Monito</label><em>*</em>
+                                {{form_widget(form.name,{ 'attr': {'class': 'form-control','placeholder':'Nombre Del Monitor', 'maxlength':'30'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.name)}}     
-                                </div>  
+                                    {{form_errors(form.name)}}
+                                </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Description</label><em>*</em>
-                                {{form_widget(form.description,{ 'attr': {'class': 'form-control','placeholder':'Description', 'maxlength':'500'} })}}
+                                <label>Descripcion</label><em>*</em>
+                                {{form_widget(form.description,{ 'attr': {'class': 'form-control','placeholder':'Descripcion', 'maxlength':'500'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.description)}}     
+                                    {{form_errors(form.description)}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Numero De Clientes </label><em>*</em>
+                                {% if showImagesForm is defined and showImagesForm %}
+                                    {{form_widget(form.clientsNumber,{ 'attr': {'class': 'form-control', 'readonly': 'readonly'} })}}
+                                {% else %}
+                                    {{form_widget(form.clientsNumber,{ 'attr': {'class': 'form-control'} })}}
+                                {% endif %}
+                                <div class="help-block alert-danger">
+                                    {{form_errors(form.clientsNumber)}}
                                 </div>
                             </div>
                         </div>
@@ -51,135 +63,143 @@
                         <!-- direccion y ubicacion -->
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label>Starting Date </label><em>*</em>
+                                <label>Fecha Inicial </label><em>*</em>
                                 {{form_widget(form.startingDate,{ 'attr': {'class': 'form-control datetimepickerHM'} })}}
                                 <div class="help-block alert-danger">
-                                    {#{{form_errors(form.startingDate)}}#}     
+                                    {#{{form_errors(form.startingDate)}}#}
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Ending Date </label><em>*</em>
+                                <label>Fecha Final </label><em>*</em>
                                 {{form_widget(form.endingDate,{ 'attr': {'class': 'form-control datetimepickerHM'} })}}
                                 <div class="help-block alert-danger">
-                                    {#{{form_errors(form.endingDate)}}#}     
+                                    {#{{form_errors(form.endingDate)}}#}
                                 </div>
                             </div>
                         </div>
-                    </div> 
-                             
-                    <hr>
-                    <div class="col-xs-12">
-                        <label style="font-size: 22px; font-weight: bold;">Advert Plan Clients / Images </label>
-                        <br>
-                        <br>
+                        {% if entity.id is defined and entity.id %}
+                            <div>
+                                <input type="hidden" name="adspace_sublicense[id]" value="{{ entity.id }}">
+                            </div>
+                        {% endif %}
                     </div>
-                    
-                    {% for tag in fileForms %}
-                        <div class="col-xs-12">
-                            <label style="font-size: 16px;">Client # {{loop.index}} </label>
-                        </div>
+
+                    {% if showImagesForm is defined and showImagesForm %}
+
                         <hr>
-                        <div class="col-xs-6">
-                            <div class="form-group">
-                                <label>Monitor File </label><em>*</em>
-                                {{form_widget(tag.fileName,{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                            <div class="form-group">
-                                <label>Background File </label><em>*</em>
-                                {{form_widget(tag.backGroundFileName,{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                            <div class="form-group">
-                                <label>Logo File </label><em>*</em>
-                                {{form_widget(tag.logoFileName,{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                            <div class="form-group">
-                                <label>Duration In Seconds </label><em>*</em>
-                                {{form_widget(tag.timeDurationInSeconds,{ 'attr': {'class': 'form-control'} })}}
-                            </div>
-                            <div class="form-group">
-                                <label>Client Email </label><em>*</em>
-                                {{form_widget(tag.clientEmail,{ 'attr': {'class': 'form-control', 'placeholder':'some@email.com'} })}}
-                            </div>
+                        <div class="col-xs-12">
+                            <label style="font-size: 22px; font-weight: bold;">Advert Plan Clients / Images </label>
+                            <br>
+                            <br>
                         </div>
-                        <div class="col-xs-6">
+
+                        {% for tag in fileForms %}
+                            <div class="col-xs-12">
+                                <label style="font-size: 16px;">Client # {{loop.index}} </label>
+                            </div>
+                            <hr>
                             <div class="col-xs-6">
                                 <div class="form-group">
-                                    <label>Descriptive File 1 </label><em>*</em>
-                                    {{form_widget(tag.dev1FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    <label>Imagen De Monitor </label><em>*</em>
+                                    {{form_widget(tag.fileName,{ 'attr': {'class': 'form-control'} })}}
                                 </div>
-                                <br>
                                 <div class="form-group">
-                                    <label>Descriptive File 2 </label>
-                                    {{form_widget(tag.dev2FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    <label>Imagen De Fondo </label><em>*</em>
+                                    {{form_widget(tag.backGroundFileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Logo </label><em>*</em>
+                                    {{form_widget(tag.logoFileName,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Duracion En Segundos </label><em>*</em>
+                                    {{form_widget(tag.timeDurationInSeconds,{ 'attr': {'class': 'form-control'} })}}
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Del Cliente </label><em>*</em>
+                                    {{form_widget(tag.clientEmail,{ 'attr': {'class': 'form-control', 'placeholder':'some@email.com'} })}}
                                 </div>
                             </div>
                             <div class="col-xs-6">
-                                <div class="form-group">
-                                    <label>Description Text 1 </label><em>*</em>
-                                    {{form_widget(tag.dev1Description,{ 'attr': {'class': 'form-control'} })}}
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Imagen Descriptiva 1 </label><em>*</em>
+                                        {{form_widget(tag.dev1FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label>Imagen Descriptiva 2 </label>
+                                        {{form_widget(tag.dev2FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Description Text 2 </label>
-                                    {{form_widget(tag.dev2Description,{ 'attr': {'class': 'form-control'} })}}
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Texto Descriptivo 1 </label><em>*</em>
+                                        {{form_widget(tag.dev1Description,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Texto Descriptivo 2 </label>
+                                        {{form_widget(tag.dev2Description,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Imagen Descriptiva 3 </label>
+                                        {{form_widget(tag.dev3FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label>Imagen Descriptiva 4 </label>
+                                        {{form_widget(tag.dev4FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Texto Descriptivo 3 </label>
+                                        {{form_widget(tag.dev3Description,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Texto Descriptivo 4 </label>
+                                        {{form_widget(tag.dev4Description,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Imagen Descriptiva 5 </label>
+                                        {{form_widget(tag.dev5FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label>Imagen Descriptiva 6 </label>
+                                        {{form_widget(tag.dev6FileName,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label>Texto Descriptivo 5 </label>
+                                        {{form_widget(tag.dev5Description,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Texto Descriptivo 6 </label>
+                                        {{form_widget(tag.dev6Description,{ 'attr': {'class': 'form-control'} })}}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6">
-                                <div class="form-group">
-                                    <label>Descriptive File 3 </label>
-                                    {{form_widget(tag.dev3FileName,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label>Descriptive File 4 </label>
-                                    {{form_widget(tag.dev4FileName,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="form-group">
-                                    <label>Description Text 3 </label>
-                                    {{form_widget(tag.dev3Description,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                                <div class="form-group">
-                                    <label>Description Text 4 </label>
-                                    {{form_widget(tag.dev4Description,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="form-group">
-                                    <label>Descriptive File 5 </label>
-                                    {{form_widget(tag.dev5FileName,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <label>Descriptive File 6 </label>
-                                    {{form_widget(tag.dev6FileName,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="form-group">
-                                    <label>Description Text 5 </label>
-                                    {{form_widget(tag.dev5Description,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                                <div class="form-group">
-                                    <label>Description Text 6 </label>
-                                    {{form_widget(tag.dev6Description,{ 'attr': {'class': 'form-control'} })}}
-                                </div>
-                            </div>
-                        </div>   
-                        {{form_widget(tag._token)}}
-                        <br>
-                    {% endfor %}
-                    
+                            {{form_widget(tag._token)}}
+                            <br>
+                        {% endfor %}
+                    {% endif %}
+
                     {{form_widget(form._token)}}
 
                     <div class="form-group" style="margin-top: 30px;">
-                        <button class="btn btn-primary pull-right save-btn" type="submit" style="margin-right: 15px; margin-top: 20px;">{% if isNew is defined and isNew != false %}Save{% else %}Update{% endif %}</button>
+                        <button class="btn btn-primary pull-right save-btn" type="submit" style="margin-right: 15px; margin-top: 110px;">{% if isNew is defined and isNew != false %}Guardar{% else %}Actualizar{% endif %}</button>
                     </div>
                 </form>
             </div>
         </div>
-       
+
     {% endblock %}
 
     {% block scripts %}
@@ -187,5 +207,5 @@
     {% endblock %}
 
     {% block functions_javascript %}
-        
+
     {% endblock %}

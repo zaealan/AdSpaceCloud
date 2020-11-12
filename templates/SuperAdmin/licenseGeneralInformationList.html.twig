@@ -42,7 +42,7 @@
                         <tr>                            
                             {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}                            
                             <th style="width: 27%;"><a style="color: whitesmoke;" href="{{ path('index_general_license_information_list', { 'order_by_nickname': orderBy.order_by_nickname.order }) }}{{ params~itemsPage }}"> Restaurant Name <strong>(</strong>Nickname<strong>)</strong> <strong>/</strong> Contact Name</a>&nbsp; {{ orderBy.order_by_nickname.htmlImage|default('')|raw }}</th>                
-                            <th style="cursor: default; width: 14%;"> Email <strong>/</strong> Phone Number</th>
+                            <th style="cursor: default; width: 14%;"> Email <strong>/</strong> Numero Telefonico</th>
                             <th style="cursor: default; width: 14%;"> Address <strong>/</strong> Suit PO Box</th> 
                             <th style="cursor: default; width: 21%;"> Data Starting From <strong>/</strong> Database Size </th>                
                             <th><a style="color: whitesmoke; width: 10%;" href="{{ path('index_general_license_information_list', { 'order_by_apk_version': orderBy.order_by_apk_version.order }) }}{{ params~itemsPage }}"> Version <strong>/</strong> Install C {{ orderBy.order_by_apk_version.htmlImage|default('')|raw }}</a>&nbsp;</th>

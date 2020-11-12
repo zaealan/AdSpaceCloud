@@ -36,7 +36,7 @@ class AdvertisePlan {
      * @ORM\Column(name="description", length=255, nullable=true)
      */
     private $description;
-    
+
     /**
      * @var string
      * @ORM\Column(name="has_video", type="boolean", nullable=true)
@@ -69,54 +69,74 @@ class AdvertisePlan {
      * })
      */
     private $advertPlace;
-    
+
     /**
      * @var \DateTime
      * @ORM\Column(name="date_created", type="datetime", nullable=false)
      */
     private $createdDate;
-    
+
     /**
      * @var \DateTime
      * @ORM\Column(name="starting_date", type="datetime", nullable=false)
      */
     private $startingDate;
-    
+
     /**
      * @var \DateTime
      * @ORM\Column(name="queued_date", type="datetime", nullable=true)
      */
     private $inQueuedDate;
-    
+
     /**
      * @var \DateTime
      * @ORM\Column(name="ending_date", type="datetime", nullable=false)
      */
     private $endingDate;
-    
+
     /**
      * @var integer
      * @ORM\Column(name="status", type="integer", nullable=false)
      */
     private $status;
-    
+
     /**
      * @var string
      * @ORM\Column(name="rerun_times", type="integer", length=3, nullable=false)
      */
     private $rerunTimes;
-    
+
     /**
      * @var string
      * @ORM\Column(name="rerun_duration_in_seconds", type="integer", length=3, nullable=false)
      */
     private $timeDurationInSeconds;
-    
+
+    /**
+     * @var string
+     * @ORM\Column(name="clients_number", type="integer", length=2, nullable=false)
+     */
+    private $clientsNumber;
+
     /**
      * @return type
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @return type
+     */
+    public function getClientsNumber() {
+        return $this->clientsNumber;
+    }
+
+    /**
+     * @param type $clientsNumber
+     */
+    public function setClientsNumber($clientsNumber) {
+        $this->clientsNumber = $clientsNumber;
     }
 
     /**
@@ -334,6 +354,26 @@ class AdvertisePlan {
      */
     public function setRerunTimes($rerunTimes) {
         $this->rerunTimes = $rerunTimes;
+    }
+
+    /**
+     * Get text type super_admin, administrator, license_manager,
+     * report_viewer, data_bases_administrator
+     * @return string
+     */
+    public function getTextStatus() {
+        $text = '';
+        switch ($this->status) {
+            case static::ADVERT_PLAN_STATUS_SCHEDULED: $text = 'Programada';
+                break;
+            case static::ADVERT_PLAN_STATUS_RUNNING: $text = 'Corriendo';
+                break;
+            case static::ADVERT_PLAN_STATUS_FINISHED: $text = 'Terminado';
+                break;
+            default:
+                $text = 'Estado No Determinado';
+        }
+        return $text;
     }
 
 }

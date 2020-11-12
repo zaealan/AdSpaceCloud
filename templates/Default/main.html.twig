@@ -40,7 +40,7 @@
     </head>
 
     <body style="height: 100%;">
-        <div class="imgblur"></div>  
+        <div class="imgblur"></div>
         <div id="wrapper" style="height: 100%">
             <div class="navbar-nav side-nav hidePanelLeft" id="tooglePanelLeft" title="Hide">&nbsp;</div>
             <!-- Sidebar -->
@@ -96,234 +96,234 @@
         <script type="text/javascript">
             var widthOriginal = parseInt($("#panelLeft").width());
             var intervalNoDb = null;
-            $(document).ready(function () {
+            $(document).ready(function() {
                 /*
                  * funcionalidad JS para retornar la fecha actual en string
                  * y utulizarla por el datapicker para el minDate
                  * @returns {String} fecha en formato yyyy-mm-dd incluido los guiones
                  */
-                Date.prototype.yyyymmdd = function () {
+                Date.prototype.yyyymmdd = function() {
                     var yyyy = this.getFullYear().toString();
                     var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based
                     var dd = this.getDate().toString();
                     return yyyy + "-" + (mm[1] ? mm : "0" + mm[0]) + "-" + (dd[1] ? dd : "0" + dd[0]); // padding
                 };
-               
-                {#$('.js-datepicker').datepicker({
-                    pickTime: true
-                });#}
-       
-                var today = new Date();
-                $(".datetimepicker").datetimepicker({
-                    pickTime: false
-                });
-                $(".datetimepicker-mindate").datetimepicker({
-                    pickTime: false,
-                    minDate: today.yyyymmdd()
-                });
-                $(".datetimepicker-maxdate").datetimepicker({
-                    pickTime: false,
-                    maxDate: today.yyyymmdd()
-                });
-                
-                $(".datetimepickerHM").datetimepicker({
-                    pickTime: true,
-                    minDate: today.yyyymmdd()
-                });
 
-                $.webshims.polyfill('forms');
-                $('html').removeAttr('class');
+            {#$('.js-datepicker').datepicker({
+                pickTime: true
+            });#}
 
-                $.extend({
-                    password: function (length, special) {
-                        var iteration = 0;
-                        var password = "";
-                        var randomNumber;
-                        if (special == undefined) {
-                            var special = false;
-                        }
-                        while (iteration < length) {
-                            randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
-                            if (!special) {
-                                if ((randomNumber >= 33) && (randomNumber <= 47)) {
-                                    continue;
-                                }
-                                if ((randomNumber >= 58) && (randomNumber <= 64)) {
-                                    continue;
-                                }
-                                if ((randomNumber >= 91) && (randomNumber <= 96)) {
-                                    continue;
-                                }
-                                if ((randomNumber >= 123) && (randomNumber <= 126)) {
-                                    continue;
-                                }
-                            }
-                            iteration++;
-                            password += String.fromCharCode(randomNumber);
-                        }
-                        password = password.replace("0", "A");
-                        password = password.replace("o", "A");
-                        password = password.replace("O", "A");
-                        return password;
-                    }
-                });
-
-                $('.fancybox').fancybox();
-
-                /*Codigo para mostrar y ocultar el menu lateral*/
-                $("#tooglePanelLeft").click(function () {
-                    width = parseInt($("#panelLeft").width());
-                    if (width > 0) {
-                        $("#panelLeft").animate({"width": "0px"}, "slow");
-                        $("#tooglePanelLeft").removeClass('hidePanelLeft');
-                        $("#tooglePanelLeft").addClass('showPanelLeft');
-                        $("#wrapper").animate({"padding-left": "0px"}, "slow");
-                        $("#tooglePanelLeft").attr('title', 'Show');
-                    } else {
-                        $("#panelLeft").animate({"width": widthOriginal + "px"}, "slow");
-                        $("#tooglePanelLeft").removeClass('showPanelLeft');
-                        $("#tooglePanelLeft").addClass('hidePanelLeft');
-                        $("#wrapper").animate({"padding-left": widthOriginal + "px"}, "slow");
-                        $("#tooglePanelLeft").attr('title', 'Hide');
-                    }
-                });
-
-                /**
-                 * Comas para todos los campos numericos
-                 */
-                $(document).on("keyup", '.input_number', function () {
-                    var val = $(this).val();
-                    val = val.replace(/[\D]+/g, "");
-                    val = val.replace(/$0+/g, "");
-
-                    if (val.length > 0) {
-                        $(this).val($.number(val));
-                    }
-                });
-
-                /**
-                 * Comas para todos los campos numericos
-                 */
-                $('.version_name').keyup(function () {
-                    var data = $(this).val();
-                    var regx = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-
-                    if (data !== '' && !data.match(regx)) {
-                        $('.amt_err')
-                                .text('Only Matching Formtat Example ###.###.### Acepted!')
-                                .fadeIn('fast');
-                    } else {
-                        $('.amt_err').fadeOut('slow');
-                    }
-                });
-
-                /**
-                 * Comas para todos los campos numericos
-                 */
-                $('.version_name').blur(function () {
-                    var data = $(this).val();
-                    var regx = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-
-                    console.log(data + ' patt:' + data.match(regx));
-
-                    if (data !== '' && !data.match(regx)) {
-                        $(this).val('');
-                    }
-                });
-
-                /*Formato para los numeros de celulares*/
-                $(function ($) {
-                    $(".phone_number").mask("(999) 999-9999", {placeholder: " "});
-                });
-
-                /*Formato para los zip codes*/
-                $(function ($) {
-                    $(".zip_code").mask("?99999", {placeholder: ""});
-                });
-
-                $('.upper-case').keyup(function () {
-                    var text = $(this).val();
-                    text = text.toUpperCase();
-
-                    $(this).val(text);
-                });
-
-                $('.lower-case').keyup(function () {
-                    var text = $(this).val();
-                    text = text.toLowerCase();
-
-                    $(this).val(text);
-                });
-
-                $('.title-case').keyup(function () {
-                    var text = $(this).val();
-                    text = text.replace(/\w\S*/g, function (txt) {
-                        return txt.charAt(0).toUpperCase() + txt.substr(1);
+                    var today = new Date();
+                    $(".datetimepicker").datetimepicker({
+                        pickTime: false
                     });
-                    $(this).val(text);
-                });
+                    $(".datetimepicker-mindate").datetimepicker({
+                        pickTime: false,
+                        minDate: today.yyyymmdd()
+                    });
+                    $(".datetimepicker-maxdate").datetimepicker({
+                        pickTime: false,
+                        maxDate: today.yyyymmdd()
+                    });
 
-                /*Efecto sobre el boton de busqueda*/
-                $(".search-btn").click(function () {
-                    $(this).html('Searching..');
-                });
+                    $(".datetimepickerHM").datetimepicker({
+                        pickTime: true,
+                        minDate: today.yyyymmdd()
+                    });
 
-                /*Efecto sobre el boton de guardar cambios, crear objetos*/
-                $(".form").submit(function () {
-                    $(".save-btn").html('Saving Changes..');
-                    $(".continue-btn").html('Saving..');
-                    $(".send-btn").html('Sending..');
-                    $(".add-btn").html('Adding..');
-                });
+                    $.webshims.polyfill('forms');
+                    $('html').removeAttr('class');
 
-                /*$("input:text:visible:first").focus();*/
-                $("#tooglePanelLeft").trigger('click');
+                    $.extend({
+                        password: function(length, special) {
+                            var iteration = 0;
+                            var password = "";
+                            var randomNumber;
+                            if (special == undefined) {
+                                var special = false;
+                            }
+                            while (iteration < length) {
+                                randomNumber = (Math.floor((Math.random() * 100)) % 94) + 33;
+                                if (!special) {
+                                    if ((randomNumber >= 33) && (randomNumber <= 47)) {
+                                        continue;
+                                    }
+                                    if ((randomNumber >= 58) && (randomNumber <= 64)) {
+                                        continue;
+                                    }
+                                    if ((randomNumber >= 91) && (randomNumber <= 96)) {
+                                        continue;
+                                    }
+                                    if ((randomNumber >= 123) && (randomNumber <= 126)) {
+                                        continue;
+                                    }
+                                }
+                                iteration++;
+                                password += String.fromCharCode(randomNumber);
+                            }
+                            password = password.replace("0", "A");
+                            password = password.replace("o", "A");
+                            password = password.replace("O", "A");
+                            return password;
+                        }
+                    });
 
-                /**
-                 * funcion para validar que no queden espacion en los campos license number
-                 */
-                var textAnterior = '';
-                var firstClick = true;
-                $('.noEspacios').focusin(function (e) {
-                    if (firstClick == true) {
-                        textAnterior = $(this).val();
-                        firstClick = false;
-                    }
-                });
+                    $('.fancybox').fancybox();
 
-                $('.noEspacios').keyup(function (e) {
+                    /*Codigo para mostrar y ocultar el menu lateral*/
+                    $("#tooglePanelLeft").click(function() {
+                        width = parseInt($("#panelLeft").width());
+                        if (width > 0) {
+                            $("#panelLeft").animate({"width": "0px"}, "slow");
+                            $("#tooglePanelLeft").removeClass('hidePanelLeft');
+                            $("#tooglePanelLeft").addClass('showPanelLeft');
+                            $("#wrapper").animate({"padding-left": "0px"}, "slow");
+                            $("#tooglePanelLeft").attr('title', 'Show');
+                        } else {
+                            $("#panelLeft").animate({"width": widthOriginal + "px"}, "slow");
+                            $("#tooglePanelLeft").removeClass('showPanelLeft');
+                            $("#tooglePanelLeft").addClass('hidePanelLeft');
+                            $("#wrapper").animate({"padding-left": widthOriginal + "px"}, "slow");
+                            $("#tooglePanelLeft").attr('title', 'Hide');
+                        }
+                    });
 
-                    var er = new RegExp(/\s/);
-                    var text = $(this).val();
+                    /**
+                     * Comas para todos los campos numericos
+                     */
+                    $(document).on("keyup", '.input_number', function() {
+                        var val = $(this).val();
+                        val = val.replace(/[\D]+/g, "");
+                        val = val.replace(/$0+/g, "");
 
-                    if (er.test(text)) {
-                        $(this).val(textAnterior);
-                    } else {
+                        if (val.length > 0) {
+                            $(this).val($.number(val));
+                        }
+                    });
+
+                    /**
+                     * Comas para todos los campos numericos
+                     */
+                    $('.version_name').keyup(function() {
+                        var data = $(this).val();
+                        var regx = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+                        if (data !== '' && !data.match(regx)) {
+                            $('.amt_err')
+                                    .text('Only Matching Formtat Example ###.###.### Acepted!')
+                                    .fadeIn('fast');
+                        } else {
+                            $('.amt_err').fadeOut('slow');
+                        }
+                    });
+
+                    /**
+                     * Comas para todos los campos numericos
+                     */
+                    $('.version_name').blur(function() {
+                        var data = $(this).val();
+                        var regx = /^\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+
+                        console.log(data + ' patt:' + data.match(regx));
+
+                        if (data !== '' && !data.match(regx)) {
+                            $(this).val('');
+                        }
+                    });
+
+                    /*Formato para los numeros de celulares*/
+                    $(function($) {
+                        $(".phone_number").mask("(999) 999-9999", {placeholder: " "});
+                    });
+
+                    /*Formato para los zip codes*/
+                    $(function($) {
+                        $(".zip_code").mask("?99999", {placeholder: ""});
+                    });
+
+                    $('.upper-case').keyup(function() {
+                        var text = $(this).val();
+                        text = text.toUpperCase();
+
                         $(this).val(text);
-                        textAnterior = text;
-                    }
-                });
+                    });
 
-                /**
-                 * el onblur de los campos requeridos
-                 * input, select y textarea
-                 */
-                $("input[required=required], select[required=required], textarea[required=required]").blur(function () {
-                    if ($(this).val() == "") {
-                        $(this).addClass("error");
-                    } else {
-                        $(this).removeClass("error");
-                    }
-                });
+                    $('.lower-case').keyup(function() {
+                        var text = $(this).val();
+                        text = text.toLowerCase();
 
-                $('.number_format_decimal').number(true, 1);
+                        $(this).val(text);
+                    });
 
-                /**
-                 * Analizar si hay  campos requeridos
-                 */
-                $("button[type=submit]").click(function () {
-                    empty_fields = 0; /*variable que controla ajax al crear licencia*/
-                    $("input[required=required], select[required=required], textarea[required=required]").not(".error").each(function () {
+                    $('.title-case').keyup(function() {
+                        var text = $(this).val();
+                        text = text.replace(/\w\S*/g, function(txt) {
+                            return txt.charAt(0).toUpperCase() + txt.substr(1);
+                        });
+                        $(this).val(text);
+                    });
+
+                    /*Efecto sobre el boton de busqueda*/
+                    $(".search-btn").click(function() {
+                        $(this).html('Searching..');
+                    });
+
+                    /*Efecto sobre el boton de guardar cambios, crear objetos*/
+                    $(".form").submit(function() {
+                        $(".save-btn").html('Saving Changes..');
+                        $(".continue-btn").html('Saving..');
+                        $(".send-btn").html('Sending..');
+                        $(".add-btn").html('Adding..');
+                    });
+
+                    /*$("input:text:visible:first").focus();*/
+                    $("#tooglePanelLeft").trigger('click');
+
+                    /**
+                     * funcion para validar que no queden espacion en los campos license number
+                     */
+                    var textAnterior = '';
+                    var firstClick = true;
+                    $('.noEspacios').focusin(function(e) {
+                        if (firstClick == true) {
+                            textAnterior = $(this).val();
+                            firstClick = false;
+                        }
+                    });
+
+                    $('.noEspacios').keyup(function(e) {
+
+                        var er = new RegExp(/\s/);
+                        var text = $(this).val();
+
+                        if (er.test(text)) {
+                            $(this).val(textAnterior);
+                        } else {
+                            $(this).val(text);
+                            textAnterior = text;
+                        }
+                    });
+
+                    /**
+                     * el onblur de los campos requeridos
+                     * input, select y textarea
+                     */
+                    $("input[required=required], select[required=required], textarea[required=required]").blur(function() {
+                        if ($(this).val() == "") {
+                            $(this).addClass("error");
+                        } else {
+                            $(this).removeClass("error");
+                        }
+                    });
+
+                    $('.number_format_decimal').number(true, 1);
+
+                    /**
+                     * Analizar si hay  campos requeridos
+                     */
+                    $("button[type=submit]").click(function() {
+                        empty_fields = 0; /*variable que controla ajax al crear licencia*/
+                        $("input[required=required], select[required=required], textarea[required=required]").not(".error").each(function() {
             {#                            console.log(' -> '+$(this).val());#}
                             if ($(this).val() == "") {
                                 $(this).addClass("error");
@@ -339,13 +339,13 @@
 
             {% block scripts %}
             {% endblock %}
-                
+
             {% block functionsAutoCompListener %}
             {% endblock %}
                 });
             {% block jsfunctions %}
             {% endblock %}
-                $('#menuCollapse').click(function () {
+                $('#menuCollapse').click(function() {
                     var windowHgt = $(window).innerHeight() - 20;
                     var hgtPanel = windowHgt - $("[role=navigation]").height();
                     $(".menuScroll").css(
@@ -429,7 +429,7 @@
                  */
                 function decreaseShowingItems() {
 
-                    $(".itemsShowing").each(function () {
+                    $(".itemsShowing").each(function() {
                         var item = $(this);
                         var numberItems = parseInt(item.html());
                         item.html(numberItems - 1);
@@ -438,11 +438,11 @@
 
                 /**
                  * Number.prototype.format(n, x)
-                 * 
+                 *
                  * @param integer n: length of decimal
                  * @param integer x: length of sections
                  */
-                Number.prototype.format = function (n, x) {
+                Number.prototype.format = function(n, x) {
                     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
                     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
                 };
@@ -492,7 +492,7 @@
                             sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
                             dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
                             s = '',
-                            toFixedFix = function (n, prec) {
+                            toFixedFix = function(n, prec) {
                                 var k = Math.pow(10, prec);
                                 return '' + (Math.round(n * k) / k)
                                         .toFixed(prec);
@@ -519,7 +519,7 @@
                         data: {},
                         dataType: "json",
                         async: false,
-                        success: function (data) {
+                        success: function(data) {
                             if (data.msn == "__KO__") {
                                 return hasSession;
                             }
@@ -531,12 +531,14 @@
                     return hasSession;
                 }
 
+
+
             {% block functions_javascript %}
             {% endblock %}
 
             {% block functionsAutoAddress %}
             {% endblock %}
-                
+
         </script>
         {% block functionsAutocompAddress %}
         {% endblock %}

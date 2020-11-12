@@ -27,9 +27,9 @@ class SearchAccountType extends AbstractType {
 
         $this->status = $options['selected_choice'];
 
-        $choices = [ '' => 'All Accounts',
-            Account::ACCOUNT_STATUS_ACTIVE => 'Active',
-            Account::ACCOUNT_STATUS_INACTIVE => 'Inactive'
+        $choices = ['' => 'Todos Los Estados',
+            Account::ACCOUNT_STATUS_ACTIVE => 'Activo',
+            Account::ACCOUNT_STATUS_INACTIVE => 'Inactivo'
         ];
 
         $choices = Util::choiceFlip($choices);

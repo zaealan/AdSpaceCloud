@@ -28,22 +28,22 @@ class SearchUserType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
         $this->isSuperAdmin = $options['is_superadmin'];
-        
+
         $this->status = $options['selected_choice_status'];
 
-        $choices = ['' => 'All Users',
-            User::STATUS_ACTIVE => 'Active',
-            User::STATUS_INACTIVE => 'Inactive'
+        $choices = ['' => 'Todos Los Usuarios',
+            User::STATUS_ACTIVE => 'Activo',
+            User::STATUS_INACTIVE => 'Inactivo'
         ];
 
         $choices = Util::choiceFlip($choices);
 
         $this->type = $options['selected_choice_type'];
-        
-        $choices2 = ['' => 'All Type',
-            User::USER_ADMINISTRATOR => 'Administrator',
-            User::USER_LICENSE_MANAGER => 'License Manager',
-            User::USER_ADMIN_DATABASES => 'Database Manager'
+
+        $choices2 = ['' => 'Todos Los Tipos',
+            User::USER_ADMINISTRATOR => 'Administrador',
+            User::USER_LICENSE_MANAGER => 'Gestor De Monitores',
+            User::USER_ADMIN_DATABASES => 'Supervisor De Publicidad'
         ];
 
         $choices2 = Util::choiceFlip($choices2);

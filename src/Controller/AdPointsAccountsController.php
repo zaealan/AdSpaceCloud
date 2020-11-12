@@ -5,18 +5,9 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use App\Entity\User;
 use App\Entity\AccountLicense;
 use App\Entity\Module;
-use App\Entity\Company;
-use App\Entity\LicenseRate;
 use App\Entity\Account;
-use App\Entity\CompanyModule;
-use App\Form\CompanyType;
-use App\Form\SearchUserType;
-use App\Form\LicenseRateType;
-use App\Form\SearchCompanyType;
 use App\Entity\AdvertisePlan;
 use App\Entity\AdvertPlanFile;
 use App\Form\AdvertisePlanType;
@@ -30,26 +21,25 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Controller\ParametersNormalizerController;
 use DateTime;
 use App\Form\AdvertPlanFileType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * Description of AdPointsAccountsController
  * @author aealan
- * 
+ *
  * @Route("/adPointsAccounts", defaults={"_locale"="en"})
  */
 class AdPointsAccountsController extends ParametersNormalizerController {
 
     /**
      * Lists all AccountLicense entities.
-     * 
+     *
      * @Route("/", name="adpoint_accounts", options={ "method_prefix" = false })
      */
     public function index(Request $request) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -136,7 +126,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                 $count = count($entitiesToPaginate);
                 for ($i = 0; $i < $count; ++$i) {
                     $searchL['alAccountLicense'] = $entitiesToPaginate[$i]->getId();
-                    
+
                     $entitiesToPaginate[$i]->licenseNum = $em->getRepository('App:AccountLicense')->accountLicensesForSuperAdminUsers($searchL, '', true);
                 }
             } else {
@@ -149,7 +139,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         }
 
         $entities = $entitiesToPaginate;
-        
+
         /* Construimos las url para las peticiones get del ordenador y paginador */
         $params = Paginator::getUrlFromParameters($indexSearch, $search);
         $orderBy = Paginator::getUrlOrderFromParameters($indexOrder, $order);
@@ -165,17 +155,17 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'itemsPerPage' => $itemsPerPage
         ));
     }
-    
+
     /**
      * Lists all AccountLicense entities by account company.
-     * 
+     *
      * @Route("/{accountId}/AdPointsByCompany", name="adpoint_points_list", options={ "method_prefix" = false })
      */
     public function licensesListFromAccount(Request $request, $accountId) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -255,14 +245,14 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
             foreach ($entitiesToPaginate as $key => $license) {
                 $actualDate = Util::getCurrentDate()->format('Y-m-d H:i:s');
-                
+
                 $activeAdvertPlans = $em->getRepository('App:AdvertisePlan')->getActualActiveAdvertPlanForDevice($license[0]->getId(), $actualDate);
                 $cheduledAdvertPlans = $em->getRepository('App:AdvertisePlan')->getCheduledAdvertPlanForDevice($license[0]->getId(), $actualDate);
                 $oldAdvertPlans = $em->getRepository('App:AdvertisePlan')->getOldAdvertPlanForDevice($license[0]->getId(), $actualDate);
-                
+
                 $entitiesToPaginate[$key][0]->activeNum = count($activeAdvertPlans);
                 $entitiesToPaginate[$key][0]->cheduledNum = count($cheduledAdvertPlans);
-                
+
                 if (count($oldAdvertPlans) > 9) {
                     $entitiesToPaginate[$key][0]->oldNum = '+9';
                 } else {
@@ -276,7 +266,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         }
 
         $entities = $entitiesToPaginate;
-        
+
         /* Construimos las url para las peticiones get del ordenador y paginador */
         $params = Paginator::getUrlFromParameters($indexSearch, $search);
         $orderBy = Paginator::getUrlOrderFromParameters($indexOrder, $order);
@@ -293,17 +283,17 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'itemsPerPage' => $itemsPerPage
         ]);
     }
-    
+
     /**
      * Displays a form to create a new AccountLicense entity.
-     * 
+     *
      * @Route("/{id}/new", name="adpoint_point_new", options={ "method_prefix" = false })
      */
     public function newAccountLicense(Request $request, $id = 0) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -350,17 +340,17 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'menu' => 'accounts',
         ]);
     }
-    
+
     /**
      * Creates a new AccountLicense entity.
-     * 
+     *
      * @Route("/create", name="adpoint_point_create", options={ "method_prefix" = false }, methods={"POST"})
      */
     public function create(Request $request) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -457,7 +447,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 //                }
 //
 //                $sumPrice = $params["hdPrices"]["server"];
-                
+
                 /* crear base de datos */
 //                $this->setDataLicense($em, $entity);
 
@@ -465,7 +455,6 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                  * Enviar correos informando la creacion de la licencia
                  */
 //                $account = $em->getRepository('App:Account')->find($entity->getAlAccountLicense());
-
 //                $arrInfo = ["nameTo" => $entity->getAlContacName(),
 //                    "emailTo" => [$entity->getAlLicenseEmail() => $entity->getAlContacName()],
 //                    "emailCc" => [$account->getAcEmail() => $account->getAcContactName()],
@@ -529,10 +518,10 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'countries' => $countries
         ));
     }
-    
+
     /**
      * Lists all advertise plans for an advertise point.
-     * 
+     *
      * @Route("/{id}/adPlanList", name="adpoint_adplans_list", options={ "method_prefix" = false })
      */
     public function adPlansList(Request $request, $id) {
@@ -554,17 +543,17 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'menu' => 'accounts',
         ]);
     }
-    
+
     /**
      * Displays a form to create a new AdPlacePlan entity.
-     * 
+     *
      * @Route("/{id}/adPlanNew", name="adpoint_adplans_new", options={ "method_prefix" = false })
      */
     public function newSublicense(Request $request, $id) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -580,11 +569,8 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         $entity = new AdvertisePlan();
         $entity->setAdvertPlace($entityLicense);
-        $form = $this->createSublicenseForm($entity, 2);
-        
-//        dump($form->createView());
-//        die;
-        
+        $form = $this->createSublicenseForm($entity, $this->realContainer->getParameter('default_clients_per_plan'));
+
         for ($i = 0; $i < $this->realContainer->getParameter('default_clients_per_plan'); ++$i) {
             $entityFile = new AdvertPlanFile();
             $fileForms[] = $this->createAdvertPlanFileForm($entityFile, ($i + 2))->createView();
@@ -593,13 +579,14 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         return $this->render('AccountLicense\Sublicense\new.html.twig', [
                     'entity' => $entity,
                     'form' => $form->createView(),
-                    'clientsNumber' => 2,
+                    'clientsNumber' => $this->realContainer->getParameter('default_clients_per_plan'),
+                    'showImagesForm' => false,
                     'fileForms' => $fileForms,
                     'menu' => 'accounts',
                     'isNew' => true
         ]);
     }
-    
+
     /**
      * Creates a form to create a AccountLicense entity.
      *
@@ -617,7 +604,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         return $form;
     }
-    
+
     /**
      * Creates a form to create a AccountLicense entity.
      *
@@ -626,7 +613,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createAdvertPlanFileForm(AdvertPlanFile $entity, $formNumber, $selectedChoice = null, $selectedSeconds = null) {
-        
+
         $form = $this->createForm(AdvertPlanFileType::class, $entity, [
             'action' => '#',
             'selected_choice' => $selectedChoice,
@@ -636,7 +623,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         return $form;
     }
-    
+
     /**
      * Crear AdvertisePlan
      * @param Request $request
@@ -644,7 +631,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
      * @param type $channel
      * @param type $name
      * @return type
-     * 
+     *
      * @Route("/{id}/adPlanCreate", name="adpoint_adplans_create", options={ "method_prefix" = false }, methods={"POST"})
      */
     public function createAdvertPlan(Request $request, $id) {
@@ -673,16 +660,24 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         }
 
         $parametersArray = $request->request->getIterator()->getArrayCopy();
-        
+
         $startingDate = $parametersArray['adspace_sublicense']['startingDate'];
         $endingDate = $parametersArray['adspace_sublicense']['endingDate'];
-        
-        $sublicense = new AdvertisePlan();
-        
+
+        $sublicense = null;
+        if (isset($parametersArray['adspace_sublicense']['id']) && $parametersArray['adspace_sublicense']['id']) {
+            $sublicense = $em->getRepository('App:AdvertisePlan')->find($parametersArray['adspace_sublicense']['id']);
+        }
+
+        if (!$sublicense) {
+            $sublicense = new AdvertisePlan();
+        }
+
         try {
             $auxNowDate = Util::getCurrentDate();
-            
+
             $startingDateTime = new DateTime($startingDate);
+            $startingDateTime->modify('-1 day');
             $endingDateTime = new DateTime($endingDate);
 
             $parametersArray['adspace_sublicense']['startingDate'] = $startingDateTime->format('m/d/Y H:i');
@@ -691,428 +686,480 @@ class AdPointsAccountsController extends ParametersNormalizerController {
             $request->request->replace($parametersArray);
 
             $actualDate = Util::getCurrentDate();
-            
+
             $sublicense->setAdvertPlace($license);
-            
+
             $sublicense->setCreatedDate($actualDate);
             $sublicense->setStartingDate($startingDateTime);
             $sublicense->setEndingDate($endingDateTime);
             $sublicense->setRerunTimes(0);
-            
+
             if ($startingDateTime < $auxNowDate && $auxNowDate < $endingDateTime) {
                 $sublicense->setStatus(AdvertisePlan::ADVERT_PLAN_STATUS_RUNNING);
             } else {
                 $sublicense->setStatus(AdvertisePlan::ADVERT_PLAN_STATUS_SCHEDULED);
             }
-            
+
             $someDefaultPoint = 1;
             $baseNumberOfAvertises = $someDefaultPoint * 15;
-            
+
+//            dump($parametersArray['adspace_sublicense']['clientsNumber']);
+//            die;
+
             $sublicense->setTimeDurationInSeconds($baseNumberOfAvertises);
-            
+
+//            dump($parametersArray);
+//            dump($sublicense);
+
+            $actualClientsNumeber = (int) $sublicense->getClientsNumber();
+
+//            dump($sublicense);
+//            die;
+
+            $sublicense->setClientsNumber($parametersArray['adspace_sublicense']['clientsNumber']);
+
             $sublicense->setName($parametersArray['adspace_sublicense']['name']);
             $sublicense->setDescription($parametersArray['adspace_sublicense']['description']);
-            
+
             $em->persist($license);
             $em->persist($sublicense);
 
             $em->flush();
-            
-            for ($i = 0; $i < $this->realContainer->getParameter('default_clients_per_plan'); ++$i) {
-                $entityFile = new AdvertPlanFile();
-                $auxForm = $this->createAdvertPlanFileForm($entityFile, ($i + 2));
-                $auxForm->handleRequest($request);
-                
-                $fileForms[] = $auxForm->createView();
-                
-                // fileName Monitor Image
-                
-                $advertFile = $auxForm['fileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setFileName($newFilename);
-                            
-                            $entityFile->setOriginalName($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setExtension('jpg');
-                                $entityFile->setMimetype('image/jpg');
-                            } else {
-                                $entityFile->setMimetype($advertFile->getMimeType());
-                                $entityFile->setExtension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setSize($advertFile->getSize());
-                            
-                            $entityFile->setAdvertPlan($sublicense);
-                            $entityFile->setLicense($license);
-                            $entityFile->setAdvertPlan($sublicense);
-                            $entityFile->setSorting($i + 1);
-                            $entityFile->setIsUploadedInAws(false);
-                            
-                            $entityFile->setTitle(isset($params['title']) ? $params['title'] : null);
-                            $entityFile->setDescription(isset($params['description']) ? $params['description'] : null);
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan monitor image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // backGroundFileName
-                
-                $advertFile = $auxForm['backGroundFileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+//            dump($request);
+//            dump($actualClientsNumeber);
+            //////////// Hacer una consulta para que me traiga la cantidad de clientes que tiene ingresados un plan de publicidad y conforme a esto enviar un contador que con diferencia del total
+            // de clientes indicados para el plan de publicidad, determine cuantos mas hay que guardar y faltan por guardar.
+            if ($actualClientsNumeber) {
+                for ($i = 0; $i < $actualClientsNumeber; ++$i) {
+                    $entityFile = new AdvertPlanFile();
+                    $auxForm = $this->createAdvertPlanFileForm($entityFile, $i);
+                    $auxForm->handleRequest($request);
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setBackGroundFileName($newFilename);
-                            $entityFile->setOriginalBackGroundName($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setBackGroundExtension('jpg');
-                                $entityFile->setBackGroundMimetype('image/jpg');
-                            } else {
-                                $entityFile->setBackGroundMimetype($advertFile->getMimeType());
-                                $entityFile->setBackGroundExtension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setBackGroundSize($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan Background image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // logoFileName
-                
-                $advertFile = $auxForm['logoFileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $fileForms[] = $auxForm->createView();
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setLogoFileName($newFilename);
-                            $entityFile->setOriginalLogoName($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setLogoExtension('jpg');
-                                $entityFile->setLogoMimetype('image/jpg');
-                            } else {
-                                $entityFile->setLogoMimetype($advertFile->getMimeType());
-                                $entityFile->setLogoExtension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setLogoSize($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan Background image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // dev1FileName
-                
-                $advertFile = $auxForm['dev1FileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // fileName Monitor Image
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setDev1FileName($newFilename);
-                            $entityFile->setOriginalDev1Name($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setDev1Extension('jpg');
-                                $entityFile->setDev1Mimetype('image/jpg');
-                            } else {
-                                $entityFile->setDev1Mimetype($advertFile->getMimeType());
-                                $entityFile->setDev1Extension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setDev1Size($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev1 image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // dev2FileName
-                
-                $advertFile = $auxForm['dev2FileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $advertFile = $auxForm['fileName']->getData();
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setDev2FileName($newFilename);
-                            $entityFile->setOriginalDev2Name($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setDev2Extension('jpg');
-                                $entityFile->setDev2Mimetype('image/jpg');
-                            } else {
-                                $entityFile->setDev2Mimetype($advertFile->getMimeType());
-                                $entityFile->setDev2Extension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setDev2Size($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev2 image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // dev3FileName
-                
-                $advertFile = $auxForm['dev3FileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+//                    dump($auxForm);
+//                    dump($advertFile);
+//                    die;
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setDev3FileName($newFilename);
-                            $entityFile->setOriginalDev3Name($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setDev3Extension('jpg');
-                                $entityFile->setDev3Mimetype('image/jpg');
-                            } else {
-                                $entityFile->setDev3Mimetype($advertFile->getMimeType());
-                                $entityFile->setDev3Extension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setDev3Size($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev3 image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // dev4FileName
-                
-                $advertFile = $auxForm['dev4FileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setDev4FileName($newFilename);
-                            $entityFile->setOriginalDev4Name($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setDev4Extension('jpg');
-                                $entityFile->setDev4Mimetype('image/jpg');
-                            } else {
-                                $entityFile->setDev4Mimetype($advertFile->getMimeType());
-                                $entityFile->setDev4Extension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setDev4Size($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev4 image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // dev5FileName
-                
-                $advertFile = $auxForm['dev5FileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setDev5FileName($newFilename);
-                            $entityFile->setOriginalDev5Name($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setDev5Extension('jpg');
-                                $entityFile->setDev5Mimetype('image/jpg');
-                            } else {
-                                $entityFile->setDev5Mimetype($advertFile->getMimeType());
-                                $entityFile->setDev5Extension($advertFile->getClientOriginalExtension());
-                            }
-                            $entityFile->setDev5Size($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
-                        }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev5 image error <strong>" . $ex->getMessage() . "</strong>");
-                    }
-                }
-                
-                // dev6FileName
-                
-                $advertFile = $auxForm['dev6FileName']->getData();
-                
-                if ($advertFile) {
-                    $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
 
-                    $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$advertFile->guessExtension();
-                    
-                    try {
-                        $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
-                        $theAccountLicenseDirector = $isDirectoryReady['directory'];
-                        
-                        if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
-                            $msnError = 'An error occurred while creating your directory in server ';
-                            $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
-                        } else {
-                            // Archivo Monitor
-                            $entityFile->setDev6FileName($newFilename);
-                            $entityFile->setOriginalDev6Name($originalFilename);
-                            if ($advertFile && $advertFile->guessClientExtension() == 'png') {
-                                $entityFile->setDev6Extension('jpg');
-                                $entityFile->setDev6Mimetype('image/jpg');
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
                             } else {
-                                $entityFile->setDev6Mimetype($advertFile->getMimeType());
-                                $entityFile->setDev6Extension($advertFile->getClientOriginalExtension());
+                                // Archivo Monitor
+                                $entityFile->setFileName($newFilename);
+
+                                $entityFile->setOriginalName($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setExtension('jpg');
+                                    $entityFile->setMimetype('image/jpg');
+                                } else {
+                                    $entityFile->setMimetype($advertFile->getMimeType());
+                                    $entityFile->setExtension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setSize($advertFile->getSize());
+
+                                $entityFile->setAdvertPlan($sublicense);
+                                $entityFile->setLicense($license);
+                                $entityFile->setAdvertPlan($sublicense);
+                                $entityFile->setSorting($i + 1);
+                                $entityFile->setIsUploadedInAws(false);
+
+                                $entityFile->setTitle(isset($params['title']) ? $params['title'] : null);
+                                $entityFile->setDescription(isset($params['description']) ? $params['description'] : null);
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
                             }
-                            $entityFile->setDev6Size($advertFile->getSize());
-                            
-                            $advertFile->move(
-                                $theAccountLicenseDirector,
-                                $newFilename
-                            );
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan monitor image error <strong>" . $ex->getMessage() . "</strong>");
                         }
-                    } catch (FileException $e) {
-                        $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev6 image error <strong>" . $ex->getMessage() . "</strong>");
                     }
+
+                    // backGroundFileName
+
+                    $advertFile = $auxForm['backGroundFileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setBackGroundFileName($newFilename);
+                                $entityFile->setOriginalBackGroundName($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setBackGroundExtension('jpg');
+                                    $entityFile->setBackGroundMimetype('image/jpg');
+                                } else {
+                                    $entityFile->setBackGroundMimetype($advertFile->getMimeType());
+                                    $entityFile->setBackGroundExtension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setBackGroundSize($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan Background image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // logoFileName
+
+                    $advertFile = $auxForm['logoFileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setLogoFileName($newFilename);
+                                $entityFile->setOriginalLogoName($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setLogoExtension('jpg');
+                                    $entityFile->setLogoMimetype('image/jpg');
+                                } else {
+                                    $entityFile->setLogoMimetype($advertFile->getMimeType());
+                                    $entityFile->setLogoExtension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setLogoSize($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan Background image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // dev1FileName
+
+                    $advertFile = $auxForm['dev1FileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setDev1FileName($newFilename);
+                                $entityFile->setOriginalDev1Name($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setDev1Extension('jpg');
+                                    $entityFile->setDev1Mimetype('image/jpg');
+                                } else {
+                                    $entityFile->setDev1Mimetype($advertFile->getMimeType());
+                                    $entityFile->setDev1Extension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setDev1Size($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev1 image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // dev2FileName
+
+                    $advertFile = $auxForm['dev2FileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setDev2FileName($newFilename);
+                                $entityFile->setOriginalDev2Name($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setDev2Extension('jpg');
+                                    $entityFile->setDev2Mimetype('image/jpg');
+                                } else {
+                                    $entityFile->setDev2Mimetype($advertFile->getMimeType());
+                                    $entityFile->setDev2Extension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setDev2Size($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev2 image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // dev3FileName
+
+                    $advertFile = $auxForm['dev3FileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setDev3FileName($newFilename);
+                                $entityFile->setOriginalDev3Name($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setDev3Extension('jpg');
+                                    $entityFile->setDev3Mimetype('image/jpg');
+                                } else {
+                                    $entityFile->setDev3Mimetype($advertFile->getMimeType());
+                                    $entityFile->setDev3Extension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setDev3Size($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev3 image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // dev4FileName
+
+                    $advertFile = $auxForm['dev4FileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setDev4FileName($newFilename);
+                                $entityFile->setOriginalDev4Name($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setDev4Extension('jpg');
+                                    $entityFile->setDev4Mimetype('image/jpg');
+                                } else {
+                                    $entityFile->setDev4Mimetype($advertFile->getMimeType());
+                                    $entityFile->setDev4Extension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setDev4Size($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev4 image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // dev5FileName
+
+                    $advertFile = $auxForm['dev5FileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setDev5FileName($newFilename);
+                                $entityFile->setOriginalDev5Name($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setDev5Extension('jpg');
+                                    $entityFile->setDev5Mimetype('image/jpg');
+                                } else {
+                                    $entityFile->setDev5Mimetype($advertFile->getMimeType());
+                                    $entityFile->setDev5Extension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setDev5Size($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev5 image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    // dev6FileName
+
+                    $advertFile = $auxForm['dev6FileName']->getData();
+
+                    if ($advertFile) {
+                        $originalFilename = pathinfo($advertFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $advertFile->guessExtension();
+
+                        try {
+                            $isDirectoryReady = Util::createLicenseDirectory($this->realContainer, $license, $license->getAlLicenseUsername());
+                            $theAccountLicenseDirector = $isDirectoryReady['directory'];
+
+                            if (!isset($isDirectoryReady['result']) || $isDirectoryReady['result'] == '__KO__') {
+                                $msnError = 'An error occurred while creating your directory in server ';
+                                $this->get('session')->getFlashBag()->add('msgError', "AdPointPlan error <strong>" . $msnError . "</strong>");
+                            } else {
+                                // Archivo Monitor
+                                $entityFile->setDev6FileName($newFilename);
+                                $entityFile->setOriginalDev6Name($originalFilename);
+                                if ($advertFile && $advertFile->guessClientExtension() == 'png') {
+                                    $entityFile->setDev6Extension('jpg');
+                                    $entityFile->setDev6Mimetype('image/jpg');
+                                } else {
+                                    $entityFile->setDev6Mimetype($advertFile->getMimeType());
+                                    $entityFile->setDev6Extension($advertFile->getClientOriginalExtension());
+                                }
+                                $entityFile->setDev6Size($advertFile->getSize());
+
+                                $advertFile->move(
+                                        $theAccountLicenseDirector,
+                                        $newFilename
+                                );
+                            }
+                        } catch (\Exception $e) {
+                            $this->get('session')->getFlashBag()->add('msgError', "AdPlacePlan dev6 image error <strong>" . $ex->getMessage() . "</strong>");
+                        }
+                    }
+
+                    $em->persist($entityFile);
+                    $em->flush();
                 }
-                
-                $em->persist($entityFile);
-                $em->flush();
+
+                $this->get('session')->getFlashBag()->add('msgNotification', "AdPointPlan saved successfully!");
+
+                return $this->redirect($this->generateUrl('adpoint_adplans_list', ['id' => $license->getId()]));
+            } elseif (isset($parametersArray['adspace_sublicense']['clientsNumber'])) {
+                $entity = new AdvertisePlan();
+                $entity->setAdvertPlace($license);
+                $form = $this->createSublicenseForm($entity, $parametersArray['adspace_sublicense']['clientsNumber']);
+
+                for ($i = 0; $i < $parametersArray['adspace_sublicense']['clientsNumber']; ++$i) {
+                    $entityFile = new AdvertPlanFile();
+                    $fileForms[] = $this->createAdvertPlanFileForm($entityFile, $i)->createView();
+                }
             }
-            
-            $this->get('session')->getFlashBag()->add('msgNotification', "AdPointPlan saved successfully!");
-
-            return $this->redirect($this->generateUrl('adpoint_adplans_list', ['id' => $license->getId()]));
+//            else {
+//                dump('Se toteo esto!');
+//                die;
+//            }
         } catch (\Exception $ex) {
+//            dump($ex->getMessage() . ' ' . $ex->getTraceAsString());
+//            die;
+
             $form = $this->createSublicenseForm($sublicense, 2);
             $form->handleRequest($request);
-            
+
             $this->get('session')->getFlashBag()->add('msgError', "Advert Plan error <strong>" . $ex->getMessage() . "</strong>");
+
+            for ($i = 0; $i < $parametersArray['adspace_sublicense']['clientsNumber']; ++$i) {
+                $entityFile = new AdvertPlanFile();
+                $fileForms[] = $this->createAdvertPlanFileForm($entityFile, $i)->createView();
+            }
         }
-        
+
+        if (!isset($parametersArray['adspace_sublicense']['clientsNumber'])) {
+            $parametersArray['adspace_sublicense']['clientsNumber'] = $actualClientsNumeber;
+        }
+
+        $form = $this->createSublicenseForm($sublicense, $parametersArray['adspace_sublicense']['clientsNumber']);
+
         return $this->render('AccountLicense\Sublicense\new.html.twig', [
                     'entity' => $sublicense,
                     'form' => $form->createView(),
-                    'fileForms' => $fileForms,
+                    'clientsNumber' => $parametersArray['adspace_sublicense']['clientsNumber'],
+                    'fileForms' => array_reverse($fileForms),
+                    'showImagesForm' => true,
                     'menu' => 'accounts',
                     'isNew' => true
         ]);
@@ -1120,14 +1167,14 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
     /**
      * Displays a form to create a new AdPlacePlan entity.
-     * 
+     *
      * @Route("/{subId}/adPlanEdit", name="adpoint_adplans_edit", options={ "method_prefix" = false })
      */
     public function editSublicense(Request $request, $subId) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -1150,7 +1197,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'isNew' => true
         ]);
     }
-    
+
     /**
      * Actualiza sublicencias
      * @param Request $request
@@ -1158,7 +1205,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
      * @param type $channel
      * @param type $name
      * @return type
-     * 
+     *
      * @Route("/{subId}/adPlanCreate", name="adpoint_adplans_update", options={ "method_prefix" = false }, methods={"POST"})
      */
     public function updateSublicense(Request $request, $subId) {
@@ -1171,6 +1218,9 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         $params = $request->request->getIterator()->getArrayCopy();
 
+//        dump('Hola');
+//        die;
+
         /*
          * Encontrar la licencia segun el ID dado
          */
@@ -1179,7 +1229,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         if (!$sublicense) {
             throw $this->createAccessDeniedException('AdvertisePlan not found');
         }
-        
+
         $validCountry = true;
         $validChannelName = true;
 
@@ -1255,8 +1305,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'isNew' => false
         ));
     }
-    
-    
+
     /**
      * funcion encargada de crear un registro en la tabla LicenseDataBase
      * con nombre de base de datos usuario y password con caracteristicas especiales
@@ -1269,7 +1318,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 //        $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_CREATE);
 //        if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
 //            if ($access_control == AccessControl::SESSION_LOST) {
-//                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+//                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
 //            } elseif ($access_control == AccessControl::ACCESS_DENIED) {
 //                throw $this->createAccessDeniedException('Access Denied');
 //            }
@@ -1291,17 +1340,17 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 //        }
 //        return false;
 //    }
-    
+
     /**
      * Edits an existing AccountLicense entity.
-     * 
+     *
      * @Route("/{id}/update", name="adpoint_point_update", options={ "method_prefix" = false }, methods={"POST"})
      */
     public function update(Request $request, $id) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_EDIT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -1414,7 +1463,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'states' => $states,
         ]);
     }
-    
+
     /**
      * Creates a form to create a AccountLicense entity.
      *
@@ -1432,7 +1481,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         return $form;
     }
-    
+
     /**
      * Creates a form to edit a AccountLicense entity.
      *
@@ -1450,17 +1499,17 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         return $form;
     }
-    
+
     /**
      * Displays a form to edit an existing AccountLicense entity.
-     * 
+     *
      * @Route("/{id}/edit", name="adpoint_point_edit", options={ "method_prefix" = false })
      */
     public function edit(Request $request, $id) {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_LICENSE_EDIT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -1489,14 +1538,14 @@ class AdPointsAccountsController extends ParametersNormalizerController {
                     'menu' => 'accounts',
         ));
     }
-    
+
     /**
      * Funcion encargada de cambia el estado de una licencia
      * con el fin de activarla o desactivarla en el momento requerido
      * @param Request $request
      * @param type $id
      * @return \App\Controller\Response
-     * 
+     *
      * @Route("/{id}/changeStatus", name="adpoint_location_changeStatus", options={ "method_prefix" = false }, methods={"POST"})
      */
     public function changeStatus(Request $request, $id) {
@@ -1544,5 +1593,43 @@ class AdPointsAccountsController extends ParametersNormalizerController {
         $r->headers->set('Content-Type', 'application/json');
         return $r;
     }
-    
+
+    /**
+     * Funcion encargada de resetear el uid asociado a una licencia
+     * permitiendo que x dispositivo se loguee y tomando posecion de esta
+     * @param Request $request
+     * @param type $id
+     * @return \App\Controller\Response
+     *
+     * @Route("/{id}/changeAdvertPlanStatus", name="unlink_licenses_uid_request", options={ "method_prefix" = false }, methods={"POST"})
+     */
+    public function changeAdvertPlanStatus(Request $request, $id) {
+
+        $params = $request->request->all();
+        if (!isset($params["typeResetLogin"])) {
+            $response['msg'] = 'Parametros erroneos!';
+            $response['result'] = '__KO__';
+            return $this->respondJsonAjax($response);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $response['msg'] = 'Estado de la licencia cambiado!';
+        $response['result'] = '__OK__';
+
+        $licenseDelt = $em->find('App:AdvertisePlan', $id);
+
+        if (!$licenseDelt) {
+            $response['msg'] = 'Plan de publicidad no encontrado!';
+            $response['result'] = '__KO__';
+        } else {
+            $licenseDelt->setStatus($params["typeResetLogin"]);
+
+            $em->persist($licenseDelt);
+            $em->flush();
+        }
+
+        return $this->respondJsonAjax($response);
+    }
+
 }

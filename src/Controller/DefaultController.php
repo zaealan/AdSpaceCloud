@@ -16,27 +16,27 @@ use App\Controller\ParametersNormalizerController;
 class DefaultController extends ParametersNormalizerController {
 
     /**
-     * 
+     *
      * @param \App\Controller\Request $request
      * @return type
-     * 
+     *
      * @Route("/index", name="index", options={ "method_prefix" = false })
      */
     public function index() {
         return new Response('
             <html>
                 <body>
-                    <h1>AdSpace Cloud</h1>
+                    <h1>Space Marketing Cloud</h1>
                 </body>
             </html>
         ');
     }
-    
+
     /**
-     * 
+     *
      * @param \App\Controller\Request $request
      * @return type
-     * 
+     *
      * @Route("/login", name="adspace_login", options={ "method_prefix" = false })
      */
     public function login(Request $request) {
@@ -54,12 +54,12 @@ class DefaultController extends ParametersNormalizerController {
                     'csrf_token' => $csrfToken
         ));
     }
-    
+
     /**
      * Esta funcion se enfcarga de crear una variable de session que
      * aumentara segun la cantidad de intentos de login que tenga el
      * usuario
-     * 
+     *
      * @Route("/sessionAptemps", name="adspace_session_by_login", options={ "method_prefix" = false })
      */
     public function sessionByLoginCompany(Request $request) {
@@ -76,13 +76,13 @@ class DefaultController extends ParametersNormalizerController {
         $r->headers->set('Content-Type', 'application/html');
         return $r;
     }
-    
+
     /**
      * Esta funcion permite validar los permisos del usuario logueado y guardarlos en un arreglo en session
      * el cual se usara en toda la aplicacion para mostrar u ocultar iconos y enlaces a los modulos correctos
      *
      * @return \HttpRequest pagina de inicio de la aplicacion
-     * 
+     *
      * @Route("/accessControl", name="adspace_access_control", options={ "method_prefix" = false })
      */
     public function accessControl(Request $request) {
@@ -133,13 +133,20 @@ class DefaultController extends ParametersNormalizerController {
 
         return $this->redirect($this->generateUrl('adspace_dashboard'));
     }
-    
+
     /**
      * @return type
-     * 
+     *
      * @Route("/dashboard", name="adspace_dashboard", options={ "method_prefix" = false })
      */
     public function dashboard() {
+
+//        $diffDate = new \stdClass();
+//        $diffDate->days = 1;
+//
+//        dump($diffDate->days);
+//        die;
+
         if ('anon.' == $this->get('security.token_storage')->getToken()->getUser()) {
             return $this->redirect($this->generateUrl('adspace_logout'));
         }
@@ -148,10 +155,10 @@ class DefaultController extends ParametersNormalizerController {
                     'menu' => 'dashboard',
         ]);
     }
-    
+
     /**
      * @return Response
-     * 
+     *
      * @Route("/getSession", name="adspace_get_session", options={ "method_prefix" = false })
      */
     public function getStatusSession() {
@@ -177,5 +184,5 @@ class DefaultController extends ParametersNormalizerController {
         $r->headers->set('Content-Type', 'application/html');
         return $r;
     }
-    
+
 }

@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Module;
@@ -22,7 +21,7 @@ use App\Controller\ParametersNormalizerController;
 
 /**
  * AccountController
- * 
+ *
  * @Route("/AdPointAccount", defaults={"_locale"="en"})
  */
 class AccountController extends ParametersNormalizerController {
@@ -35,7 +34,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', ['msg' => 'Your session has expired. Please login again']));
+                return $this->redirect($this->generateUrl('level_licensor_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -158,7 +157,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -178,7 +177,7 @@ class AccountController extends ParametersNormalizerController {
 
         $validationResult = ValidatorUtil::validateThis($this->get('symfony_validator'), $typeValueArray);
 
-        $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(),false));
+        $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(), false));
         $checkAccountList = $em->getRepository('App:Account')->checkAccountExist($entity);
 
         foreach ($checkAccountList as $key => $checkAccount) {
@@ -190,26 +189,25 @@ class AccountController extends ParametersNormalizerController {
                     unset($validationResult[1][1]);
                 }
             }
-    
+
             // if (isset($checkAccount) && $checkAccount->getAcEmail() === $entity->getAcEmail()) {
             //     $validationResult[0] = false;
             //     $validationResult[1][0]['isValid'] = false;
             //     $validationResult[1][0]['message'] = 'Email already exists';
             //     if (isset($validationResult[1][1])) {
             //         unset($validationResult[1][1]);
-            //     }            
+            //     }
             // }
-    
             // if (isset($checkAccount) && $checkAccount->getAcPhoneNumber() === $entity->getAcPhoneNumber()) {
             //     $validationResult[0] = false;
             //     $validationResult[1][0]['isValid'] = false;
             //     $validationResult[1][0]['message'] = 'The phone number already exists';
             //     if (isset($validationResult[1][1])) {
             //         unset($validationResult[1][1]);
-            //     }            
+            //     }
             // }
         }
-        
+
 
         if ($form->isValid() && $validationResult[0]) {
             $entity->setAcDateCreated(new \DateTime('NOW'));
@@ -224,7 +222,7 @@ class AccountController extends ParametersNormalizerController {
                 $em->persist($entity);
                 $em->flush();
 
-                $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(),false));
+                $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(), false));
 
                 $insertId = $entity->getId();
                 $nickName = strtolower(substr(Util::replaceCharactersEspecials($entity->getAcName()), 0, 10)) . "$insertId";
@@ -290,12 +288,12 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
         }
-        
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = new Account();
@@ -321,7 +319,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -350,7 +348,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_EDIT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -406,7 +404,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_EDIT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Your session has expired. Please login again')));
+                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -429,7 +427,7 @@ class AccountController extends ParametersNormalizerController {
 
         $validationResult = ValidatorUtil::validateThis($this->get('symfony_validator'), $typeValueArray);
 
-        $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(),false));
+        $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(), false));
         $checkAccountList = $em->getRepository('App:Account')->checkAccountExist($entity);
 
         foreach ($checkAccountList as $key => $checkAccount) {
@@ -441,26 +439,26 @@ class AccountController extends ParametersNormalizerController {
                     unset($validationResult[1][1]);
                 }
             }
-    
+
             if (isset($checkAccount) && $checkAccount->getAcEmail() === $entity->getAcEmail() && $checkAccount->getId() !== $entity->getId()) {
                 $validationResult[0] = false;
                 $validationResult[1][0]['isValid'] = false;
                 $validationResult[1][0]['message'] = 'Email already exists';
                 if (isset($validationResult[1][1])) {
                     unset($validationResult[1][1]);
-                }            
+                }
             }
-    
+
             if (isset($checkAccount) && $checkAccount->getAcPhoneNumber() === $entity->getAcPhoneNumber() && $checkAccount->getId() !== $entity->getId()) {
                 $validationResult[0] = false;
                 $validationResult[1][0]['isValid'] = false;
                 $validationResult[1][0]['message'] = 'The phone number already exists';
                 if (isset($validationResult[1][1])) {
                     unset($validationResult[1][1]);
-                }            
+                }
             }
         }
-        
+
 
         if ($editForm->isValid() && $validationResult[0]) {
             $params = $request->request->getIterator()->getArrayCopy();
@@ -472,7 +470,7 @@ class AccountController extends ParametersNormalizerController {
             } else {
                 $notificationMessage = $resutlArray['message'];
             }
-            
+
 //            dump($notificationMessage);
 //            die;
         } else {
