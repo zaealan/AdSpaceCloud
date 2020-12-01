@@ -264,7 +264,7 @@ class AccountRepository extends EntityRepository {
         if (isset($data->ac_suit_po_box) && $data->ac_suit_po_box != '') {
             $entity->setAcSuitPoBox($data->ac_suit_po_box);
         }
-        
+
         if (isset($data->address_street) && $data->address_street != '') {
             $entity->setAcAddress($data->address_street);
         }
@@ -388,6 +388,27 @@ class AccountRepository extends EntityRepository {
         $theArrayResult = $query->getResult();
 
         return $theArrayResult;
+    }
+
+    /**
+     * Entrega los datos de la cuenta
+     * @author Felipe Arango <aarango@uva3.com> 29/07/2016
+     * @param type $entity
+     * @return string
+     */
+    public function checkAccountExist($entity) {
+        $em = $this->getEntityManager();
+
+        $dql = "SELECT ac FROM App:Account ac WHERE ac.acEmail = :EMAIL OR LOWER(ac.acName) = LOWER(:NAME_ACCOUNT) OR ac.acPhoneNumber = :PHONE ";
+
+        $query = $em->createQuery($dql);
+        $query->setParameter("NAME_ACCOUNT", $entity->getAcName());
+        $query->setParameter("PHONE", $entity->getAcPhoneNumber());
+        $query->setParameter("EMAIL", $entity->getAcEmail());
+
+        $result = $query->getResult();
+
+        return $result;
     }
 
 }

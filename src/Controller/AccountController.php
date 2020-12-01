@@ -34,7 +34,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
+                return $this->redirect($this->generateUrl('adspace_login', ['msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente']));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -68,7 +68,7 @@ class AccountController extends ParametersNormalizerController {
 
         $accountLicense = new Account();
         $form = $this->createForm(SearchAccountType::class, $accountLicense, [
-            'action' => $this->generateUrl('account'),
+            'action' => $this->generateUrl('adpoint_accounts'),
             'selected_choice' => $statusSearch,
         ]);
 
@@ -81,7 +81,7 @@ class AccountController extends ParametersNormalizerController {
             $parameters = $request->request->get('levellicensor_levellicensorbundle_searchaccount');
             $search = Paginator::filterParameters($indexSearch, $parameters, Paginator::REQUEST_TYPE_ARRAY);
 
-            return $this->redirect($this->generateUrl('account', $search));
+            return $this->redirect($this->generateUrl('adpoint_accounts', $search));
         } elseif ($request->getMethod() == 'GET') {
             /* Capturamos y filtramos los parametros de busqueda */
             $search = Paginator::filterParameters($indexSearch, $request, Paginator::REQUEST_TYPE_REQUEST);
@@ -157,7 +157,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -171,16 +171,17 @@ class AccountController extends ParametersNormalizerController {
 
         $em = $this->getDoctrine()->getManager();
 
-        $typeValueArray = [];
-        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Client Full Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcContactName()];
-        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Account Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcName()];
-
-        $validationResult = ValidatorUtil::validateThis($this->get('symfony_validator'), $typeValueArray);
+//        $typeValueArray = [];
+//        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Client Full Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcContactName()];
+//        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Account Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcName()];
+//
+//        $validationResult = ValidatorUtil::validateThis($this->get('symfony_validator'), $typeValueArray);
 
         $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(), false));
         $checkAccountList = $em->getRepository('App:Account')->checkAccountExist($entity);
 
         foreach ($checkAccountList as $key => $checkAccount) {
+            $validationResult = [];
             if (isset($checkAccount) && strtolower($checkAccount->getAcName()) === strtolower($entity->getAcName())) {
                 $validationResult[0] = false;
                 $validationResult[1][0]['isValid'] = false;
@@ -189,7 +190,6 @@ class AccountController extends ParametersNormalizerController {
                     unset($validationResult[1][1]);
                 }
             }
-
             // if (isset($checkAccount) && $checkAccount->getAcEmail() === $entity->getAcEmail()) {
             //     $validationResult[0] = false;
             //     $validationResult[1][0]['isValid'] = false;
@@ -209,7 +209,7 @@ class AccountController extends ParametersNormalizerController {
         }
 
 
-        if ($form->isValid() && $validationResult[0]) {
+        if ($form->isValid()) {
             $entity->setAcDateCreated(new \DateTime('NOW'));
             $entity->setAcUser($userSession);
             $em = $this->getDoctrine()->getManager();
@@ -231,7 +231,7 @@ class AccountController extends ParametersNormalizerController {
                 $em->persist($entity);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('account'));
+                return $this->redirect($this->generateUrl('adpoint_accounts'));
             } else {
                 $notificationMessage = $resutlArray['message'];
                 $this->get('session')->getFlashBag()->add('msgError', $notificationMessage);
@@ -239,13 +239,13 @@ class AccountController extends ParametersNormalizerController {
         } else {
             $notificationMessage = (string) $form->getErrors(true, false);
 
-            if (!$validationResult[0]) {
-                foreach ($validationResult[1] as $value) {
-                    if (!$value['isValid']) {
-                        $this->get('session')->getFlashBag()->add('msgError', sprintf($value['message'], $value['field']));
-                    }
-                }
-            }
+//            if (!$validationResult[0]) {
+//                foreach ($validationResult[1] as $value) {
+//                    if (!$value['isValid']) {
+//                        $this->get('session')->getFlashBag()->add('msgError', sprintf($value['message'], $value['field']));
+//                    }
+//                }
+//            }
         }
 
         $countries = $em->getRepository('App:Country')->findAll();
@@ -288,7 +288,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_CREATE, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -319,7 +319,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -404,7 +404,7 @@ class AccountController extends ParametersNormalizerController {
         $access_control = $this->get('access_control')->checkAccessModule(Module::MODULE_LICENSOR_ACCOUNT_EDIT, $request);
         if ($access_control !== AccessControl::ACCESS_GRANTED && false === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')) {
             if ($access_control == AccessControl::SESSION_LOST) {
-                return $this->redirect($this->generateUrl('level_licensor_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
+                return $this->redirect($this->generateUrl('adspace_login', array('msg' => 'Su sesion ha expirado, porfavor ingrese nuevamente')));
             } elseif ($access_control == AccessControl::ACCESS_DENIED) {
                 throw $this->createAccessDeniedException('Access Denied');
             }
@@ -421,16 +421,17 @@ class AccountController extends ParametersNormalizerController {
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
-        $typeValueArray = [];
-        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Client Full Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcContactName()];
-        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Account Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcName()];
-
-        $validationResult = ValidatorUtil::validateThis($this->get('symfony_validator'), $typeValueArray);
+//        $typeValueArray = [];
+//        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Client Full Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcContactName()];
+//        $typeValueArray[] = ['type' => 'regex', 'pattern' => "/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/", 'field' => 'Account Name', 'message' => 'Allowed numbers and letters only in <strong>%s</strong> field!', 'data' => $entity->getAcName()];
+//
+//        $validationResult = ValidatorUtil::validateThis($this->get('symfony_validator'), $typeValueArray);
 
         $entity->setAcName(Util::replaceCharactersEspecials($entity->getAcName(), false));
         $checkAccountList = $em->getRepository('App:Account')->checkAccountExist($entity);
 
         foreach ($checkAccountList as $key => $checkAccount) {
+            $validationResult = [];
             if (isset($checkAccount) && strtolower($checkAccount->getAcName()) === strtolower($entity->getAcName()) && $checkAccount->getId() !== $entity->getId()) {
                 $validationResult[0] = false;
                 $validationResult[1][0]['isValid'] = false;
@@ -440,33 +441,33 @@ class AccountController extends ParametersNormalizerController {
                 }
             }
 
-            if (isset($checkAccount) && $checkAccount->getAcEmail() === $entity->getAcEmail() && $checkAccount->getId() !== $entity->getId()) {
-                $validationResult[0] = false;
-                $validationResult[1][0]['isValid'] = false;
-                $validationResult[1][0]['message'] = 'Email already exists';
-                if (isset($validationResult[1][1])) {
-                    unset($validationResult[1][1]);
-                }
-            }
-
-            if (isset($checkAccount) && $checkAccount->getAcPhoneNumber() === $entity->getAcPhoneNumber() && $checkAccount->getId() !== $entity->getId()) {
-                $validationResult[0] = false;
-                $validationResult[1][0]['isValid'] = false;
-                $validationResult[1][0]['message'] = 'The phone number already exists';
-                if (isset($validationResult[1][1])) {
-                    unset($validationResult[1][1]);
-                }
-            }
+//            if (isset($checkAccount) && $checkAccount->getAcEmail() === $entity->getAcEmail() && $checkAccount->getId() !== $entity->getId()) {
+//                $validationResult[0] = false;
+//                $validationResult[1][0]['isValid'] = false;
+//                $validationResult[1][0]['message'] = 'Email already exists';
+//                if (isset($validationResult[1][1])) {
+//                    unset($validationResult[1][1]);
+//                }
+//            }
+//
+//            if (isset($checkAccount) && $checkAccount->getAcPhoneNumber() === $entity->getAcPhoneNumber() && $checkAccount->getId() !== $entity->getId()) {
+//                $validationResult[0] = false;
+//                $validationResult[1][0]['isValid'] = false;
+//                $validationResult[1][0]['message'] = 'The phone number already exists';
+//                if (isset($validationResult[1][1])) {
+//                    unset($validationResult[1][1]);
+//                }
+//            }
         }
 
 
-        if ($editForm->isValid() && $validationResult[0]) {
+        if ($editForm->isValid()) {
             $params = $request->request->getIterator()->getArrayCopy();
 //            $resutlArray = Util::validateAndSaveCityZipcodeBlock($this->realContainer, $em, $params, $entity);
             $resutlArray = Util::validateAndSaveAddressAutoComplete($this->realContainer, $em, $params, $entity);
             if ($resutlArray['status']) {
                 $em->flush();
-                return $this->redirect($this->generateUrl('account'));
+                return $this->redirect($this->generateUrl('adpoint_accounts'));
             } else {
                 $notificationMessage = $resutlArray['message'];
             }
@@ -476,13 +477,13 @@ class AccountController extends ParametersNormalizerController {
         } else {
             $notificationMessage = (string) $editForm->getErrors(true, false);
 
-            if (!$validationResult[0]) {
-                foreach ($validationResult[1] as $value) {
-                    if (!$value['isValid']) {
-                        $this->get('session')->getFlashBag()->add('msgError', sprintf($value['message'], $value['field']));
-                    }
-                }
-            }
+//            if (!$validationResult[0]) {
+//                foreach ($validationResult[1] as $value) {
+//                    if (!$value['isValid']) {
+//                        $this->get('session')->getFlashBag()->add('msgError', sprintf($value['message'], $value['field']));
+//                    }
+//                }
+//            }
         }
 
         $countries = $em->getRepository('App:Country')->findAll();
