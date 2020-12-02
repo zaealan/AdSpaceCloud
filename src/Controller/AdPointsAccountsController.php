@@ -573,7 +573,7 @@ class AdPointsAccountsController extends ParametersNormalizerController {
 
         for ($i = 0; $i < $this->realContainer->getParameter('default_clients_per_plan'); ++$i) {
             $entityFile = new AdvertPlanFile();
-            $fileForms[] = $this->createAdvertPlanFileForm($entityFile, ($i + 2))->createView();
+            $fileForms[] = $this->createAdvertPlanFileForm($entityFile, ($i))->createView();
         }
 
         return $this->render('AccountLicense\Sublicense\new.html.twig', [
