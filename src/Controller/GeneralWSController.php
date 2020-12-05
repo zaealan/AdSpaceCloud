@@ -64,33 +64,29 @@ class GeneralWSController extends ApiController {
 
         $licenseToSync = $licenseToSync[0];
 
-        if ($licenseToSync->getDeviceUid() != $deviceId && ($licenseToSync->getDeviceUid() != null || $licenseToSync->getDeviceUid() != '') && ($deviceId != null || $deviceId != '')) {
-            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
-                            ->respondWithError('Place logued with other active device!'
-                                    , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
-        }
-
-        if ($licenseToSync->getAndroidDeviceUid() != $androidDeviceId && ($licenseToSync->getAndroidDeviceUid() != null || $licenseToSync->getAndroidDeviceUid() != '') && ($androidDeviceId != null || $androidDeviceId != '')) {
-            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
-                            ->respondWithError('Place logued with other active tablet device!'
-                                    , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
-        }
-
-        $licenseSuspect = $em->getRepository('App:AccountLicense')->findBy(['deviceUid' => $deviceId]);
-
-        if (isset($licenseSuspect[0]) && $licenseSuspect[0]->getId() != $licenseToSync->getId()) {
-            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
-                            ->respondWithError('Device logued with other active AdvertPlace!'
-                                    , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
-        }
-
-        if ($deviceId) {
-            $licenseToSync->setDeviceUid($deviceId);
-        }
-
-        if ($androidDeviceId) {
-            $licenseToSync->setAndroidDeviceUid($androidDeviceId);
-        }
+//        if ($licenseToSync->getDeviceUid() != $deviceId && ($licenseToSync->getDeviceUid() != null || $licenseToSync->getDeviceUid() != '') && ($deviceId != null || $deviceId != '')) {
+//            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
+//                            ->respondWithError('Place logued with other active device!'
+//                                    , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
+//        }
+//        if ($licenseToSync->getAndroidDeviceUid() != $androidDeviceId && ($licenseToSync->getAndroidDeviceUid() != null || $licenseToSync->getAndroidDeviceUid() != '') && ($androidDeviceId != null || $androidDeviceId != '')) {
+//            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
+//                            ->respondWithError('Place logued with other active tablet device!'
+//                                    , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
+//        }
+//        $licenseSuspect = $em->getRepository('App:AccountLicense')->findBy(['deviceUid' => $deviceId]);
+//        if (isset($licenseSuspect[0]) && $licenseSuspect[0]->getId() != $licenseToSync->getId()) {
+//            return $this->setStatusCode(WebService::HTTP_CODE_FORBIDDEN)
+//                            ->respondWithError('Device logued with other active AdvertPlace!'
+//                                    , WebService::CODE_UNAUTHORIZED, $this->getMeta($request));
+//        }
+//        if ($deviceId) {
+//            $licenseToSync->setDeviceUid($deviceId);
+//        }
+//
+//        if ($androidDeviceId) {
+//            $licenseToSync->setAndroidDeviceUid($androidDeviceId);
+//        }
 
         $em->persist($licenseToSync);
         $em->flush();
@@ -224,7 +220,6 @@ class GeneralWSController extends ApiController {
      * @Route("/createNewContactDataRecordToAdvertPlan", name="adcws_new_plan_contact_record", options={ "method_prefix" = false }, methods={"POST"})
      */
     public function createNewContactDataRecordToAdvertPlan(Request $request) {
-
 
         if (0 !== strpos($request->headers->get('Content-Type'), WebService::CONTENT_TYPE_STRUCTURE)) {
             return $this->errorWrongArgs('Wrong Content', WebService::CODE_WRONG_ARGUMENTS);
