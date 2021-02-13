@@ -4,11 +4,11 @@
     {% block content %}
         <div class="row numpad">
             <div class="col-lg-12">
-                <h1>Licenses List By Account ({{account|title}})</h1>
+                <h1>Lista De Puntos De Publicidad De Cuenta ({{account|title}})</h1>
                 <ol class="breadcrumb">
-                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
-                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Accounts List</a></li>
-                    <li class="active"><i class="icon-file-alt"></i> Licenses By Account</li>
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Panel Principal</a></li>
+                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Listado De Cuentas</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Lista De Puntos De Publicidad De Cuenta</li>
                 </ol>
                 {% include 'Default/messageNotification.html.twig'%}
             </div>
@@ -24,7 +24,7 @@
                             {{ form_widget(form.alRestaurantName,{'attr':{'placeholder':'Restaurant Name', 'class':'form-control title-case pull-left input-form', 'value':search.alRestaurantName|default('')} }) }}
                             {{ form_widget(form.deviceUid,{'attr':{'placeholder':'UID', 'class':'form-control pull-left input-form-short', 'value':search.deviceUid|default('')} }) }}
                         </div>
-                        <button class="btn btn-primary pull-right search-btn" type="submit">Search</button>
+                        <button class="btn btn-primary pull-right search-btn" type="submit">Buscar</button>
                     </div>
                     {{ form_rest(form._token) }}
                 </form>
@@ -42,12 +42,12 @@
                         <tr>
                             {#                            {% set itemsPage = '&itemsPerPage='~paginator.itemsPerPage %}#}
                             {% set itemsPage = '&itemsPerPage='~itemsPerPage %}
-                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_contac_name': orderBy.order_by_contac_name.order }) }}{{ params~itemsPage }}">Contact Name</a>&nbsp; {{ orderBy.order_by_contac_name.htmlImage|default('')|raw }}</th>
-                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_restaurant_name': orderBy.order_by_restaurant_name.order }) }}{{ params~itemsPage }}">Restaurant Name</a>&nbsp; {{ orderBy.order_by_restaurant_name.htmlImage|default('')|raw }}</th>
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_contac_name': orderBy.order_by_contac_name.order }) }}{{ params~itemsPage }}">Contacto</a>&nbsp; {{ orderBy.order_by_contac_name.htmlImage|default('')|raw }}</th>
+                            <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_restaurant_name': orderBy.order_by_restaurant_name.order }) }}{{ params~itemsPage }}">Nombre Totem</a>&nbsp; {{ orderBy.order_by_restaurant_name.htmlImage|default('')|raw }}</th>
                             <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_license_email': orderBy.order_by_license_email.order }) }}{{ params~itemsPage }}">Email <strong>/</strong> Numero Telefonico</a>&nbsp; {{ orderBy.order_by_license_email.htmlImage|default('')|raw }}</th>
                             <th style="cursor: default;">Direccion <strong>/</strong> Suit PO Box</th>
                             <th><a style="color: whitesmoke;" href="{{ path('adpoint_points_list', { 'accountId': account.id, 'order_by_nickname': orderBy.order_by_nickname.order }) }}{{ params~itemsPage }}"> Nickname</a>&nbsp; {{ orderBy.order_by_nickname.htmlImage|default('')|raw }}</th>
-                            <th style="cursor: default;">Actions</th>
+                            <th style="cursor: default;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
