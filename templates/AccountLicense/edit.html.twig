@@ -36,15 +36,15 @@
                         {% endif %}
 
                         <div class="form-group">
-                            <label>License Contact Name</label><em>*</em>
-                            {{form_widget(form.alContacName,{ 'attr': {'class': 'form-control','placeholder':'Contact Name', 'maxlength':'30'} })}}
+                            <label>Contacto</label><em>*</em>
+                            {{form_widget(form.alContacName,{ 'attr': {'class': 'form-control','placeholder':'Contacto', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
                                 {{form_errors(form.alContacName)}}
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Restaurant Name</label><em>*</em>
-                            {{form_widget(form.alRestaurantName,{ 'attr': {'class': 'form-control','placeholder':'Restaurant Name', 'maxlength':'30'} })}}
+                            <label>Nombre Totem</label><em>*</em>
+                            {{form_widget(form.alRestaurantName,{ 'attr': {'class': 'form-control','placeholder':'Nombre Totem', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
                                 {{form_errors(form.alRestaurantName)}}
                             </div>
@@ -53,7 +53,7 @@
 
                         <div class="col-xs-6">#}
                         <div class="form-group">
-                            <label>Contact E-Mail</label><em>*</em>
+                            <label>E-Mail</label><em>*</em>
                             {{form_widget(form.alLicenseEmail,{ 'attr': {'class': 'form-control','placeholder':'contact@mailer.com', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
                                 {{form_errors(form.alLicenseEmail)}}
