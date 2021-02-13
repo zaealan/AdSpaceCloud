@@ -30,11 +30,11 @@ class SearchDatabasesType extends AbstractType {
         $this->status = $options['selected_choice'];
         $this->account = $options['selected_choice_companies'];
 
-        $choices = ['' => 'All Licenses',
+        $choices = ['' => 'Todos',
             AccountLicense::LICENSE_STATUS_ACTIVE => 'Activo',
             AccountLicense::LICENSE_STATUS_INACTIVE => 'Inactivo',
-            3 => 'Con Monitor',
-            4 => 'Sin Monitor',
+            3 => 'Con Tableta',
+            4 => 'Sin Tableta',
         ];
 
         $choices = Util::choiceFlip($choices);
