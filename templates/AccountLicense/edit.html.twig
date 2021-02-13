@@ -66,7 +66,7 @@
                                 {{form_errors(form.alPhoneNumber)}}
                             </div>
                         </div>
-                        <div style="display: inline-block; width: 100%; margin-bottom: 2%; margin-top: 4%;" >
+                        {# <div style="display: inline-block; width: 100%; margin-bottom: 2%; margin-top: 4%;" >
                             <div style="display: inline-block; width: 45%;" id="lightDivX">
                                 <label style="margin-right: 2%">Is LEVEL Lite License?  </label>
                                 {{form_widget(form.isLevelLight,{ 'attr': {'class':'megaPopX', 'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
@@ -83,7 +83,7 @@
                             </div>
                         </div>
 
-                        {#<div id="regularLicenseDiv">
+                        <div id="regularLicenseDiv">
                             <div class="form-group" style="margin-top: 5%;">
                                 <label style="margin-right: 2%">License Without Expiration?  </label>
                                 {{form_widget(form.isPlusLicense,{ 'attr': {'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
