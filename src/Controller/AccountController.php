@@ -384,7 +384,7 @@ class AccountController extends ParametersNormalizerController {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Account $entity) {
+    private function createEditForm(AccountLicense $entity) {
         $form = $this->createForm(AccountType::class, $entity, [
             'action' => $this->generateUrl('adpoint_account_update', ['id' => $entity->getId()]),
             'method' => 'POST'
