@@ -64,7 +64,7 @@
                                 <td>{{ entity[0].alLicenseUsername }}</td>
                                 <td>
                                     {% if constant('App\\Entity\\Module::MODULE_LICENSOR_LICENSE_EDIT') in app.session.get('activeModules') or is_granted('ROLE_SUPER_ADMIN') %}
-                                        <a class="editLicense" href="{{path('adpoint_account_edit', { 'id': entity[0].id })}}">
+                                        <a class="editLicense" href="{{path('adpoint_point_edit', { 'id': entity[0].id })}}">
                                             <img src="{{ asset('/images/editts.png') }}" alt="Edit AdPoint" title="Edit AdPoint"/>
                                         </a>
                                     {% endif %}

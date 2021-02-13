@@ -356,7 +356,7 @@ class AccountController extends ParametersNormalizerController {
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('App:AccountLicense')->find($id);
+        $entity = $em->getRepository('App:Account')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Account entity.');
@@ -384,7 +384,7 @@ class AccountController extends ParametersNormalizerController {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(AccountLicense $entity) {
+    private function createEditForm(Account $entity) {
         $form = $this->createForm(AccountType::class, $entity, [
             'action' => $this->generateUrl('adpoint_account_update', ['id' => $entity->getId()]),
             'method' => 'POST'
