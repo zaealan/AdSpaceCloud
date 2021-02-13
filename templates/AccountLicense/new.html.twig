@@ -1,20 +1,20 @@
 {% extends 'Default/main.html.twig' %}
 {#{% use 'Default/locationsBlockForm.html.twig' %}#}
 {% use 'Default/locationsAddresAutocompleteForm.html.twig' %}
-{% block title 'New Advertise Place'%}
+{% block title 'Nevo Punto De Publicidad'%}
     {% block content %}
         <div class="row numpad">
             <div class="col-lg-12">
-                <h1>Advertise Place Creation</h1>
+                <h1>Nevo Punto De Publicidad</h1>
                 <ol class="breadcrumb">
-                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
-                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Account List</a></li>
-                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Advertise Places List</a></li>
-                    <li class="active"><i class="icon-file-alt"></i> Advertise Place Creation</li>
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Panel</a></li>
+                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Listado De Cuentas</a></li>
+                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Listado De Puntos De Publicidad</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Advertise Place CreatNevo Punto De Publicidad</li>
                 </ol>
                 {% include 'Default/messageNotification.html.twig'%}
             </div>
-                           
+
             <div class="col-lg-12" >
                 <form action="{{path('adpoint_point_create')}}" id="create_license" method="POST">
                     <div class="col-xs-12">
@@ -22,62 +22,62 @@
                             {% if entity.AlAccountLicense is defined and entity.AlAccountLicense is not empty %}
                                 <label>Create New Advertise Place For: </label>
                                 <label>{{ entity.AlAccountLicense|title }}</label>
-                                <input type="hidden" value="{{ entity.AlAccountLicense.id }}" 
+                                <input type="hidden" value="{{ entity.AlAccountLicense.id }}"
                                        name="levellicensor_levellicensorbundle_accountlicense[alAccountLicense]" />
                             {% else %}
-                                <label>Create New Advertise Place For</label><em>*</em>
-                                {{form_widget(form.alAccountLicense,{ 'attr': {'class': 'form-control','placeholder':'Contact Name', 'maxlength':'30'} })}}
+                                <label>Crear Nuevo Punto De Publicidad Para</label><em>*</em>
+                                {{form_widget(form.alAccountLicense,{ 'attr': {'class': 'form-control','placeholder':'Contacto', 'maxlength':'30'} })}}
                             {% endif %}
                             <div class="help-block alert-danger">
                                 {{form_errors(form.alAccountLicense)}}
-                            </div>  
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-6">
                         <div class="form-group">
-                            <label>Contact Name</label><em>*</em>
-                            {{form_widget(form.alContacName,{ 'attr': {'class': 'form-control','placeholder':'Contact Name', 'maxlength':'30'} })}}
+                            <label>Contacto</label><em>*</em>
+                            {{form_widget(form.alContacName,{ 'attr': {'class': 'form-control','placeholder':'Contacto', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alContacName)}}     
-                            </div>  
+                                {{form_errors(form.alContacName)}}
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Place Name</label><em>*</em>
-                            {{form_widget(form.alRestaurantName,{ 'attr': {'class': 'form-control','placeholder':'Place Name', 'maxlength':'30'} })}}
+                            <label>Nombre Totem</label><em>*</em>
+                            {{form_widget(form.alRestaurantName,{ 'attr': {'class': 'form-control','placeholder':'Nombre Totem', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
                                 {{form_errors(form.alRestaurantName)}}
-                            </div>  
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Contact E-Mail</label><em>*</em>
+                            <label>E-Mail De Contacto</label><em>*</em>
                             {{form_widget(form.alLicenseEmail,{ 'attr': {'class': 'form-control','placeholder':'contact@mailer.com', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alLicenseEmail)}}     
+                                {{form_errors(form.alLicenseEmail)}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Numero Telefonico</label><em>*</em>
                             {{form_widget(form.alPhoneNumber,{ 'attr': {'class': 'form-control phone_number','placeholder':'(000) 000-0000', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alPhoneNumber)}}     
-                            </div>  
+                                {{form_errors(form.alPhoneNumber)}}
+                            </div>
                         </div>
                         {#<div style="display: inline-block; width: 100%; margin-bottom: 2%; margin-top: 4%;" >
                             <div style="display: inline-block; width: 45%;" id="lightDivX">
                                 <label style="margin-right: 2%">Is LEVEL Lite License?  </label>
                                 {{form_widget(form.isLevelLight,{ 'attr': {'class':'megaPopX', 'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.isLevelLight)}}     
-                                </div>  
+                                    {{form_errors(form.isLevelLight)}}
+                                </div>
                             </div>
                         </div>#}
-                        <div class="form-group" id="isCallCenter" style="margin-top: 5%; display: none;">
+                        {#<div class="form-group" id="isCallCenter" style="margin-top: 5%; display: none;">
                             <label style="margin-right: 2%">Is Call Center?  </label>
                             {{form_widget(form.isCallCenter,{ 'attr': {'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.isCallCenter)}}     
-                            </div>  
-                        </div>
+                                {{form_errors(form.isCallCenter)}}
+                            </div>
+                        </div>#}
                         {#<div id="regularLicenseDiv">
                             <div class="form-group">
                                 <hr>
@@ -86,20 +86,20 @@
                                     <tr>
                                         <td>Server</td>
                                         <td><label licensePrice="1"></label></td>
-                                    </tr>    
+                                    </tr>
                                     <tr>
                                         <td>Client</td>
                                         <td><label clientPrice="1"></label></td>
-                                    </tr>    
+                                    </tr>
                                     <tr>
                                         <td><label>Total Pay</label></td>
                                         <td><label totalPrice="1"></label></td>
-                                    </tr>    
+                                    </tr>
                                 </table>
                             </div>
                             <div class="form-group">
                                 <label>Qty Client</label><em>*</em>
-                                <input type="number" name="hdPrices[alCantDevices]" 
+                                <input type="number" name="hdPrices[alCantDevices]"
                                        id="hdPrices_alCantDevices"
                                        step="1" max="100" min="0" value="0"/>
                                 <input id="servPrice" type='hidden' name='hdPrices[server]' value=''/>
@@ -109,8 +109,8 @@
                                 <label style="margin-right: 2%">License Without Expiration?  </label>
                                 {{form_widget(form.isPlusLicense,{ 'attr': {'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.isPlusLicense)}}     
-                                </div>  
+                                    {{form_errors(form.isPlusLicense)}}
+                                </div>
                             </div>
                             <div class="form-group" style="margin-top: 5%;">
                                 <div style="display: inline-block; width: 100%; margin-bottom: 2%;" >
@@ -118,8 +118,8 @@
                                         <label style="margin-right: 2%">License With LEVEL Zero?  </label>
                                         {{form_widget(form.hasLevelZero,{ 'attr': {'class':'megaPop', 'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                                         <div class="help-block alert-danger">
-                                            {{form_errors(form.hasLevelZero)}}     
-                                        </div>  
+                                            {{form_errors(form.hasLevelZero)}}
+                                        </div>
                                     </div>
                                     <div style="display: inline-block; width: 53%;" id="notify_msg"></div>
                                 </div>
@@ -128,7 +128,7 @@
                                         <div style="display: inline-block; width: 43%;"><label>LEVEL Zero %</label><em>*</em></div>
                                         <div style="display: inline-block; width: 45%;">{{ form_widget(form.levelZeroPercentage, { 'attr': {'class':'form-control is-digit', 'style': 'width: 58%;', 'placeholder':'0',  'maxlength':'4', 'min':'1', 'max':'4', 'value' : 0} }) }}
                                             <div class="help-block alert-danger">
-                                                {{form_errors(form.levelZeroPercentage) }}     
+                                                {{form_errors(form.levelZeroPercentage) }}
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +138,7 @@
                                         <div style="display: inline-block; width: 62%;"><label>LEVEL Zero Gateway %</label><em>*</em></div>
                                         <div style="display: inline-block; width: 35%;">{{ form_widget(form.levelZeroGatewayPercentage, { 'attr': {'class':'form-control is-digit', 'style': 'width: 58%;', 'placeholder':'0',   'maxlength':'4', 'min':'1', 'max':'4', 'value' : 0} }) }}
                                             <div class="help-block alert-danger">
-                                                {{form_errors(form.levelZeroGatewayPercentage) }}     
+                                                {{form_errors(form.levelZeroGatewayPercentage) }}
                                             </div>
                                         </div>
                                     </div>
@@ -153,15 +153,15 @@
                             <label>Suit Po Box</label>
                             {{form_widget(form.alSuitPoBox,{ 'attr': {'class': 'form-control','placeholder':'Suit PO Box', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alSuitPoBox)}}     
+                                {{form_errors(form.alSuitPoBox)}}
                             </div>
                         </div>
                         {#<div class="form-group">
                             <label>Address</label><em>*</em>
                             {{form_widget(form.alAddres,{ 'attr': {'class': 'form-control','placeholder':'Address', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alAddres)}}     
-                            </div>  
+                                {{form_errors(form.alAddres)}}
+                            </div>
                         </div>#}
 
                         {#{% block locationsBlock %}
@@ -175,13 +175,13 @@
                     {{form_widget(form._token)}}
 
                     <div class="form-group" style="margin-top: 30px;">
-                        <button class="btn btn-primary pull-right save-btn" type="button" style="margin-top: 20px;">Save</button>
+                        <button class="btn btn-primary pull-right save-btn" type="button" style="margin-top: 20px;">Crear</button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="load_image">
-            <p>Please Wait</p>
+            <p>Porfavor Espere</p>
             <img src="{{ asset('/images/ajax-loader.gif') }}" />
         </div>
         <div class="screen">
@@ -195,131 +195,131 @@
     {% block scripts %}
 
         $('.closex1').click(function() {
-            $('#instantMsgAlert').fadeOut('slow');
+        $('#instantMsgAlert').fadeOut('slow');
         });
-        
-        var isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
-        
-        $('#lightDiv').on('click', '.toggle', function () {
-            isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
 
-            if (isLightSyncVal && !$('#regularLicenseDiv').is(':visible')) {
-                $('#regularLicenseDiv').fadeIn("slow");
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
-            } else {
-                if (!isLightSyncVal && $('#regularLicenseDiv').is(':visible')) {
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
-                    $('#regularLicenseDiv').fadeOut("slow");
-                }
-            }
+        var isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
+
+        $('#lightDiv').on('click', '.toggle', function () {
+        isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
+
+        if (isLightSyncVal && !$('#regularLicenseDiv').is(':visible')) {
+        $('#regularLicenseDiv').fadeIn("slow");
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
+        } else {
+        if (!isLightSyncVal && $('#regularLicenseDiv').is(':visible')) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
+        $('#regularLicenseDiv').fadeOut("slow");
+        }
+        }
         });
-        
+
         $('.save-btn').click(function() {
-            $('#create_license').submit();
-        }); 
-        
+        $('#create_license').submit();
+        });
+
         //$('.save-btn').click(function() {
-        //    event.preventDefault(); 
+        //    event.preventDefault();
         //    var realCity = $('#locality').val();
         //    if(empty_fields == 0 && realCity != null && realCity != '') {
         //    if(empty_fields == 0 && realCity != null && realCity != '') {
         //        $('.screen').css({ opacity: 0.7, 'width':$(document).width(),'height':$(document).height()});
         //        $('.load_image').css({'display': 'block'});
-        //                        
+        //
         //        $("#servPrice").val(serverPrice);
         //        $("#cliePrice").val(clientPrice);
-        //        
+        //
         //        $('#create_license').submit();
         //    } else if (realCity == '' || realCity == null) {
         //        $('#msgInstant').text('Please select a valid address in the autocomplete filed!');
         //        $('#instantMsgAlert').fadeIn('slow');
         //    }
         //});
-        
+
         $('#hdPrices_alCantDevices')
         .change(function() {
-            calculatePriceLicense(this);
+        calculatePriceLicense(this);
         })
         .keydown(function(evn) {
-            var result = testDigit(this, evn, 3, [9]);
-            return result;
+        var result = testDigit(this, evn, 3, [9]);
+        return result;
         })
         .keyup(function() {
-            var txtVal = $(this).val();
-            if(txtVal > 100){
-                $(this).val(txtVal.substring((txtVal.length-1), -1));
-                return false;
-            }
-            calculatePriceLicense(this);
+        var txtVal = $(this).val();
+        if(txtVal > 100){
+        $(this).val(txtVal.substring((txtVal.length-1), -1));
+        return false;
+        }
+        calculatePriceLicense(this);
         });
-        
+
         $('[licensePrice=1]').html("$ "+serverPrice.toFixed(2)+" USD");
         $('[clientPrice=1]').html("$ 0.00 USD");
         $('[totalPrice=1]').html("$ "+serverPrice.toFixed(2)+" USD");
-        
-        $('#countryBlock').change(function() {
-            if ($("#countryBlock option:selected").text() == 'Colombia') {
-                $('#isCallCenter').fadeIn('slow');
-            } else {
-                var isCallCenter = $('#levellicensor_levellicensorbundle_accountlicense_isCallCenter').is(':checked');
-                if (isCallCenter == 'true' || isCallCenter == true) {
-                    $('.toggle .btn').click();
-                }
-                $('#isCallCenter').fadeOut('slow');
-            }
-        });
-        
-        $('#zeroDiv').on('click', '.toggle', function () {
-            var autoSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_hasLevelZero').prop('checked');
 
-            if (!autoSyncVal && !$('#falseDiv').is(':visible')) {
-                $('#falseDiv').fadeIn("slow");
-                $('#falseDiv2').fadeIn("slow");
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
-            } else {
-                if (autoSyncVal && $('#falseDiv').is(':visible')) {
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
-                    $('#falseDiv').fadeOut("slow");
-                    $('#falseDiv2').fadeOut("slow");
-                }
-            }
+        $('#countryBlock').change(function() {
+        if ($("#countryBlock option:selected").text() == 'Colombia') {
+        $('#isCallCenter').fadeIn('slow');
+        } else {
+        var isCallCenter = $('#levellicensor_levellicensorbundle_accountlicense_isCallCenter').is(':checked');
+        if (isCallCenter == 'true' || isCallCenter == true) {
+        $('.toggle .btn').click();
+        }
+        $('#isCallCenter').fadeOut('slow');
+        }
         });
-        
+
+        $('#zeroDiv').on('click', '.toggle', function () {
+        var autoSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_hasLevelZero').prop('checked');
+
+        if (!autoSyncVal && !$('#falseDiv').is(':visible')) {
+        $('#falseDiv').fadeIn("slow");
+        $('#falseDiv2').fadeIn("slow");
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
+        } else {
+        if (autoSyncVal && $('#falseDiv').is(':visible')) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
+        $('#falseDiv').fadeOut("slow");
+        $('#falseDiv2').fadeOut("slow");
+        }
+        }
+        });
+
         $('.is-digit').on( 'input' ,function () {
-            $(this).val( this.value.replace(/[^0-9,.]/g,'') );
+        $(this).val( this.value.replace(/[^0-9,.]/g,'') );
         });
 
         $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage,#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').blur(function () {
-            
-            var valueLevelZero = $(this).val();
 
-            if (isNaN(valueLevelZero) || valueLevelZero === null || valueLevelZero === undefined || valueLevelZero === '') {
-                valueLevelZero = 0;
-            }
+        var valueLevelZero = $(this).val();
 
-            $(this).val(valueLevelZero); 
+        if (isNaN(valueLevelZero) || valueLevelZero === null || valueLevelZero === undefined || valueLevelZero === '') {
+        valueLevelZero = 0;
+        }
 
-            if ( valueLevelZero <= 4 ) {
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(valueLevelZero);
-            } else { 
-                $("#notify_msg").fadeIn("slow").text('Invalid value. Please select a value between 0 and 4!').css("color", "red");
-                                
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').val(0);
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(0);
-                
-                var timeToClose = 0;
-                setInterval(function() {
-                    timeToClose++;
+        $(this).val(valueLevelZero);
 
-                    if(timeToClose == 2) {
-                        $("#notify_msg").fadeOut("slow");
-                    }
-                },2000);
-            };
+        if ( valueLevelZero <= 4 ) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(valueLevelZero);
+        } else {
+        $("#notify_msg").fadeIn("slow").text('Invalid value. Please select a value between 0 and 4!').css("color", "red");
+
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').val(0);
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(0);
+
+        var timeToClose = 0;
+        setInterval(function() {
+        timeToClose++;
+
+        if(timeToClose == 2) {
+        $("#notify_msg").fadeOut("slow");
+        }
+        },2000);
+        };
         });
 
     {% endblock %}
@@ -337,15 +337,15 @@
         {% endfor %}
         var serverPrice = {{ serverPrice }};
         var clientPrice = {{ clientPrice }};
-        
+
         $("#servPrice").val(serverPrice);
         $("#cliePrice").val(clientPrice);
-        
+
         function calculatePriceLicense(input) {
-            var totalClients = $(input).val() * clientPrice;
-            var totalPrice = serverPrice + totalClients;
-            $('[clientPrice=1]').html("$ "+totalClients+" USD");
-            $('[totalPrice=1]').html("$ "+totalPrice+" USD");
+        var totalClients = $(input).val() * clientPrice;
+        var totalPrice = serverPrice + totalClients;
+        $('[clientPrice=1]').html("$ "+totalClients+" USD");
+        $('[totalPrice=1]').html("$ "+totalPrice+" USD");
         }
-        
+
     {% endblock %}

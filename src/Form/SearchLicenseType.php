@@ -27,11 +27,11 @@ class SearchLicenseType extends AbstractType {
 
         $this->status = $options['selected_choice'];
 
-        $choices = ['' => 'All Licenses',
+        $choices = ['' => 'Todo',
             AccountLicense::LICENSE_STATUS_ACTIVE => 'Activo',
             AccountLicense::LICENSE_STATUS_INACTIVE => 'Inactivo',
-            3 => 'With Device',
-            4 => 'Without Device',
+            3 => 'Con Tableta',
+            4 => 'Sin Tableta',
         ];
 
         $choices = Util::choiceFlip($choices);
