@@ -688,10 +688,13 @@ class AdPointsAccountsController extends ParametersNormalizerController {
             $actualDate = Util::getCurrentDate();
 
             $sublicense->setAdvertPlace($license);
-
             $sublicense->setCreatedDate($actualDate);
-            $sublicense->setStartingDate($startingDateTime);
-            $sublicense->setEndingDate($endingDateTime);
+            if (!$sublicense->getStartingDate() || $startingDateTime < $sublicense->getStartingDate()) {
+                $sublicense->setStartingDate($startingDateTime);
+            }
+            if (!$sublicense->getEndingDate() || $endingDateTime > $sublicense->getEndingDate()) {
+                $sublicense->setEndingDate($endingDateTime);
+            }
             $sublicense->setRerunTimes(0);
 
             if ($startingDateTime < $auxNowDate && $auxNowDate < $endingDateTime) {

@@ -356,7 +356,7 @@ class AccountController extends ParametersNormalizerController {
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('App:Account')->find($id);
+        $entity = $em->getRepository('App:AccountLicense')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Account entity.');
