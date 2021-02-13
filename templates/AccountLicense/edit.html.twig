@@ -5,18 +5,18 @@
     {% block content %}
         <div class="row numpad">
             <div class="col-lg-12">
-                <h1>Edit License</h1>
+                <h1>Editar Punto De Publicidad</h1>
                 <ol class="breadcrumb">
-                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Dashboard</a></li>
-                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Accounts List</a></li>
-                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Advertise Places List</a></li>
-                    <li class="active"><i class="icon-file-alt"></i> Edit License</li>
+                    <li><a href="{{path('adspace_dashboard')}}"><i class="fa fa-home"></i> Panel Principal</a></li>
+                    <li><a href="{{path('adpoint_accounts')}}"><i class="fa fa-list"></i> Lista De Cuentas</a></li>
+                    <li><a href="{{path('adpoint_points_list', { 'accountId': entity.alAccountLicense.id })}}"><i class="fa fa-list"></i> Lista Puntos De Publicidad</a></li>
+                    <li class="active"><i class="icon-file-alt"></i> Editar Punto De Publicidad</li>
                 </ol>
                 {% include 'Default/messageNotification.html.twig'%}
             </div>
-                    
+
             <div class="col-lg-12" >
-                <form action="{{path('accountlicense_update', {'id': entity.id})}}" method="POST">
+                <form action="{{path('adpoint_point_update', {'id': entity.id})}}" method="POST">
                     <div class="form-group col-xs-12">
                         <label>Edit License For </label>
                         <label>{{ entity.AlAccountLicense|title }}</label>
@@ -24,72 +24,72 @@
 
                     <div class="col-xs-6">
 
-                            {% if entity.AlAccountLicense is defined and entity.AlAccountLicense is not empty %}
-                                <input type="hidden" value="{{ entity.AlAccountLicense.id }}" 
-                                    name="levellicensor_levellicensorbundle_accountlicense[alAccountLicense]" />
-                            {% else %}
-                                <div class="form-group">
-                                    <div class="help-block alert-danger">
-                                        {{form_errors(form.alAccountLicense)}}     
-                                    </div>
+                        {% if entity.AlAccountLicense is defined and entity.AlAccountLicense is not empty %}
+                            <input type="hidden" value="{{ entity.AlAccountLicense.id }}"
+                                   name="levellicensor_levellicensorbundle_accountlicense[alAccountLicense]" />
+                        {% else %}
+                            <div class="form-group">
+                                <div class="help-block alert-danger">
+                                    {{form_errors(form.alAccountLicense)}}
                                 </div>
-                            {% endif %}  
+                            </div>
+                        {% endif %}
 
                         <div class="form-group">
                             <label>License Contact Name</label><em>*</em>
                             {{form_widget(form.alContacName,{ 'attr': {'class': 'form-control','placeholder':'Contact Name', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alContacName)}}     
-                            </div>  
+                                {{form_errors(form.alContacName)}}
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Restaurant Name</label><em>*</em>
                             {{form_widget(form.alRestaurantName,{ 'attr': {'class': 'form-control','placeholder':'Restaurant Name', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
                                 {{form_errors(form.alRestaurantName)}}
-                            </div>  
+                            </div>
                         </div>
-                    {#</div>
+                        {#</div>
 
-                    <div class="col-xs-6">#}
+                        <div class="col-xs-6">#}
                         <div class="form-group">
                             <label>Contact E-Mail</label><em>*</em>
                             {{form_widget(form.alLicenseEmail,{ 'attr': {'class': 'form-control','placeholder':'contact@mailer.com', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alLicenseEmail)}}     
+                                {{form_errors(form.alLicenseEmail)}}
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Numero Telefonico</label><em>*</em>
                             {{form_widget(form.alPhoneNumber,{ 'attr': {'class': 'form-control phone_number','placeholder':'(000) 000-0000', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alPhoneNumber)}}     
-                            </div>  
+                                {{form_errors(form.alPhoneNumber)}}
+                            </div>
                         </div>
                         <div style="display: inline-block; width: 100%; margin-bottom: 2%; margin-top: 4%;" >
                             <div style="display: inline-block; width: 45%;" id="lightDivX">
                                 <label style="margin-right: 2%">Is LEVEL Lite License?  </label>
                                 {{form_widget(form.isLevelLight,{ 'attr': {'class':'megaPopX', 'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.isLevelLight)}}     
-                                </div>  
+                                    {{form_errors(form.isLevelLight)}}
+                                </div>
                             </div>
                         </div>
                         <div class="form-group" id="isCallCenter" style="margin-top: 5%; {% if entity.city.ciState.stCountry.coVal != 'CO' %}display: none;{% endif %}">
                             <label style="margin-right: 2%">Is Call Center?  </label>
                             {{form_widget(form.isCallCenter,{ 'attr': {'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.isCallCenter)}}     
-                            </div>  
+                                {{form_errors(form.isCallCenter)}}
+                            </div>
                         </div>
-                            
+
                         {#<div id="regularLicenseDiv">
                             <div class="form-group" style="margin-top: 5%;">
                                 <label style="margin-right: 2%">License Without Expiration?  </label>
                                 {{form_widget(form.isPlusLicense,{ 'attr': {'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                                 <div class="help-block alert-danger">
-                                    {{form_errors(form.isPlusLicense)}}     
-                                </div>  
+                                    {{form_errors(form.isPlusLicense)}}
+                                </div>
                             </div>
                             <div class="form-group" style="margin-top: 5%;">
                              {% if entity.levelZeroPercentage < 1 and entity.levelZeroGatewayPercentage < 1 %}
@@ -99,7 +99,7 @@
                                 {% set porcentualZero =  entity.levelZeroPercentage %}
                                 {% set porcentualGatewayZero =  entity.levelZeroGatewayPercentage %}
                             {% endif %}
-                            
+
                             {% set porcentualZero =  entity.levelZeroPercentage * 100 %}
                             {% set porcentualGatewayZero =  entity.levelZeroGatewayPercentage * 100 %}
 
@@ -108,8 +108,8 @@
                                         <label style="margin-right: 2%">License With LEVEL Zero?  </label>
                                         {{form_widget(form.hasLevelZero,{ 'attr': {'class':'megaPop', 'data-toggle':'toggle','data-on':'Yes','data-off':'No','data-onstyle':'primary','data-offstyle':'default'} })}}
                                         <div class="help-block alert-danger">
-                                            {{form_errors(form.hasLevelZero)}}     
-                                        </div>  
+                                            {{form_errors(form.hasLevelZero)}}
+                                        </div>
                                     </div>
                                     <div style="display: inline-block; width: 53%;" id="notify_msg"></div>
                                 </div>
@@ -118,7 +118,7 @@
                                         <div style="display: inline-block; width: 43%;"><label>LEVEL Zero %</label><em>*</em></div>
                                         <div style="display: inline-block; width: 45%;">{{ form_widget(form.levelZeroPercentage, { 'attr': {'class':'form-control is-digit', 'typeLevel':'0', 'maxlength':'4', 'min':'1', 'max':'4', 'style': 'width: 58%;', 'placeholder':'0', 'value' : porcentualZero} }) }}
                                             <div class="help-block alert-danger">
-                                                {{form_errors(form.levelZeroPercentage) }}     
+                                                {{form_errors(form.levelZeroPercentage) }}
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
                                         <div style="display: inline-block; width: 62%;"><label>LEVEL Zero Gateway %</label><em>*</em></div>
                                         <div style="display: inline-block; width: 35%;">{{ form_widget(form.levelZeroGatewayPercentage, { 'attr': {'class':'form-control is-digit', 'typeLevel':'1', 'maxlength':'4', 'min':'1', 'max':'4', 'style': 'width: 58%;', 'placeholder':'0', 'value' : porcentualGatewayZero} }) }}
                                             <div class="help-block alert-danger">
-                                                {{form_errors(form.levelZeroGatewayPercentage) }}     
+                                                {{form_errors(form.levelZeroGatewayPercentage) }}
                                             </div>
                                         </div>
                                     </div>
@@ -137,21 +137,21 @@
                         </div>#}
                     </div>
 
-                            
+
                     <div class="col-xs-6">
                         <div class="form-group">
                             <label>Suit Po Box</label>
                             {{form_widget(form.alSuitPoBox,{ 'attr': {'class': 'form-control','placeholder':'Suit PO Box', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alSuitPoBox)}}     
+                                {{form_errors(form.alSuitPoBox)}}
                             </div>
                         </div>
                         {#<div class="form-group">
                             <label>Address</label>
                             {{form_widget(form.alAddres,{ 'attr': {'class': 'form-control','placeholder':'Address', 'maxlength':'30'} })}}
                             <div class="help-block alert-danger">
-                                {{form_errors(form.alAddres)}}     
-                            </div>  
+                                {{form_errors(form.alAddres)}}
+                            </div>
                         </div>
 
                         {% block locationsBlock %}
@@ -161,7 +161,7 @@
                         {% block autocompAddressBlock %}
                             {{parent()}}
                         {% endblock %}
-                        
+
                         {{form_widget(form._token)}}
 
                         <div class="form-group" style="margin-top: 30px;">
@@ -176,108 +176,108 @@
 
     {% block scripts %}
 
-{#        {% block locationsScriptBlock %}
-            {{parent()}}
-        {% endblock %}#}
+        {#        {% block locationsScriptBlock %}
+                    {{parent()}}
+                {% endblock %}#}
 
         $('#countryBlock').change(function() {
-            if ($("#countryBlock option:selected").text() == 'Colombia') {
-                $('#isCallCenter').fadeIn('slow');
-                
-                var isCallCenter = $('#levellicensor_levellicensorbundle_accountlicense_isCallCenter').is(':checked');
-            } else {
-                var isCallCenter = $('#levellicensor_levellicensorbundle_accountlicense_isCallCenter').is(':checked');
-                if (isCallCenter == 'true' || isCallCenter == true) {
-                    $('.toggle .btn').click();
-                }
-                $('#isCallCenter').fadeOut('slow');
-            }
+        if ($("#countryBlock option:selected").text() == 'Colombia') {
+        $('#isCallCenter').fadeIn('slow');
+
+        var isCallCenter = $('#levellicensor_levellicensorbundle_accountlicense_isCallCenter').is(':checked');
+        } else {
+        var isCallCenter = $('#levellicensor_levellicensorbundle_accountlicense_isCallCenter').is(':checked');
+        if (isCallCenter == 'true' || isCallCenter == true) {
+        $('.toggle .btn').click();
+        }
+        $('#isCallCenter').fadeOut('slow');
+        }
         });
-        
+
         var isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
 
         $('#lightDivX').on('click', '.toggle', function () {
-            isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
-            
-            if (isLightSyncVal && !$('#regularLicenseDiv').is(':visible')) {
-                $('#regularLicenseDiv').fadeIn("slow");
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
-                $('#hdPrices_alCantDevices').attr('required', 'required');
-            } else {
-                if (!isLightSyncVal && $('#regularLicenseDiv').is(':visible')) {
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
-                    $('#hdPrices_alCantDevices').removeAttr('required');
-                    $('#regularLicenseDiv').fadeOut("slow");
-                }
-            }
+        isLightSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_isLevelLight').prop('checked');
+
+        if (isLightSyncVal && !$('#regularLicenseDiv').is(':visible')) {
+        $('#regularLicenseDiv').fadeIn("slow");
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
+        $('#hdPrices_alCantDevices').attr('required', 'required');
+        } else {
+        if (!isLightSyncVal && $('#regularLicenseDiv').is(':visible')) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
+        $('#hdPrices_alCantDevices').removeAttr('required');
+        $('#regularLicenseDiv').fadeOut("slow");
+        }
+        }
         });
 
         $('#zeroDiv').on('click', '.toggle', function () {
-            var autoSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_hasLevelZero').prop('checked');
+        var autoSyncVal = $('#levellicensor_levellicensorbundle_accountlicense_hasLevelZero').prop('checked');
 
-            if (!autoSyncVal && !$('#falseDiv').is(':visible')) {
-                $('#falseDiv').fadeIn("slow");
-                $('#falseDiv2').fadeIn("slow");
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
-            } else {
-                if (autoSyncVal && $('#falseDiv').is(':visible')) {
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
-                    $('#falseDiv').fadeOut("slow");
-                    $('#falseDiv2').fadeOut("slow");
-                }
-            }
+        if (!autoSyncVal && !$('#falseDiv').is(':visible')) {
+        $('#falseDiv').fadeIn("slow");
+        $('#falseDiv2').fadeIn("slow");
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
+        } else {
+        if (autoSyncVal && $('#falseDiv').is(':visible')) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').removeAttr('required');
+        $('#falseDiv').fadeOut("slow");
+        $('#falseDiv2').fadeOut("slow");
+        }
+        }
         });
-        
+
         $('.is-digit').on( 'input' ,function () {
-            $(this).val( this.value.replace(/[^0-9.]/g,'') );
+        $(this).val( this.value.replace(/[^0-9.]/g,'') );
         });
 
         $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage,#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').on( 'change',function () {
-            
-            var valueLevelZero = $(this).val();
 
-            if (isNaN(valueLevelZero) || valueLevelZero === null || valueLevelZero === undefined || valueLevelZero === '') {
-                valueLevelZero = 0;
-            } 
+        var valueLevelZero = $(this).val();
 
-            $(this).val(valueLevelZero); 
+        if (isNaN(valueLevelZero) || valueLevelZero === null || valueLevelZero === undefined || valueLevelZero === '') {
+        valueLevelZero = 0;
+        }
 
-            if ( valueLevelZero <= 4 ) {
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(valueLevelZero);
-            } else { 
-                $("#notify_msg").fadeIn("slow").text('Invalid value. Please select a value between 0 and 4!').css("color", "red");
-                
-                if ($(this).attr("typeLevel") == 0 ) {
-                    $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').val(0);
-                }
-                $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(0);
-                
-                var timeToClose = 0;
-                setInterval(function() {
-                    timeToClose++;
+        $(this).val(valueLevelZero);
 
-                    if(timeToClose == 2) {
-                        $("#notify_msg").fadeOut("slow");
-                    }
-                },2000);
-            };
+        if ( valueLevelZero <= 4 ) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(valueLevelZero);
+        } else {
+        $("#notify_msg").fadeIn("slow").text('Invalid value. Please select a value between 0 and 4!').css("color", "red");
+
+        if ($(this).attr("typeLevel") == 0 ) {
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').val(0);
+        }
+        $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').val(0);
+
+        var timeToClose = 0;
+        setInterval(function() {
+        timeToClose++;
+
+        if(timeToClose == 2) {
+        $("#notify_msg").fadeOut("slow");
+        }
+        },2000);
+        };
         });
-        
+
         {% if entity.isCallCenter == true %}
             $('.toggle .btn').click();
         {% endif %}
-        
+
         {% if entity.hasLevelZero == true %}
             $('#falseDiv').fadeIn("slow");
             $('#falseDiv2').fadeIn("slow");
             $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').attr('required', 'required');
             $('#levellicensor_levellicensorbundle_accountlicense_levelZeroGatewayPercentage').attr('required', 'required');
         {% endif %}
-        
+
         {% if entity.isLevelLight == true %}
             $('#regularLicenseDiv').fadeOut("slow");
             $('#levellicensor_levellicensorbundle_accountlicense_levelZeroPercentage').removeAttr('required');
